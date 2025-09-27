@@ -2,7 +2,6 @@ import { getServerSupabase } from "../../auth/server";
 import PartnerProducts from "./PartnerProducts";
 import Uploader from "./Uploader";
 import { getCurrentAppUser } from "../../../lib/userProfile";
-import ContractCard from "./ContractCard";
 
 export default async function PartnerDashboard() {
   const supabase = await getServerSupabase();
@@ -13,6 +12,14 @@ export default async function PartnerDashboard() {
     .select("id,name,sku,price_public_ttc,price_partner_net,stock_qty,gallery")
     .order("id", { ascending: false })
     .limit(1000);
+
+  const { data: agreement } = await supabase
+    .from('partner_agreements')
+    .select('version, pdf_url, accepted_at')
+    .eq('email', appUser?.email || '')
+    .order('accepted_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
 
   const isActivePartner = appUser?.role === 'partner' && appUser?.partner_status === 'active';
 
@@ -31,26 +38,34 @@ export default async function PartnerDashboard() {
         </div>
       )}
 
+      {isActivePartner && !agreement && (
+        <div className="rounded-2xl border border-neutral-200 bg-white p-4">
+          <h3 className="font-medium text-neutral-900">Trebuie să acceptați termenii programului de parteneriat</h3>
+          <p className="mt-1 text-sm text-neutral-600">Vă rugăm să parcurgeți și să acceptați termenii pentru a continua.</p>
+          <a href="/parteneri/acceptare" className="mt-3 inline-flex rounded-full bg-black text-white px-4 py-2 text-sm">Acceptă termeni</a>
+        </div>
+      )}
+
+      {isActivePartner && agreement && (
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm">
+          <div className="text-emerald-900 font-medium">Contract semnat</div>
+          <div className="mt-1 text-emerald-800">Versiune: {agreement.version} · Data: {agreement.accepted_at ? new Date(agreement.accepted_at as unknown as string).toLocaleDateString('ro-RO') : '-'}</div>
+          {agreement.pdf_url && <a href={agreement.pdf_url} target="_blank" className="underline">Descarcă PDF</a>}
+        </div>
+      )}
+
       <div>
         {error ? (
           <div className="text-red-600">{error.message}</div>
         ) : (
           <PartnerProducts initialProducts={(products || []).map(p => ({
             ...p,
-            // Dacă nu e activ, ascundem prețul partener
             price_partner_net: isActivePartner ? p.price_partner_net : null,
           })) as any} />
         )}
       </div>
 
-      {isActivePartner && <ContractCard />}
-
       <Uploader />
-
-      <div className="text-sm text-neutral-600">
-        <h2 className="text-neutral-900 font-medium">Termeni</h2>
-        <p className="mt-2">Accesul complet la resurse este disponibil după validarea contului de către administrator.</p>
-      </div>
     </div>
   );
 }
