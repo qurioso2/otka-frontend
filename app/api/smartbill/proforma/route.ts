@@ -47,7 +47,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: result.errorText || 'SmartBill error' }, { status: 400 });
     }
     return NextResponse.json({ success: true, number: result.number, url: result.url });
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message || 'Request failed' }, { status: 500 });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Request failed';
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
