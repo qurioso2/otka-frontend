@@ -26,8 +26,9 @@ export default function CheckoutPage() {
       setResult({ number: data.number, url: data.url });
       toast.success('Proformă generată');
       clear();
-    } catch (e: any) {
-      toast.error(e.message || 'Eroare');
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Eroare';
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
