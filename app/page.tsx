@@ -13,10 +13,27 @@ interface ProductPublic {
   gallery: unknown[] | null;
 }
 
-function StockBadge({ qty }: { qty: number }) {
-  const status = qty > 0 ? "Disponibil" : "Rezervat";
-  const color = qty > 0 ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-amber-50 text-amber-700 border-amber-200";
-  return <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${color}`}>{status}</span>;
+function StockBadge({ qty, status }: { qty: number; status?: string }) {
+  // Verifică status-ul explicit först
+  if (status === 'reserved') {
+    return <span className="rounded-full bg-orange-100 text-orange-800 px-2 py-1 text-xs font-medium">Rezervat</span>;
+  }
+  if (status === 'discontinued') {
+    return <span className="rounded-full bg-gray-100 text-gray-800 px-2 py-1 text-xs font-medium">Discontinuat</span>;
+  }
+  
+  // Apoi verifică cantitatea
+  if (qty === 0) {
+    return <span className="rounded-full bg-red-100 text-red-800 px-2 py-1 text-xs font-medium">Epuizat</span>;
+  }
+  if (qty <= 3) {
+    return <span className="rounded-full bg-yellow-100 text-yellow-800 px-2 py-1 text-xs font-medium">Ultimele bucăți ({qty})</span>;
+  }
+  if (qty <= 10) {
+    return <span className="rounded-full bg-blue-100 text-blue-800 px-2 py-1 text-xs font-medium">Stoc limitat ({qty})</span>;
+  }
+  
+  return <span className="rounded-full bg-green-100 text-green-800 px-2 py-1 text-xs font-medium">În stoc ({qty})</span>;
 }
 
 function Price({ value }: { value: number }) {
