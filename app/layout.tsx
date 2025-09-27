@@ -35,8 +35,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "OTKA — Produse resigilate și expuse",
-    description: "Descoperă produse resigilate și ex-demo de calitate la prețuri avantajoase.",
+    title: "OTKA — Mobilier și Design Interior",
+    description: "Mobilier design, corpuri de iluminat și obiecte decorative pentru amenajări interioare.",
   },
   robots: {
     index: true,
