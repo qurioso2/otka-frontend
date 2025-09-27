@@ -11,7 +11,11 @@ export async function middleware(req: NextRequest) {
   const { data: { session } } = await supabase.auth.getSession();
 
   const protectedPaths = ['/parteneri/dashboard', '/admin'];
-  const isProtected = protectedPaths.some(p => req.nextUrl.pathname === p || req.nextUrl.pathname.startsWith(p + '/'));
+  const isProtected = protectedPaths.some(p => {
+    const path = req.nextUrl.pathname;
+    // Exact match or starts with the path followed by /
+    return path === p || path.startsWith(p + '/');
+  });
 
   if (!session && isProtected) {
     const url = req.nextUrl.clone();
