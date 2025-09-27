@@ -1,6 +1,7 @@
 import { getServerSupabase } from "../auth/server";
 import UsersAdmin from "./UsersAdmin";
 import ClientsAdmin from "./ClientsAdmin";
+import CommissionSummary from "./CommissionSummary";
 
 export default async function Admin() {
   const supabase = await getServerSupabase();
@@ -30,7 +31,7 @@ export default async function Admin() {
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10 space-y-10">
       <h1 className="text-2xl font-semibold">Administrare</h1>
-      <p className="mt-2 text-neutral-600 text-sm">Import produse CSV, gestiune parteneri, clienți și comenzi manuale.</p>
+      <p className="mt-2 text-neutral-600 text-sm">Import produse CSV, gestiune parteneri, clienți, comenzi manuale și comisioane.</p>
 
       <div className="rounded-2xl border border-neutral-200 bg-white p-4">
         <h2 className="font-medium text-neutral-900">Import CSV produse</h2>
@@ -42,6 +43,7 @@ export default async function Admin() {
 
       <UsersAdmin />
       <ClientsAdmin />
+      <CommissionSummary />
     </div>
   );
 }
