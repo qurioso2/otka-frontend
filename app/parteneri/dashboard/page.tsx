@@ -64,6 +64,14 @@ export default async function PartnerDashboard() {
         </div>
       )}
 
+      {/* Resurse și Documente */}
+      <PartnerResources />
+
+      {/* Comandă Nouă */}
+      {(isActivePartner || isAdmin) && (
+        <NewOrder />
+      )}
+
       <div>
         {error ? (
           <div className="text-red-600">{error.message}</div>
