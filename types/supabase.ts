@@ -62,6 +62,7 @@ export interface Database {
           defect_notes?: string | null;
           defect_photos?: Json | null;
           price_public_ttc?: number;
+          price_original?: number | null;
           price_partner_net?: number | null;
           vat_rate?: number;
           stock_qty?: number;
