@@ -1,14 +1,25 @@
-export const dynamic = 'force-static';
+import { getCurrentAppUser } from "../../lib/userProfile";
 
-export default function Contract() {
+export const dynamic = 'force-dynamic';
+
+export default async function Contract() {
+  const appUser = await getCurrentAppUser();
+  const isActivePartner = appUser?.role === 'partner' && appUser?.partner_status === 'active';
+
+  if (!isActivePartner) {
+    return (
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+        <h1 className="text-2xl font-semibold tracking-tight">Contract Parteneri</h1>
+        <p className="mt-2 text-neutral-600">Acest document este disponibil doar partenerilor validați. Dacă ați primit invitație, autentificați-vă și reveniți după aprobarea contului.</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="mx-auto max-w-3xl px-4 sm:px-6 py-12 prose prose-neutral">
-      <h1>Contract Parteneri</h1>
-      <p>Acesta este un template. Descărcați versiunea HTML și o puteți converti în PDF:</p>
-      <ul>
-        <li><a className="underline" href="/contract-partener.html" download>Descarcă Contract (HTML)</a></li>
-      </ul>
-      <p>Dacă doriți, adaug integrare pentru generarea PDF automat (pdf-lib) și salvare în R2.</p>
+    <div className="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+      <h1 className="text-2xl font-semibold tracking-tight">Contract Parteneri</h1>
+      <p className="mt-3">Puteți descărca ultima versiune a contractului de comision de mai jos:</p>
+      <a href="/contract-partener.html" className="mt-4 inline-flex rounded-full bg-black text-white px-5 py-2.5 text-sm">Descarcă Contract</a>
     </div>
   );
 }
