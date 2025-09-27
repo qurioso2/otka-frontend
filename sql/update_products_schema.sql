@@ -6,7 +6,10 @@ ALTER TABLE public.products
 ADD COLUMN IF NOT EXISTS price_original numeric;
 
 -- 2) Actualizați view-ul products_public să includă price_original
-CREATE OR REPLACE VIEW public.products_public AS
+-- Først drop view-ul existent pentru a evita conflictele
+DROP VIEW IF EXISTS public.products_public;
+
+CREATE VIEW public.products_public AS
 SELECT id, sku, name, slug, price_public_ttc, price_original, stock_qty, gallery, visible
 FROM public.products
 WHERE visible = true;
