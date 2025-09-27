@@ -66,14 +66,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Homepage verification"
-    - "Login page functionality"
-    - "Protected route middleware"
     - "Parteneri landing page"
-  stuck_tasks: []
+  stuck_tasks:
+    - "Parteneri landing page"
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "testing"
     message: "Starting comprehensive UI testing based on review request. Testing homepage, login functionality, protected routes, and parteneri landing page."
+  - agent: "testing"
+    message: "CRITICAL BUG FOUND: Middleware incorrectly protects /parteneri landing page. The middleware uses startsWith('/parteneri') which blocks access to the public landing page. Need to fix middleware logic to only protect /parteneri/dashboard and other protected subroutes, not the base /parteneri path."
