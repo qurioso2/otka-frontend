@@ -19,7 +19,7 @@ type InsertProduct = Database['public']['Tables']['products']['Insert'];
 
 export async function POST(request: Request) {
   const supabase = await getServerSupabase();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await (supabase as SupabaseClient<Database>).auth.getUser();
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const formData = await request.formData();
