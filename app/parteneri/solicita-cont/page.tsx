@@ -85,10 +85,13 @@ export default function SolicitaContPartener() {
                 className="w-full rounded-xl border border-neutral-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-900"
               >
                 <option value="">Selectează...</option>
-                <option value="retail">Retail</option>
+                <option value="design-interior">Designer Interior</option>
+                <option value="retail-mobilier">Magazin Mobilier</option>
+                <option value="arhitectura">Studio Arhitectură</option>
+                <option value="instalator">Instalator Corpuri Iluminat</option>
                 <option value="distribuitor">Distribuitor</option>
-                <option value="integrator">Integrator IT</option>
-                <option value="service">Service</option>
+                <option value="decorator">Decorator/Stilist</option>
+                <option value="contractor">Contractor Amenajări</option>
                 <option value="alte">Alte</option>
               </select>
             </div>
