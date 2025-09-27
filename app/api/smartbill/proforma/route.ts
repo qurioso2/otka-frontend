@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     issueDate: new Date().toISOString().split('T')[0],
     dueDate: new Date(Date.now() + 30*24*60*60*1000).toISOString().split('T')[0],
     seriesName: 'PF',
-    products: (body.products || []).map((p: any) => ({
+    products: (body.products || []).map((p: { name: string; sku: string; quantity: number; price: number }) => ({
       name: p.name,
       code: p.sku,
       quantity: p.quantity,
