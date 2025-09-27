@@ -29,7 +29,8 @@ export default function Uploader() {
 
   return (
     <div className="rounded-2xl border border-neutral-200 bg-white p-4">
-      <h3 className="font-medium text-neutral-900">Încărcare materiale (R2)</h3>
+      <h3 className="font-medium text-neutral-900">Încărcare documente și imagini</h3>
+      <p className="mt-1 text-sm text-neutral-600">Încărcați documente, imagini produse sau alte materiale de lucru.</p>
       <div className="mt-3 flex items-center gap-3">
         <input type="file" onChange={e => setFile(e.target.files?.[0] || null)} className="text-sm" />
         <button onClick={handleUpload} disabled={loading} className="rounded-full bg-black text-white px-4 py-2 text-sm hover:bg-neutral-800 disabled:opacity-50">
