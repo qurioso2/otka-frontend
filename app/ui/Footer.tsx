@@ -5,6 +5,7 @@ export default function Footer() {
         <p>© {new Date().getFullYear()} OTKA</p>
         <nav className="flex items-center gap-6">
           <a href="/termeni" className="hover:text-neutral-700">Termeni</a>
+          <a href="/gdpr" className="hover:text-neutral-700">GDPR</a>
           <a href="/contact" className="hover:text-neutral-700">Contact</a>
           <a href="/login" className="hover:text-neutral-700">Login Parteneri</a>
         </nav>

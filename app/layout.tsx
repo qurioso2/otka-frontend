@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./ui/Header";
 import Footer from "./ui/Footer";
 import { Toaster } from "sonner";
+import CookieBanner from "./ui/CookieBanner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -39,6 +40,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
+        <CookieBanner />
       </body>
     </html>
   );

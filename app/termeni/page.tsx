@@ -1,25 +1,62 @@
+export const dynamic = 'force-static';
+
 export default function Termeni() {
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-12 prose prose-neutral">
-      <h1>Termeni & Comisioane</h1>
-      <p>Acesta este un draft editabil. Spuneți exact ce modificări doriți și le aplic.</p>
-      <h2>Eligibilitate comision</h2>
+      <h1>TERMENI ȘI CONDIȚII DE VÂNZARE - OTKA.RO</h1>
+
+      <h2>1. INFORMAȚII GENERALE</h2>
+      <p><strong>Vânzător:</strong> MERCURY VC S.R.L.<br />
+      CIF: RO48801623, J20/3003/2023<br />
+      Adresa: Bld. Eroilor, Nr.42, Et.I, Ap.9, Cluj-Napoca<br />
+      Email: comenzi@otka.ro | Telefon: +40.XXX.XXX.XXX</p>
+
+      <h2>2. PRODUSE</h2>
       <ul>
-        <li>Comisionul standard: 5% din prețul de vânzare către clientul final.</li>
-        <li>Eligibil când comanda este inițiată de lead-ul partenerului și aprobată.</li>
-        <li>Se calculează la valoarea netă, după discounturi aplicate clientului final.</li>
+        <li>Produsele sunt <strong>resigilate sau expuse în showroom</strong></li>
+        <li>Funcționalitatea este 100% garantată</li>
+        <li>Pot prezenta urme minore de uz estetic</li>
+        <li>Garanția: 12 luni pentru defecte de fabricație</li>
       </ul>
-      <h2>Plată</h2>
+
+      <h2>3. COMENZI ȘI PLĂȚI</h2>
       <ul>
-        <li>Plata comisioanelor se face lunar, în 30 de zile de la livrare.</li>
-        <li>Factura pentru comision trebuie emisă în termen de 5 zile lucrătoare de la confirmare.</li>
+        <li>Comanda se confirmă prin email</li>
+        <li>Plata: transfer bancar sau card online</li>
+        <li>Livrarea: 2-5 zile lucrătoare prin curier</li>
+        <li>Costul livrării: 25 RON (gratuit peste 500 RON)</li>
       </ul>
-      <h2>Excluderi</h2>
+
+      <h2>4. MONTAJ (OPȚIONAL)</h2>
       <ul>
-        <li>Returnări sau comenzi anulate nu generează comision.</li>
-        <li>Comenzi interne sau auto-cumpărări nu sunt eligibile.</li>
+        <li>Montajul <strong>NU este inclus</strong> în preț</li>
+        <li>Se poate solicita separat pentru fiecare livrare</li>
+        <li>Cost montaj: la cerere, în funcție de complexitate</li>
+        <li>Montajul se oferă doar în Cluj-Napoca și împrejurimi</li>
       </ul>
-      <p>Trimiteți modificările dorite (procente, termene, excepții) și actualizez textul.</p>
+
+      <h2>5. DREPTUL DE RETURNARE</h2>
+      <ul>
+        <li>14 zile de la primire pentru returnare</li>
+        <li>Produsul trebuie returnat în starea originală</li>
+        <li>Costul returnării: în sarcina clientului</li>
+        <li>Rambursarea: în maxim 14 zile de la returnare</li>
+      </ul>
+
+      <h2>6. GARANȚII ȘI RĂSPUNDERI</h2>
+      <ul>
+        <li>Garanție comercială: 12 luni</li>
+        <li>Garanția nu acoperă deteriorările mecanice</li>
+        <li>Service autorizat: conform producătorului</li>
+      </ul>
+
+      <h2>7. FORȚA MAJORĂ</h2>
+      <p>Ne rezervăm dreptul de a suspenda temporar serviciile în caz de forță majoră.</p>
+
+      <h2>8. LITIGII</h2>
+      <p>Litigiile se rezolvă pe cale amiabilă sau în instanțele competente din Cluj-Napoca.</p>
+
+      <p><em>Actualizat: Septembrie 2025</em></p>
     </div>
   );
 }
