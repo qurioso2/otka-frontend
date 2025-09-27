@@ -19,21 +19,9 @@ function StockBadge({ qty }: { qty: number }) {
   return <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${color}`}>{status}</span>;
 }
 
-function Price({ value, originalPrice }: { value: number; originalPrice?: number }) {
-  const formatPrice = (price: number) => new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(price || 0);
-  
+function Price({ value }: { value: number }) {
   return (
-    <div className="space-y-1">
-      {originalPrice && originalPrice > value && (
-        <div className="text-sm text-neutral-500 line-through">{formatPrice(originalPrice)}</div>
-      )}
-      <div className="text-lg font-semibold text-red-600">{formatPrice(value)}</div>
-      {originalPrice && originalPrice > value && (
-        <div className="text-xs text-green-600 font-medium">
-          Economisești {formatPrice(originalPrice - value)}
-        </div>
-      )}
-    </div>
+    <div className="mt-1 text-lg font-semibold text-neutral-900">{new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(value || 0)}</div>
   );
 }
 
