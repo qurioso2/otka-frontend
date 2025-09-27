@@ -22,6 +22,7 @@ export default async function PartnerDashboard() {
     .maybeSingle();
 
   const isActivePartner = appUser?.role === 'partner' && appUser?.partner_status === 'active';
+  const isAdmin = appUser?.role === 'admin';
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-10">
