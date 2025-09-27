@@ -30,8 +30,9 @@ export async function POST(request: Request) {
   let records: Row[] = [];
   try {
     records = parse(buf.toString('utf8'), { columns: true, skip_empty_lines: true });
-  } catch (e: any) {
-    return NextResponse.json({ error: 'CSV parse error', detail: e.message }, { status: 400 });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ error: 'CSV parse error', detail: msg }, { status: 400 });
   }
 
   const upserts: InsertProduct[] = records.map((r) => ({
