@@ -8,16 +8,16 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ number?: string; url?: string } | null>(null);
 
-  const handleSubmit = async (formData: FormData) => {
-    if (items.length === 0) return toast.error('Coșul este gol');
+  const handleSubmit = async (formData: FormData): Promise<void> => {
+    if (items.length === 0) { toast.error('Coșul este gol'); return; }
     setLoading(true);
     try {
       const body = {
-        clientName: formData.get('name'),
-        clientCIF: formData.get('cif') || '',
-        address: formData.get('address'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
+        clientName: String(formData.get('name') || ''),
+        clientCIF: String(formData.get('cif') || ''),
+        address: String(formData.get('address') || ''),
+        email: String(formData.get('email') || ''),
+        phone: String(formData.get('phone') || ''),
         products: items.map(i => ({ name: i.name, sku: i.sku, quantity: i.qty, price: i.price })),
       };
       const res = await fetch('/api/smartbill/proforma', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
@@ -34,6 +34,12 @@ export default function CheckoutPage() {
     }
   };
 
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    await handleSubmit(fd);
+  };
+
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10">
       <h1 className="text-3xl font-semibold tracking-tight">Checkout</h1>
@@ -43,7 +49,7 @@ export default function CheckoutPage() {
       )}
 
       {!result && (
-        <form action={handleSubmit} className="mt-6 grid grid-cols-1 gap-4">
+        <form onSubmit={onSubmit} className="mt-6 grid grid-cols-1 gap-4">
           <div>
             <label className="block text-sm text-neutral-700">Nume client</label>
             <input name="name" className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-2" required />

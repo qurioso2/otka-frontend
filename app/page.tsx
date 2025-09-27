@@ -1,8 +1,7 @@
 import { supabase } from "../lib/supabaseClient";
 import type { Database } from "../types/supabase";
 import Link from "next/link";
-
-// anchor smooth scroll handled via CSS (globals.css: html { scroll-behavior: smooth; })
+import AddToCartButton from "./ui/AddToCartButton";
 
 type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 
@@ -34,7 +33,7 @@ function CardSkeleton() {
 export default async function Home() {
   const { data: products, error } = await supabase
     .from("products")
-    .select("id,name,slug,price_public_ttc,stock_qty,gallery,visible")
+    .select("id,sku,name,slug,price_public_ttc,stock_qty,gallery,visible")
     .eq("visible", true)
     .order("id", { ascending: false })
     .limit(24);
@@ -76,20 +75,23 @@ export default async function Home() {
             const galleryArr = Array.isArray(p.gallery) ? (p.gallery as unknown[]).filter((x): x is string => typeof x === 'string') : null;
             const img = galleryArr?.[0] || "/vercel.svg";
             return (
-              <Link href={`/p/${p.slug}`} key={p.id} className="group rounded-2xl border border-neutral-200 overflow-hidden bg-white hover:shadow-md transition">
-                <div className="aspect-[4/3] bg-neutral-50">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img} alt={p.name} className="h-full w-full object-cover" />
-                </div>
+              <div key={p.id} className="group rounded-2xl border border-neutral-200 overflow-hidden bg-white hover:shadow-md transition">
+                <Link href={`/p/${p.slug}`}>
+                  <div className="aspect-[4/3] bg-neutral-50">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={img} alt={p.name} className="h-full w-full object-cover" />
+                  </div>
+                </Link>
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-3">
-                    <h3 className="font-medium text-neutral-900 group-hover:opacity-80 transition">{p.name}</h3>
+                    <Link href={`/p/${p.slug}`} className="font-medium text-neutral-900 group-hover:opacity-80 transition">{p.name}</Link>
                     <StockBadge qty={p.stock_qty || 0} />
                   </div>
                   <div className="mt-2 text-neutral-600 text-sm">TVA inclus</div>
                   <Price value={p.price_public_ttc || 0} />
+                  <AddToCartButton item={{ id: p.id as number, sku: p.sku, name: p.name, price: p.price_public_ttc || 0, image: img }} />
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>
