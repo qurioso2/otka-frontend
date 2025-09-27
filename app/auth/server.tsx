@@ -1,9 +1,10 @@
 // app/auth/server.tsx
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';
-import { Database } from '../../types/supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
+import type { Database } from '../../types/supabase';
 
-export async function getServerSupabase() {
+export async function getServerSupabase(): Promise<SupabaseClient<Database>> {
   const cookieStore = await cookies();
 
   const supabase = createServerClient<Database>(
