@@ -76,6 +76,11 @@ export default async function Home() {
 
   return (
     <div>
+      {/* Structured Data pentru SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       {/* Hero Section - îmbunătățit pentru SEO și contrast */}
       <section className="border-b border-neutral-200">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-24">
