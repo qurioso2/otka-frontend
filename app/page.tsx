@@ -46,6 +46,34 @@ export default async function Home() {
 
   const rows: ProductPublic[] = (products as ProductPublic[] | null) ?? [];
 
+  // Structured data pentru SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "OTKA",
+    "description": "Produse resigilate și ex-demo de calitate",
+    "url": process.env.NEXT_PUBLIC_URL || "https://otka.ro",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Produse resigilate și expuse",
+      "itemListElement": rows.slice(0, 10).map((product, index) => ({
+        "@type": "Offer",
+        "position": index + 1,
+        "itemOffered": {
+          "@type": "Product",
+          "name": product.name,
+          "sku": product.sku,
+          "offers": {
+            "@type": "Offer",
+            "price": product.price_public_ttc,
+            "priceCurrency": "RON",
+            "availability": product.stock_qty > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+          }
+        }
+      }))
+    }
+  };
+
   return (
     <div>
       {/* Hero Section - îmbunătățit pentru SEO și contrast */}
