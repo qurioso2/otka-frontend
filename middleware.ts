@@ -1,15 +1,22 @@
-import { NextResponse } from 'next/server';
-import { getServerSupabase } from './app/auth/server';
+import { NextResponse, type NextRequest } from 'next/server';
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 
-export async function middleware(request) {
-  const supabase = await getServerSupabase();
-  const { data: { user } } = await supabase.auth.getUser();
+export async function middleware(req: NextRequest) {
+  const res = NextResponse.next();
+  const supabase = createMiddlewareClient({ req, res }, {
+    supabaseUrl: process.env.SUPABASE_URL,
+    supabaseKey: process.env.SUPABASE_ANON_KEY,
+  });
 
-  if (!user && request.nextUrl.pathname.startsWith('/parteneri')) {
-    return NextResponse.redirect(new URL('/login', request.url));
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (!session && req.nextUrl.pathname.startsWith('/parteneri')) {
+    const url = req.nextUrl.clone();
+    url.pathname = '/login';
+    return NextResponse.redirect(url);
   }
 
-  return NextResponse.next();
+  return res;
 }
 
 export const config = {
