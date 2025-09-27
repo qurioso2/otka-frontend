@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     visible: r.visible ? r.visible.toLowerCase() === 'true' : true,
   }));
 
-  const { data, error } = await supabase.from('products').upsert(upserts, { onConflict: 'sku' }).select('sku');
+  const { data, error } = await (supabase as any).from('products').upsert(upserts as any, { onConflict: 'sku' }).select('sku');
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
   return NextResponse.json({ ok: true, count: data?.length || 0 });
