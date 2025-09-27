@@ -62,13 +62,8 @@ export async function POST(request: Request) {
     // 2. Trimiterea unui email de notificare către admin
     // 3. Trimiterea unui email de confirmare către solicitant
 
-    // Simulez o întârziere pentru UX
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Cererea a fost înregistrată cu succes' 
-    });
+    // Redirecționez către pagina de confirmare
+    return NextResponse.redirect(new URL('/parteneri/solicita-cont/confirmare', request.url));
 
   } catch (error) {
     console.error('Eroare la procesarea cererii de parteneriat:', error);
