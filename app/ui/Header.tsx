@@ -23,13 +23,13 @@ export default async function Header() {
   return (
     <header className="border-b border-neutral-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="font-semibold text-xl tracking-tight">OTKA</Link>
+        <Link href="/" className="font-semibold text-xl tracking-tight text-neutral-900">OTKA</Link>
         <nav className="flex items-center gap-4 text-sm">
-          <Link href="/parteneri" className="hover:opacity-70 transition">Parteneri</Link>
+          <Link href="/parteneri" className="text-neutral-700 hover:text-neutral-900 transition">Parteneri</Link>
           <CartButton />
           {user ? (
             <>
-              <Link href="/parteneri/dashboard" className="hover:opacity-70 transition">Dashboard</Link>
+              <Link href="/parteneri/dashboard" className="text-neutral-700 hover:text-neutral-900 transition">Dashboard</Link>
               <form action="/auth/logout" method="POST">
                 <button className="rounded-full bg-black text-white px-4 py-1.5 hover:bg-neutral-800 transition">Logout</button>
               </form>
