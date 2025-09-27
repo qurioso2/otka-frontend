@@ -33,9 +33,16 @@ export default async function PartnerDashboard() {
         </form>
       </div>
 
-      {!isActivePartner && (
+      {!isActivePartner && !isAdmin && (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
           Contul tău este în așteptare pentru validare. După aprobarea de către un administrator, vei vedea prețurile nete și contractul de comision.
+        </div>
+      )}
+
+      {isAdmin && (
+        <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
+          <div className="font-medium">Administrator Access</div>
+          <div className="mt-1">Accesați <a href="/admin" className="underline font-medium">zona de administrare</a> pentru funcții avansate (gestiune parteneri, comenzi, comisioane).</div>
         </div>
       )}
 
