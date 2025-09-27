@@ -50,13 +50,13 @@ export default async function Home() {
   // Structured data pentru SEO
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "Store",
+    "@type": "FurnitureStore",
     "name": "OTKA",
-    "description": "Produse resigilate și ex-demo de calitate",
+    "description": "Mobilier, corpuri de iluminat și obiecte decorative pentru design interior",
     "url": process.env.NEXT_PUBLIC_URL || "https://otka.ro",
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "Produse resigilate și expuse",
+      "name": "Mobilier și Design Interior",
       "itemListElement": rows.slice(0, 10).map((product, index) => ({
         "@type": "Offer",
         "position": index + 1,
@@ -64,6 +64,7 @@ export default async function Home() {
           "@type": "Product",
           "name": product.name,
           "sku": product.sku,
+          "category": "Furniture",
           "offers": {
             "@type": "Offer",
             "price": product.price_public_ttc,
