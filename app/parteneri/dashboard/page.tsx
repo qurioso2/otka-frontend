@@ -64,12 +64,15 @@ export default async function PartnerDashboard() {
         </div>
       )}
 
-      {/* Resurse și Documente */}
-      <PartnerResources />
-
-      {/* Comandă Nouă */}
+      {/* Doar pentru parteneri activi și admini */}
       {(isActivePartner || isAdmin) && (
-        <NewOrder />
+        <>
+          {/* Resurse și Documente */}
+          <PartnerResources />
+
+          {/* Comandă Nouă */}
+          <NewOrder />
+        </>
       )}
 
       <div>
