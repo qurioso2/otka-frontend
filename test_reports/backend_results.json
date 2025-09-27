@@ -1,0 +1,99 @@
+{
+  "timestamp": "2025-09-27T19:47:37.540994",
+  "total_tests": 13,
+  "passed_tests": 13,
+  "success_rate": 1.0,
+  "results": [
+    {
+      "test": "Homepage Load with SEO",
+      "success": true,
+      "details": "Homepage loaded with products, structured data, and SEO meta tags",
+      "expected_status": null,
+      "actual_status": null
+    },
+    {
+      "test": "Parteneri Page Access",
+      "success": true,
+      "details": "Parteneri page accessible without login redirect",
+      "expected_status": null,
+      "actual_status": null
+    },
+    {
+      "test": "Protected Route /admin",
+      "success": true,
+      "details": "Redirects to login: /login",
+      "expected_status": null,
+      "actual_status": null
+    },
+    {
+      "test": "Protected Route /parteneri/dashboard",
+      "success": true,
+      "details": "Redirects to login: /login",
+      "expected_status": null,
+      "actual_status": null
+    },
+    {
+      "test": "Cart Page",
+      "success": true,
+      "details": "Cart page loads with proper content",
+      "expected_status": null,
+      "actual_status": null
+    },
+    {
+      "test": "Footer Link /termeni",
+      "success": true,
+      "details": "Link accessible",
+      "expected_status": null,
+      "actual_status": null
+    },
+    {
+      "test": "Footer Link /gdpr",
+      "success": true,
+      "details": "Link accessible",
+      "expected_status": null,
+      "actual_status": null
+    },
+    {
+      "test": "Footer Link /cookies",
+      "success": true,
+      "details": "Link accessible",
+      "expected_status": null,
+      "actual_status": null
+    },
+    {
+      "test": "Footer Link /contact",
+      "success": true,
+      "details": "Link accessible",
+      "expected_status": null,
+      "actual_status": null
+    },
+    {
+      "test": "CSV Export API Protection",
+      "success": true,
+      "details": "Properly protected with 401",
+      "expected_status": null,
+      "actual_status": null
+    },
+    {
+      "test": "Build Check /",
+      "success": true,
+      "details": "No build/import errors",
+      "expected_status": null,
+      "actual_status": null
+    },
+    {
+      "test": "Build Check /parteneri",
+      "success": true,
+      "details": "No build/import errors",
+      "expected_status": null,
+      "actual_status": null
+    },
+    {
+      "test": "Build Check /cart",
+      "success": true,
+      "details": "No build/import errors",
+      "expected_status": null,
+      "actual_status": null
+    }
+  ]
+}
