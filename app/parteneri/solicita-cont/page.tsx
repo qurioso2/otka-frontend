@@ -5,8 +5,8 @@ export default function SolicitaContPartener() {
     <div className="mx-auto max-w-2xl px-4 sm:px-6 py-16">
       <div className="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-semibold tracking-tight text-neutral-900">Solicită Cont Partener</h1>
-          <p className="mt-3 text-neutral-700">Completează formularul pentru a deveni partener OTKA și a avea acces la prețuri preferențiale.</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-neutral-900">Programul de Parteneriat OTKA</h1>
+          <p className="mt-3 text-neutral-700">Alătură-te rețelei noastre de designeri și profesioniști din domeniul amenajărilor interioare. Beneficiază de prețuri preferențiale la mobilier, iluminat și decorațiuni.</p>
         </div>
 
         <form action="/api/partners/register" method="POST" className="space-y-6">
