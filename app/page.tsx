@@ -1,5 +1,14 @@
 import { supabase } from "../lib/supabaseClient";
 
+type Product = {
+  id: number;
+  name: string;
+  slug: string;
+  price_public_ttc: number;
+  stock_qty: number;
+  gallery: string[] | null;
+};
+
 function StockBadge({ qty }: { qty: number }) {
   const status = qty > 0 ? "Disponibil" : "Rezervat";
   const color = qty > 0 ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-amber-50 text-amber-700 border-amber-200";
@@ -13,6 +22,15 @@ export default async function Home() {
     .eq("visible", true)
     .order("id", { ascending: false })
     .limit(24);
+
+  const safeProducts: Product[] = (products || []).map((p: any) => ({
+    id: p.id,
+    name: p.name,
+    slug: p.slug,
+    price_public_ttc: p.price_public_ttc,
+    stock_qty: p.stock_qty,
+    gallery: Array.isArray(p.gallery) ? p.gallery : null,
+  }));
 
   return (
     <div>
@@ -33,9 +51,8 @@ export default async function Home() {
           <div className="text-red-600">{error.message}</div>
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {products?.map((p) => {
-            const images = (p as any).gallery as string[] | null;
-            const img = Array.isArray(images) && images.length > 0 ? images[0] : "/vercel.svg";
+          {safeProducts.map((p) => {
+            const img = p.gallery?.[0] || "/vercel.svg";
             return (
               <div key={p.id} className="group rounded-2xl border border-neutral-200 overflow-hidden bg-white hover:shadow-md transition">
                 <div className="aspect-[4/3] bg-neutral-50">
@@ -45,10 +62,10 @@ export default async function Home() {
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-3">
                     <h3 className="font-medium text-neutral-900 group-hover:opacity-80 transition">{p.name}</h3>
-                    <StockBadge qty={(p as any).stock_qty || 0} />
+                    <StockBadge qty={p.stock_qty || 0} />
                   </div>
                   <div className="mt-2 text-neutral-600 text-sm">TVA inclus</div>
-                  <div className="mt-1 text-lg font-semibold">{new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format((p as any).price_public_ttc || 0)}</div>
+                  <div className="mt-1 text-lg font-semibold">{new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_public_ttc || 0)}</div>
                 </div>
               </div>
             );
