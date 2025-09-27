@@ -8,6 +8,7 @@ create table if not exists public.products (
   price_original numeric, -- Prețul original înainte de reducere
   price_partner_net numeric,
   stock_qty integer not null default 0,
+  stock_status varchar default 'available' check (stock_status in ('available', 'reserved', 'discontinued', 'pre_order')),
   gallery jsonb,
   visible boolean not null default true,
   brand_id integer,
