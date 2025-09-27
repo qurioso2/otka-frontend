@@ -45,7 +45,7 @@ export default function SolicitaContPartener() {
         throw new Error(errorData || 'Eroare la procesarea cererii');
       }
 
-      toast.success('Cererea a fost trimisă cu succes!');
+      alert('Cererea a fost trimisă cu succes!');
       router.push('/parteneri/solicita-cont/confirmare');
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Eroare de sistem');
