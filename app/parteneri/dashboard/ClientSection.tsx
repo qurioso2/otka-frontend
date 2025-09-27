@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 
-export default function ClientSection({ initialCatalogs }) {
+type Catalog = { id: number; title: string };
+
+export default function ClientSection({ initialCatalogs }: { initialCatalogs: Catalog[] }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [file, setFile] = useState<File | null>(null);
 
