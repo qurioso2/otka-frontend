@@ -153,7 +153,7 @@ export default async function Home() {
                   </div>
                   <div className="mb-3">
                     <div className="text-neutral-600 text-sm mb-1">TVA inclus</div>
-                    <Price value={p.price_public_ttc || 0} originalPrice={p.price_original || undefined} />
+                    <Price value={p.price_public_ttc || 0} />
                   </div>
                   <AddToCartButton item={{ id: p.id as number, sku: p.sku, name: p.name, price: p.price_public_ttc || 0, image: img }} />
                 </div>
