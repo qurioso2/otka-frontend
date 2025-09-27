@@ -1,5 +1,21 @@
 import { supabase } from "../lib/supabaseClient";
 import type { Database } from "../types/supabase";
+import Link from "next/link";
+
+// Smooth-scroll direct link
+function ScrollLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a href={href} onClick={(e) => {
+      if (href.startsWith('#')) {
+        e.preventDefault();
+        const el = document.querySelector(href);
+        el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }} className="inline-flex rounded-full bg-black text-white px-5 py-2.5 text-sm font-medium hover:bg-neutral-800 transition">
+      {children}
+    </a>
+  );
+}
 
 type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 
@@ -7,6 +23,26 @@ function StockBadge({ qty }: { qty: number }) {
   const status = qty > 0 ? "Disponibil" : "Rezervat";
   const color = qty > 0 ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-amber-50 text-amber-700 border-amber-200";
   return <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${color}`}>{status}</span>;
+}
+
+function Price({ value, emphasize = false }: { value: number; emphasize?: boolean }) {
+  const cls = emphasize ? "text-neutral-900" : "text-neutral-800";
+  return (
+    <div className={`mt-1 text-lg font-semibold ${cls}`}>{new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(value || 0)}</div>
+  );
+}
+
+function CardSkeleton() {
+  return (
+    <div className="animate-pulse rounded-2xl border border-neutral-200 overflow-hidden bg-white">
+      <div className="aspect-[4/3] bg-neutral-100" />
+      <div className="p-4 space-y-3">
+        <div className="h-4 w-2/3 bg-neutral-100 rounded" />
+        <div className="h-3 w-1/3 bg-neutral-100 rounded" />
+        <div className="h-5 w-1/2 bg-neutral-100 rounded" />
+      </div>
+    </div>
+  );
 }
 
 export default async function Home() {
@@ -27,7 +63,7 @@ export default async function Home() {
           <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-neutral-900">Produse resigilate și expuse</h1>
           <p className="mt-4 text-neutral-600 text-lg max-w-2xl">Prețuri avantajoase la selecția noastră de produse resigilate și ex-demo. Stocuri limitate.</p>
           <div className="mt-8">
-            <a href="#produse" className="inline-flex rounded-full bg-black text-white px-5 py-2.5 text-sm font-medium hover:bg-neutral-800 transition">Vezi produsele</a>
+            <ScrollLink href="#produse">Vezi produsele</ScrollLink>
           </div>
         </div>
       </section>
@@ -37,12 +73,24 @@ export default async function Home() {
         {error && (
           <div className="text-red-600">{error.message}</div>
         )}
+
+        {/* Empty state */}
+        {!error && rows.length === 0 && (
+          <div className="text-center py-20">
+            <h3 className="text-xl font-medium text-neutral-900">Nu există produse vizibile momentan</h3>
+            <p className="mt-2 text-neutral-600">Reveniți în curând sau contactați-ne pentru disponibilitate.</p>
+          </div>
+        )}
+
+        {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {rows.length === 0 && Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} />)}
+
           {rows.map((p) => {
             const galleryArr = Array.isArray(p.gallery) ? (p.gallery as unknown[]).filter((x): x is string => typeof x === 'string') : null;
             const img = galleryArr?.[0] || "/vercel.svg";
             return (
-              <div key={p.id} className="group rounded-2xl border border-neutral-200 overflow-hidden bg-white hover:shadow-md transition">
+              <Link href={`/p/${p.slug}`} key={p.id} className="group rounded-2xl border border-neutral-200 overflow-hidden bg-white hover:shadow-md transition">
                 <div className="aspect-[4/3] bg-neutral-50">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={img} alt={p.name} className="h-full w-full object-cover" />
@@ -53,9 +101,9 @@ export default async function Home() {
                     <StockBadge qty={p.stock_qty || 0} />
                   </div>
                   <div className="mt-2 text-neutral-600 text-sm">TVA inclus</div>
-                  <div className="mt-1 text-lg font-semibold">{new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_public_ttc || 0)}</div>
+                  <Price value={p.price_public_ttc || 0} emphasize />
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
