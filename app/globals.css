@@ -58,3 +58,37 @@ body { color: var(--foreground); }
   background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
   transform: translateY(-1px);
 }
+
+/* Îmbunătățiri pentru input fields - contrast mai bun */
+input[type="text"], 
+input[type="email"], 
+input[type="password"], 
+input[type="number"], 
+input[type="tel"], 
+input[type="url"], 
+select, 
+textarea {
+  color: #1f2937 !important; /* Text foarte închis pentru contrast maxim */
+  background-color: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  font-weight: 500;
+}
+
+input[type="text"]:focus, 
+input[type="email"]:focus, 
+input[type="password"]:focus, 
+input[type="number"]:focus, 
+input[type="tel"]:focus, 
+input[type="url"]:focus, 
+select:focus, 
+textarea:focus {
+  color: #111827 !important; /* Și mai închis la focus */
+  border-color: #000000 !important;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+input::placeholder, 
+textarea::placeholder {
+  color: #6b7280 !important; /* Placeholder contrast îmbunătățit */
+  opacity: 1;
+}
