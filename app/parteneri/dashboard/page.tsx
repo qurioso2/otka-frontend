@@ -1,40 +1,36 @@
-// app/parteneri/dashboard/page.tsx
-import { getServerSupabase } from '../../auth/server';
+import { getServerSupabase } from "../../auth/server";
+import PartnerProducts from "./PartnerProducts";
 
 export default async function PartnerDashboard() {
   const supabase = await getServerSupabase();
-  const { data: catalogs, error: catalogsError } = await supabase.from('catalogs').select('*');
-  const { data: pricelists, error: pricelistsError } = await supabase.from('pricelists').select('*');
-  const { data: materials, error: materialsError } = await supabase.from('materials').select('*');
-  const { data: orders, error: ordersError } = await supabase.from('orders').select('*');
+  const { data: { user } } = await supabase.auth.getUser();
 
-  const totalCommission = orders?.reduce((sum, order) => sum + (order.total_gross * 0.05 || 0), 0).toFixed(2) || '0.00';
+  const { data: products, error } = await supabase
+    .from("products")
+    .select("id,name,sku,price_public_ttc,price_partner_net,stock_qty,gallery")
+    .order("id", { ascending: false })
+    .limit(1000);
 
   return (
-    <div className="p-4 bg-gray-900 text-white min-h-screen">
-      <h1 className="text-2xl font-bold mb-4 text-gray-100">Partner Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="p-4 bg-gray-800 rounded shadow text-gray-200">
-          <h2 className="text-xl font-semibold mb-2">Cataloage</h2>
-          <p>{catalogsError ? catalogsError.message : JSON.stringify(catalogs)}</p>
-        </div>
-        <div className="p-4 bg-gray-800 rounded shadow text-gray-200">
-          <h2 className="text-xl font-semibold mb-2">Liste de Preț</h2>
-          <p>{pricelistsError ? pricelistsError.message : JSON.stringify(pricelists)}</p>
-        </div>
-        <div className="p-4 bg-gray-800 rounded shadow text-gray-200">
-          <h2 className="text-xl font-semibold mb-2">Materiale</h2>
-          <p>{materialsError ? materialsError.message : JSON.stringify(materials)}</p>
-        </div>
-        <div className="p-4 bg-gray-800 rounded shadow text-gray-200">
-          <h2 className="text-xl font-semibold mb-2">Termeni și Condiții</h2>
-          <p>Comision standard 5% din prețul de vânzare către clientul final. Eligibilitate: comisionul se acordă când comanda e inițiată de lead-ul partenerului. Plată: lunar, la 30 zile de la livrare. (Add full terms later.)</p>
-        </div>
-        <div className="p-4 bg-gray-800 rounded shadow text-gray-200">
-          <h2 className="text-xl font-semibold mb-2">Comenzi Mele și Comisioane</h2>
-          <p>{ordersError ? ordersError.message : JSON.stringify(orders)}</p>
-          <p>Total Commission: {totalCommission} RON</p>
-        </div>
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold tracking-tight">Dashboard Partener</h1>
+        <form action="/auth/logout" method="POST">
+          <button className="rounded-full bg-black text-white px-4 py-1.5 text-sm hover:bg-neutral-800 transition">Logout</button>
+        </form>
+      </div>
+
+      <div className="mt-6">
+        {error ? (
+          <div className="text-red-600">{error.message}</div>
+        ) : (
+          <PartnerProducts initialProducts={products || []} />
+        )}
+      </div>
+
+      <div className="mt-12 text-sm text-neutral-600">
+        <h2 className="text-neutral-900 font-medium">Termeni & Comisioane</h2>
+        <p className="mt-2">Comision standard 5% din prețul de vânzare către clientul final. Eligibilitate: comisionul se acordă când comanda e inițiată de lead-ul partenerului. Plată: lunar, la 30 zile de la livrare.</p>
       </div>
     </div>
   );
