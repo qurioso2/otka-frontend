@@ -43,17 +43,7 @@ export default async function Login({ searchParams }: { searchParams?: Promise<R
           <button type="submit" className="w-full rounded-full bg-black text-white px-5 py-2.5 text-sm font-medium hover:bg-neutral-800 transition">Autentificare</button>
         </form>
         
-        <div className="mt-6 pt-6 border-t border-neutral-200">
-          <div className="text-center">
-            <p className="text-sm text-neutral-600 mb-4">Nu ai cont de partener?</p>
-            <a 
-              href="/parteneri/solicita-cont" 
-              className="inline-flex items-center justify-center rounded-full border-2 border-neutral-900 text-neutral-900 px-6 py-2.5 text-sm font-medium hover:bg-neutral-900 hover:text-white transition"
-            >
-              Solicită Cont Partener
-            </a>
-          </div>
-        </div>
+        {/* Butonul "Solicită cont" temporar dezactivat până la stabilizarea sistemului */}
       </div>
     </div>
   );
