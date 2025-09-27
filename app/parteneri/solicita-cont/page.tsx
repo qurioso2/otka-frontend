@@ -48,7 +48,7 @@ export default function SolicitaContPartener() {
       alert('Cererea a fost trimisă cu succes!');
       router.push('/parteneri/solicita-cont/confirmare');
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Eroare de sistem');
+      alert(error instanceof Error ? error.message : 'Eroare de sistem');
     } finally {
       setLoading(false);
     }
