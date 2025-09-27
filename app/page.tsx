@@ -2,20 +2,7 @@ import { supabase } from "../lib/supabaseClient";
 import type { Database } from "../types/supabase";
 import Link from "next/link";
 
-// Smooth-scroll direct link
-function ScrollLink({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <a href={href} onClick={(e) => {
-      if (href.startsWith('#')) {
-        e.preventDefault();
-        const el = document.querySelector(href);
-        el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }} className="inline-flex rounded-full bg-black text-white px-5 py-2.5 text-sm font-medium hover:bg-neutral-800 transition">
-      {children}
-    </a>
-  );
-}
+// anchor smooth scroll handled via CSS (globals.css: html { scroll-behavior: smooth; })
 
 type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 
@@ -25,10 +12,9 @@ function StockBadge({ qty }: { qty: number }) {
   return <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${color}`}>{status}</span>;
 }
 
-function Price({ value, emphasize = false }: { value: number; emphasize?: boolean }) {
-  const cls = emphasize ? "text-neutral-900" : "text-neutral-800";
+function Price({ value }: { value: number }) {
   return (
-    <div className={`mt-1 text-lg font-semibold ${cls}`}>{new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(value || 0)}</div>
+    <div className="mt-1 text-lg font-semibold text-neutral-900">{new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(value || 0)}</div>
   );
 }
 
@@ -63,7 +49,7 @@ export default async function Home() {
           <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-neutral-900">Produse resigilate și expuse</h1>
           <p className="mt-4 text-neutral-600 text-lg max-w-2xl">Prețuri avantajoase la selecția noastră de produse resigilate și ex-demo. Stocuri limitate.</p>
           <div className="mt-8">
-            <ScrollLink href="#produse">Vezi produsele</ScrollLink>
+            <a href="#produse" className="inline-flex rounded-full bg-black text-white px-5 py-2.5 text-sm font-medium hover:bg-neutral-800 transition">Vezi produsele</a>
           </div>
         </div>
       </section>
@@ -101,7 +87,7 @@ export default async function Home() {
                     <StockBadge qty={p.stock_qty || 0} />
                   </div>
                   <div className="mt-2 text-neutral-600 text-sm">TVA inclus</div>
-                  <Price value={p.price_public_ttc || 0} emphasize />
+                  <Price value={p.price_public_ttc || 0} />
                 </div>
               </Link>
             );

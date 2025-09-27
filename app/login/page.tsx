@@ -1,9 +1,10 @@
 import { getServerSupabase } from "../auth/server";
 
-export default async function Login({ searchParams }: { searchParams?: { error?: string } }) {
+export default async function Login({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
   const supabase = await getServerSupabase();
   const { data } = await supabase.auth.getUser();
-  const errorMsg = searchParams?.error;
+  const errorParam = searchParams?.error;
+  const errorMsg = Array.isArray(errorParam) ? errorParam[0] : errorParam;
 
   if (data.user) {
     return (
