@@ -32,7 +32,16 @@ export default function CommissionSummary() {
         <h2 className="font-medium text-neutral-900">Comisioane lunare</h2>
         <div className="flex items-center gap-2">
           <input type="month" value={month} onChange={(e)=>setMonth(e.target.value)} className="rounded-xl border border-neutral-300 px-3 py-2" />
-          <button onClick={load} className="rounded-full bg-black text-white px-4 py-2 text-sm hover:bg-neutral-800">Verifică</button>
+          <button onClick={load} className="rounded-full bg-black text-white px-4 py-2 text-sm hover:bg-neutral-800" disabled={loading}>
+            {loading ? 'Se încarcă...' : 'Verifică'}
+          </button>
+          <button 
+            onClick={() => window.open(`/api/admin/commission-summary/export?month=${month}`, '_blank')}
+            className="rounded-full border border-neutral-300 text-neutral-700 px-4 py-2 text-sm hover:bg-neutral-50"
+            disabled={rows.length === 0}
+          >
+            Export CSV
+          </button>
         </div>
       </div>
 
