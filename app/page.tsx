@@ -8,6 +8,7 @@ interface ProductPublic {
   name: string;
   slug: string;
   price_public_ttc: number;
+  price_original?: number;
   stock_qty: number;
   gallery: unknown[] | null;
 }
