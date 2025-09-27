@@ -87,11 +87,11 @@ export default async function Home() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-24">
           <div className="text-center">
             <h1 className="text-5xl sm:text-6xl font-bold tracking-tight text-neutral-900 leading-tight">
-              Produse resigilate și expuse
+              Mobilier și Design Interior
             </h1>
             <p className="mt-6 text-xl text-neutral-700 max-w-3xl mx-auto leading-relaxed">
-              Descoperă selecția noastră exclusivă de produse resigilate și ex-demo cu prețuri avantajoase. 
-              Calitate garantată, stocuri limitate.
+              Descoperă colecția noastră de mobilier, corpuri de iluminat și obiecte decorative pentru amenajări interioare. 
+              Produse de calitate, design modern, prețuri avantajoase.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <a href="#produse" className="btn-primary inline-flex items-center justify-center rounded-full text-white px-8 py-3 text-base font-medium shadow-lg">
