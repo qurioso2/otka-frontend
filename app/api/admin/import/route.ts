@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSupabase } from '../../../auth/server';
 import { parse } from 'csv-parse/sync';
 import type { Database } from '../../../../types/supabase';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 type Row = {
   sku: string;
