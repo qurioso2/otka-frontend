@@ -1,29 +1,39 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCart } from '../ui/cart/CartProvider';
 import { toast } from 'sonner';
 
 export default function CheckoutPage() {
   const { items, total, clear } = useCart();
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ number?: string; url?: string } | null>(null);
+  const [clientType, setClientType] = useState<'individual' | 'company'>('individual');
+  const [result, setResult] = useState<{ number?: string; url?: string; pdfUrl?: string } | null>(null);
+
+  useEffect(() => {
+    if (items.length === 0 && !result) {
+      // noop
+    }
+  }, [items, result]);
 
   const handleSubmit = async (formData: FormData): Promise<void> => {
     if (items.length === 0) { toast.error('Coșul este gol'); return; }
     setLoading(true);
     try {
       const body = {
+        clientType,
         clientName: String(formData.get('name') || ''),
+        companyName: String(formData.get('companyName') || ''),
+        regCom: String(formData.get('regcom') || ''),
         clientCIF: String(formData.get('cif') || ''),
         address: String(formData.get('address') || ''),
         email: String(formData.get('email') || ''),
         phone: String(formData.get('phone') || ''),
         products: items.map(i => ({ name: i.name, sku: i.sku, quantity: i.qty, price: i.price })),
-      };
+      } as const;
       const res = await fetch('/api/smartbill/proforma', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Eroare generare proformă');
-      setResult({ number: data.number, url: data.url });
+      setResult({ number: data.number, url: data.url, pdfUrl: data.pdfUrl });
       toast.success('Proformă generată');
       clear();
     } catch (e) {
@@ -44,15 +54,37 @@ export default function CheckoutPage() {
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10">
       <h1 className="text-3xl font-semibold tracking-tight">Checkout</h1>
 
-      {items.length === 0 && !result && (
-        <p className="mt-4 text-neutral-600">Coșul este gol.</p>
-      )}
-
       {!result && (
         <form onSubmit={onSubmit} className="mt-6 grid grid-cols-1 gap-4">
+          <div className="flex items-center gap-6">
+            <label className="inline-flex items-center gap-2 text-sm">
+              <input type="radio" name="clientType" value="individual" checked={clientType==='individual'} onChange={() => setClientType('individual')} /> Persoană fizică
+            </label>
+            <label className="inline-flex items-center gap-2 text-sm">
+              <input type="radio" name="clientType" value="company" checked={clientType==='company'} onChange={() => setClientType('company')} /> Companie
+            </label>
+          </div>
+
+          {clientType==='company' && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm text-neutral-700">Denumire companie</label>
+                <input name="companyName" className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-2" required={clientType==='company'} />
+              </div>
+              <div>
+                <label className="block text-sm text-neutral-700">CIF</label>
+                <input name="cif" className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-2" required={clientType==='company'} />
+              </div>
+              <div>
+                <label className="block text-sm text-neutral-700">Reg. Com.</label>
+                <input name="regcom" className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-2" />
+              </div>
+            </div>
+          )}
+
           <div>
             <label className="block text-sm text-neutral-700">Nume client</label>
-            <input name="name" className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-2" required />
+            <input name="name" className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-2" required={clientType==='individual'} />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -65,12 +97,8 @@ export default function CheckoutPage() {
             </div>
           </div>
           <div>
-            <label className="block text-sm text-neutral-700">Adresă</label>
+            <label className="block text-sm text-neutral-700">Adresă facturare/livrare</label>
             <input name="address" className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-2" required />
-          </div>
-          <div>
-            <label className="block text-sm text-neutral-700">CIF (opțional)</label>
-            <input name="cif" className="mt-1 w-full rounded-xl border border-neutral-300 px-3 py-2" />
           </div>
 
           <div className="rounded-2xl border border-neutral-200 bg-white p-4">
@@ -88,7 +116,8 @@ export default function CheckoutPage() {
         <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
           <div className="font-medium text-emerald-900">Proforma a fost generată cu succes.</div>
           <div className="text-sm mt-1 text-emerald-800">Număr: {result.number || '-'}</div>
-          {result.url && <a href={result.url} target="_blank" className="text-sm underline">Descarcă proforma</a>}
+          {result.url && <a href={result.url} target="_blank" className="text-sm underline mr-4">Vezi în SmartBill</a>}
+          {result.pdfUrl && <a href={result.pdfUrl} target="_blank" className="text-sm underline">Descarcă PDF (R2)</a>}
         </div>
       )}
     </div>
