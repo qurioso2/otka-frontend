@@ -19,8 +19,9 @@ export default function Uploader() {
       const data = await res.json();
       setUrl(data.url);
       toast.success('Încărcare reușită');
-    } catch (e: any) {
-      toast.error(e.message || 'Eroare la încărcare');
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Eroare la încărcare';
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
