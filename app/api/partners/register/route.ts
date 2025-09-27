@@ -27,15 +27,49 @@ export async function POST(request: Request) {
       motivation 
     } = data;
 
-    // Validare de bază
-    if (!company_name || !vat_id || !contact_name || !email) {
-      return NextResponse.json('Câmpurile obligatorii trebuie completate', { status: 400 });
-    }
+    // Validare completă
+    const errors: string[] = [];
+
+    // Validare câmpuri obligatorii
+    if (!company_name?.trim()) errors.push('Numele companiei este obligatoriu');
+    if (!vat_id?.trim()) errors.push('CUI/CIF este obligatoriu');
+    if (!contact_name?.trim()) errors.push('Numele persoanei de contact este obligatoriu');
+    if (!email?.trim()) errors.push('Email-ul este obligatoriu');
 
     // Validare email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return NextResponse.json('Format email invalid', { status: 400 });
+    if (email && !emailRegex.test(email)) {
+      errors.push('Format email invalid');
+    }
+
+    // Validare CUI/CIF format (România)
+    if (vat_id) {
+      const vatRegex = /^(RO)?[0-9]{2,10}$/;
+      if (!vatRegex.test(vat_id.replace(/\s/g, ''))) {
+        errors.push('Format CUI/CIF invalid (ex: RO12345678)');
+      }
+    }
+
+    // Validare nume companie (minim 3 caractere)
+    if (company_name && company_name.trim().length < 3) {
+      errors.push('Numele companiei trebuie să aibă minim 3 caractere');
+    }
+
+    // Validare nume contact (minim 2 cuvinte)
+    if (contact_name && contact_name.trim().split(' ').length < 2) {
+      errors.push('Numele persoanei de contact trebuie să conțină prenume și nume');
+    }
+
+    // Validare telefon (dacă este completat)
+    if (phone) {
+      const phoneRegex = /^(\+4|4|0)[0-9]{8,9}$/;
+      if (!phoneRegex.test(phone.replace(/\s|-/g, ''))) {
+        errors.push('Format telefon invalid (ex: +40123456789)');
+      }
+    }
+
+    if (errors.length > 0) {
+      return NextResponse.json(`Erori de validare: ${errors.join(', ')}`, { status: 400 });
     }
 
     // Pentru simplicitate, salvez datele într-un fișier sau le trimit prin email
