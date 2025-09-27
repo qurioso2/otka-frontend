@@ -86,7 +86,18 @@ export default async function PartnerDashboard() {
         )}
       </div>
 
-      <Uploader />
+      {/* Uploader doar pentru parteneri activi și admini - pentru materiale suport */}
+      {(isActivePartner || isAdmin) && (
+        <div className="rounded-2xl border border-neutral-200 bg-white">
+          <div className="p-6 border-b border-neutral-200">
+            <h3 className="font-semibold text-lg text-neutral-900">Suport Tehnic</h3>
+            <p className="text-sm text-neutral-600 mt-1">Încărcați materiale de suport pentru echipa tehnică (documente garanție, specificații, etc.)</p>
+          </div>
+          <div className="p-6">
+            <Uploader />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
