@@ -2,7 +2,7 @@ import { getServerSupabase } from "../auth/server";
 
 export default async function Login() {
   const supabase = await getServerSupabase();
-  const { data, error } = await supabase.auth.getUser();
+  const { data } = await supabase.auth.getUser();
 
   if (data.user) {
     return (
