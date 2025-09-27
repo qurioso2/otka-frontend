@@ -14,9 +14,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "OTKA — Produse resigilate și expuse | Prețuri avantajoase",
-  description: "Descoperă produse resigilate și ex-demo de calitate la prețuri avantajoase. Stocuri limitate, garanție inclusă. Program de parteneriat disponibil.",
-  keywords: "produse resigilate, ex-demo, prețuri avantajoase, electronice, program parteneriat, stocuri limitate",
+  title: "OTKA — Mobilier, Iluminat și Design Interior | Prețuri Avantajoase",
+  description: "Mobilier design, corpuri de iluminat și obiecte decorative pentru amenajări interioare. Produse de calitate, program parteneriat pentru designeri și arhitecți.",
+  keywords: "mobilier design, corpuri iluminat, amenajari interioare, design interior, mobilier modern, lustre, fotolii, canapele, program parteneriat designeri",
   openGraph: {
     title: "OTKA — Produse resigilate și expuse | Prețuri avantajoase",
     description: "Descoperă produse resigilate și ex-demo de calitate la prețuri avantajoase. Stocuri limitate, garanție inclusă.",
