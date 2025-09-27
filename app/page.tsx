@@ -51,11 +51,31 @@ function CardSkeleton() {
 }
 
 export default async function Home() {
-  const { data: products, error } = await supabase
-    .from("products_public")
-    .select("id,sku,name,slug,price_public_ttc,price_original,stock_qty,gallery")
-    .order("id", { ascending: false })
-    .limit(24);
+  // Încercăm să luăm price_original, dar dacă nu există coloana, ignorăm eroarea
+  let products = null;
+  let error = null;
+  
+  try {
+    const result = await supabase
+      .from("products_public")
+      .select("id,sku,name,slug,price_public_ttc,price_original,stock_qty,gallery")
+      .order("id", { ascending: false })
+      .limit(24);
+    
+    products = result.data;
+    error = result.error;
+  } catch (e) {
+    // Dacă eroarea este din cauza coloanei price_original, încearcă fără ea
+    console.warn('price_original column not found, trying without it');
+    const fallbackResult = await supabase
+      .from("products_public")
+      .select("id,sku,name,slug,price_public_ttc,stock_qty,gallery")
+      .order("id", { ascending: false })
+      .limit(24);
+    
+    products = fallbackResult.data;
+    error = fallbackResult.error;
+  }
 
   const rows: ProductPublic[] = (products as ProductPublic[] | null) ?? [];
 
