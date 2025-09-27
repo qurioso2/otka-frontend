@@ -3,10 +3,18 @@ import { createServerClient } from '@supabase/ssr';
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
-  const supabase = createMiddlewareClient({ req, res }, {
-    supabaseUrl: process.env.SUPABASE_URL,
-    supabaseKey: process.env.SUPABASE_ANON_KEY,
-  });
+  const supabase = createServerClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll: () => req.cookies.getAll().map(({ name, value }) => ({ name, value })),
+        setAll: (cookies) => {
+          cookies.forEach(({ name, value, options }) => res.cookies.set(name, value, options));
+        },
+      },
+    }
+  );
 
   const { data: { session } } = await supabase.auth.getSession();
 
