@@ -37,6 +37,7 @@ export async function POST(request: Request) {
     sku: r.sku?.trim(),
     name: r.name?.trim(),
     slug: r.slug?.trim(),
+    condition: 'resigilat',
     price_public_ttc: Number(r.price_public_ttc || 0),
     price_partner_net: r.price_partner_net ? Number(r.price_partner_net) : null,
     stock_qty: r.stock_qty ? Number(r.stock_qty) : 0,
