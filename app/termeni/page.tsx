@@ -1,62 +1,69 @@
 export const dynamic = 'force-static';
 
 export default function Termeni() {
+  const today = new Date().toLocaleDateString('ro-RO');
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-12 prose prose-neutral">
-      <h1>TERMENI ȘI CONDIȚII DE VÂNZARE - OTKA.RO</h1>
+      <h1>TERMENI ȘI CONDIȚII DE VÂNZARE</h1>
+      <p><em>Ultima actualizare: {today}</em></p>
 
-      <h2>1. INFORMAȚII GENERALE</h2>
-      <p><strong>Vânzător:</strong> MERCURY VC S.R.L.<br />
-      CIF: RO48801623, J20/3003/2023<br />
-      Adresa: Bld. Eroilor, Nr.42, Et.I, Ap.9, Cluj-Napoca<br />
-      Email: comenzi@otka.ro | Telefon: +40.XXX.XXX.XXX</p>
+      <h2>1. INFORMAȚII DESPRE VÂNZĂTOR</h2>
+      <p>Denumire: MERCURY VC S.R.L. | CIF: RO48801623 | Sediul: Cluj-Napoca, România<br />
+      Email: contact@otka.ro | Site: https://otka.ro</p>
 
-      <h2>2. PRODUSE</h2>
+      <h2>2. DEFINIȚII</h2>
+      <p>Produse resigilate/expuse, Consumator, Contract la distanță, Zi lucrătoare.</p>
+
+      <h2>3. PRODUSE</h2>
       <ul>
-        <li>Produsele sunt <strong>resigilate sau expuse în showroom</strong></li>
-        <li>Funcționalitatea este 100% garantată</li>
-        <li>Pot prezenta urme minore de uz estetic</li>
-        <li>Garanția: 12 luni pentru defecte de fabricație</li>
+        <li>Resigilate/expuse, pot avea urme estetice minore, funcționalitate 100%.</li>
+        <li>Starea produsului este descrisă în fișa individuală; fotografii reale.</li>
       </ul>
 
-      <h2>3. COMENZI ȘI PLĂȚI</h2>
+      <h2>4. PREȚURI ȘI PLĂȚI</h2>
       <ul>
-        <li>Comanda se confirmă prin email</li>
-        <li>Plata: transfer bancar sau card online</li>
-        <li>Livrarea: 2-5 zile lucrătoare prin curier</li>
-        <li>Costul livrării: 25 RON (gratuit peste 500 RON)</li>
+        <li>Prețurile includ TVA; pot fi actualizate.</li>
+        <li>Livrarea este afișată înainte de finalizare; montajul separat.</li>
+        <li>Plată: card/transfer/ramburs (unde disponibil).</li>
       </ul>
 
-      <h2>4. MONTAJ (OPȚIONAL)</h2>
+      <h2>5. COMANDA</h2>
       <ul>
-        <li>Montajul <strong>NU este inclus</strong> în preț</li>
-        <li>Se poate solicita separat pentru fiecare livrare</li>
-        <li>Cost montaj: la cerere, în funcție de complexitate</li>
-        <li>Montajul se oferă doar în Cluj-Napoca și împrejurimi</li>
+        <li>Contractul se încheie la confirmarea prin email.</li>
+        <li>Erori evidente de preț/descriere: vă contactăm; altfel, anulare în 48h.</li>
       </ul>
 
-      <h2>5. DREPTUL DE RETURNARE</h2>
+      <h2>6. LIVRAREA</h2>
       <ul>
-        <li>14 zile de la primire pentru returnare</li>
-        <li>Produsul trebuie returnat în starea originală</li>
-        <li>Costul returnării: în sarcina clientului</li>
-        <li>Rambursarea: în maxim 14 zile de la returnare</li>
+        <li>România prin curier; 2-5 zile lucrătoare uzual.</li>
+        <li>Riscul la livrare; proprietatea după plata integrală.</li>
       </ul>
 
-      <h2>6. GARANȚII ȘI RĂSPUNDERI</h2>
+      <h2>7. RETRAGERE</h2>
       <ul>
-        <li>Garanție comercială: 12 luni</li>
-        <li>Garanția nu acoperă deteriorările mecanice</li>
-        <li>Service autorizat: conform producătorului</li>
+        <li>14 zile, produs în stare inițială; ramburs în 14 zile.</li>
+        <li>Excepții: personalizate, deteriorate nejustificat etc.</li>
       </ul>
 
-      <h2>7. FORȚA MAJORĂ</h2>
-      <p>Ne rezervăm dreptul de a suspenda temporar serviciile în caz de forță majoră.</p>
+      <h2>8. GARANȚIE</h2>
+      <ul>
+        <li>Legală de conformitate 2 ani; remedii: reparare/înlocuire/reducere/rezoluțiune.</li>
+      </ul>
 
-      <h2>8. LITIGII</h2>
-      <p>Litigiile se rezolvă pe cale amiabilă sau în instanțele competente din Cluj-Napoca.</p>
+      <h2>9. RECLAMAȚII/LITIGII</h2>
+      <ul>
+        <li>Reclamații: contact@otka.ro (max 30 zile răspuns).</li>
+        <li>SAL/ODR/instanțe competente; lege română.</li>
+      </ul>
 
-      <p><em>Actualizat: Septembrie 2025</em></p>
+      <h2>10. DATE PERSONALE</h2>
+      <p>Prelucrarea conform Politicii de Confidențialitate.</p>
+
+      <h2>11. MODIFICAREA TERMENILOR</h2>
+      <p>Notificare prealabilă 15 zile; nu afectează comenzile plasate.</p>
+
+      <h2>12. DISPOZIȚII FINALE</h2>
+      <p>Clauze nule nu afectează restul; se aplică Codul Civil, OUG 34/2014.</p>
     </div>
   );
 }
