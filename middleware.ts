@@ -10,7 +10,8 @@ export async function middleware(req: NextRequest) {
 
   const { data: { session } } = await supabase.auth.getSession();
 
-  const protectedPaths = ['/parteneri/dashboard', '/admin'];
+  // Only specific paths should be protected, not the general /parteneri landing page
+  const protectedPaths = ['/parteneri/dashboard', '/parteneri/acceptare', '/admin'];
   const isProtected = protectedPaths.some(p => {
     const path = req.nextUrl.pathname;
     // Exact match or starts with the path followed by /
