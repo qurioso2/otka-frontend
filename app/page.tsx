@@ -48,13 +48,25 @@ export default async function Home() {
 
   return (
     <div>
-      {/* Hero */}
+      {/* Hero Section - îmbunătățit pentru SEO și contrast */}
       <section className="border-b border-neutral-200">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-20">
-          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-neutral-900">Produse resigilate și expuse</h1>
-          <p className="mt-4 text-neutral-600 text-lg max-w-2xl">Prețuri avantajoase la selecția noastră de produse resigilate și ex-demo. Stocuri limitate.</p>
-          <div className="mt-8">
-            <a href="#produse" className="inline-flex rounded-full bg-black text-white px-5 py-2.5 text-sm font-medium hover:bg-neutral-800 transition">Vezi produsele</a>
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-24">
+          <div className="text-center">
+            <h1 className="text-5xl sm:text-6xl font-bold tracking-tight text-neutral-900 leading-tight">
+              Produse resigilate și expuse
+            </h1>
+            <p className="mt-6 text-xl text-neutral-700 max-w-3xl mx-auto leading-relaxed">
+              Descoperă selecția noastră exclusivă de produse resigilate și ex-demo cu prețuri avantajoase. 
+              Calitate garantată, stocuri limitate.
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="#produse" className="btn-primary inline-flex items-center justify-center rounded-full text-white px-8 py-3 text-base font-medium shadow-lg">
+                Vezi toate produsele
+              </a>
+              <a href="/parteneri" className="inline-flex items-center justify-center rounded-full border-2 border-neutral-900 text-neutral-900 px-8 py-3 text-base font-medium hover:bg-neutral-900 hover:text-white transition">
+                Devino partener
+              </a>
+            </div>
           </div>
         </div>
       </section>
