@@ -13,9 +13,17 @@ export async function GET(request: Request) {
   const start = month ? new Date(month + '-01T00:00:00') : new Date(new Date().getFullYear(), new Date().getMonth(), 1);
   const end = new Date(start); end.setMonth(start.getMonth() + 1);
 
+  // Obțin date mai detaliate pentru CSV cu informații despre prețuri partener
   const { data, error } = await supabase
     .from('manual_orders')
-    .select('partner_email, total_net, status, created_at, order_id')
+    .select(`
+      partner_email, 
+      total_net, 
+      status, 
+      created_at, 
+      order_id,
+      clients(name, company_name)
+    `)
     .gte('created_at', start.toISOString())
     .lt('created_at', end.toISOString())
     .order('created_at', { ascending: false });
