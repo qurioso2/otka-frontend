@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSupabase } from '../../../auth/server';
 import { parse } from 'csv-parse/sync';
+import type { Database } from '../../../../types/supabase';
 
 type Row = {
   sku: string;
@@ -12,6 +13,8 @@ type Row = {
   gallery?: string; // ; separated
   visible?: string; // true/false
 };
+
+type InsertProduct = Database['public']['Tables']['products']['Insert'];
 
 export async function POST(request: Request) {
   const supabase = await getServerSupabase();
@@ -30,7 +33,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'CSV parse error', detail: e.message }, { status: 400 });
   }
 
-  const upserts = records.map((r) => ({
+  const upserts: InsertProduct[] = records.map((r) => ({
     sku: r.sku?.trim(),
     name: r.name?.trim(),
     slug: r.slug?.trim(),
