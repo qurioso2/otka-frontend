@@ -9,9 +9,10 @@ export default async function Header() {
     process.env.SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get: (name) => cookieStore.get(name)?.value,
-        set: (name, value, options) => cookieStore.set(name, value, options),
-        remove: (name, options) => cookieStore.delete(name, options),
+        getAll: () => cookieStore.getAll(),
+        setAll: (cookiesArray) => {
+          cookiesArray.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+        },
       },
     }
   );
