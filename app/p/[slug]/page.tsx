@@ -6,13 +6,12 @@ export const revalidate = 60; // ISR
 
 type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 
-type PageProps = { params: { slug: string } };
-
-export default async function ProductPage({ params }: PageProps) {
+export default async function ProductPage(props: { params: Promise<{ slug: string }> }) {
+  const { slug } = await props.params;
   const { data, error } = await supabase
     .from("products")
     .select("*")
-    .eq("slug", params.slug)
+    .eq("slug", slug)
     .maybeSingle();
 
   if (error || !data) {
