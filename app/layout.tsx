@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   description: "Mobilier design, corpuri de iluminat și obiecte decorative pentru amenajări interioare. Produse de calitate, program parteneriat pentru designeri și arhitecți.",
   keywords: "mobilier design, corpuri iluminat, amenajari interioare, design interior, mobilier modern, lustre, fotolii, canapele, program parteneriat designeri",
   openGraph: {
-    title: "OTKA — Produse resigilate și expuse | Prețuri avantajoase",
-    description: "Descoperă produse resigilate și ex-demo de calitate la prețuri avantajoase. Stocuri limitate, garanție inclusă.",
+    title: "OTKA — Mobilier, Iluminat și Design Interior | Prețuri Avantajoase",
+    description: "Mobilier design, corpuri de iluminat și obiecte decorative pentru amenajări interioare. Program de parteneriat pentru designeri și arhitecți.",
     url: process.env.NEXT_PUBLIC_URL || "https://otka.ro",
     siteName: "OTKA",
     locale: "ro_RO",
