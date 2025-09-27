@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { r2Client, R2_CONFIG } from '../../../../lib/r2-client';
+import { r2Client, R2_CONFIG } from '@/lib/r2-client';
 import { nanoid } from 'nanoid';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 
