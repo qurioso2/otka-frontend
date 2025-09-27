@@ -1,13 +1,7 @@
 import { supabase } from "../lib/supabaseClient";
+import type { Database } from "../types/supabase";
 
-type Product = {
-  id: number;
-  name: string;
-  slug: string;
-  price_public_ttc: number;
-  stock_qty: number;
-  gallery: string[] | null;
-};
+type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 
 function StockBadge({ qty }: { qty: number }) {
   const status = qty > 0 ? "Disponibil" : "Rezervat";
@@ -18,19 +12,12 @@ function StockBadge({ qty }: { qty: number }) {
 export default async function Home() {
   const { data: products, error } = await supabase
     .from("products")
-    .select("id,name,slug,price_public_ttc,stock_qty,gallery")
+    .select("id,name,slug,price_public_ttc,stock_qty,gallery,visible")
     .eq("visible", true)
     .order("id", { ascending: false })
     .limit(24);
 
-  const safeProducts: Product[] = (products || []).map((p: any) => ({
-    id: p.id,
-    name: p.name,
-    slug: p.slug,
-    price_public_ttc: p.price_public_ttc,
-    stock_qty: p.stock_qty,
-    gallery: Array.isArray(p.gallery) ? p.gallery : null,
-  }));
+  const rows: ProductRow[] = (products as ProductRow[] | null) ?? [];
 
   return (
     <div>
@@ -51,8 +38,9 @@ export default async function Home() {
           <div className="text-red-600">{error.message}</div>
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {safeProducts.map((p) => {
-            const img = p.gallery?.[0] || "/vercel.svg";
+          {rows.map((p) => {
+            const galleryArr = Array.isArray(p.gallery) ? (p.gallery as unknown[]).filter((x): x is string => typeof x === 'string') : null;
+            const img = galleryArr?.[0] || "/vercel.svg";
             return (
               <div key={p.id} className="group rounded-2xl border border-neutral-200 overflow-hidden bg-white hover:shadow-md transition">
                 <div className="aspect-[4/3] bg-neutral-50">

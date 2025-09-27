@@ -9,7 +9,7 @@ type Product = {
   price_public_ttc: number;
   price_partner_net: number | null;
   stock_qty: number;
-  gallery: string[] | null;
+  gallery: unknown[] | null;
 };
 
 export default function PartnerProducts({ initialProducts }: { initialProducts: Product[] }) {
@@ -59,21 +59,24 @@ export default function PartnerProducts({ initialProducts }: { initialProducts: 
             </tr>
           </thead>
           <tbody>
-            {filtered.map(p => (
-              <tr key={p.id} className="border-t border-neutral-200">
-                <td className="px-4 py-3 font-mono text-xs text-neutral-600">{p.sku}</td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-3">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={p.gallery?.[0] || '/vercel.svg'} alt={p.name} className="h-10 w-14 rounded object-cover bg-neutral-100" />
-                    <div className="text-neutral-900">{p.name}</div>
-                  </div>
-                </td>
-                <td className="px-4 py-3">{p.stock_qty}</td>
-                <td className="px-4 py-3">{new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_public_ttc || 0)}</td>
-                <td className="px-4 py-3 font-semibold text-neutral-900">{p.price_partner_net != null ? new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_partner_net) : '-'}</td>
-              </tr>
-            ))}
+            {filtered.map(p => {
+              const firstImg = Array.isArray(p.gallery) && typeof p.gallery[0] === 'string' ? (p.gallery[0] as string) : '/vercel.svg';
+              return (
+                <tr key={p.id} className="border-t border-neutral-200">
+                  <td className="px-4 py-3 font-mono text-xs text-neutral-600">{p.sku}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={firstImg} alt={p.name} className="h-10 w-14 rounded object-cover bg-neutral-100" />
+                      <div className="text-neutral-900">{p.name}</div>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">{p.stock_qty}</td>
+                  <td className="px-4 py-3">{new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_public_ttc || 0)}</td>
+                  <td className="px-4 py-3 font-semibold text-neutral-900">{p.price_partner_net != null ? new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_partner_net) : '-'}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
