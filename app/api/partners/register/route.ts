@@ -2,7 +2,18 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   try {
-    const data = await request.json();
+    const formData = await request.formData();
+    const data = {
+      company_name: formData.get('company_name') as string,
+      vat_id: formData.get('vat_id') as string,
+      contact_name: formData.get('contact_name') as string,
+      email: formData.get('email') as string,
+      phone: formData.get('phone') as string,
+      business_type: formData.get('business_type') as string,
+      address: formData.get('address') as string,
+      annual_volume: formData.get('annual_volume') as string,
+      motivation: formData.get('motivation') as string,
+    };
     
     const { 
       company_name, 
