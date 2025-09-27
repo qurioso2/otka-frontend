@@ -9,7 +9,7 @@ export default function SolicitaContPartener() {
           <p className="mt-3 text-neutral-700">Completează formularul pentru a deveni partener OTKA și a avea acces la prețuri preferențiale.</p>
         </div>
 
-        <form action="/api/partners/request-account" method="POST" className="space-y-6">
+        <form action="mailto:parteneri@otka.ro" method="get" enctype="text/plain" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-neutral-800 mb-2">Nume Companie *</label>
