@@ -132,7 +132,15 @@ export default async function Home() {
                 <Link href={`/p/${p.slug}`}>
                   <div className="aspect-[4/3] bg-neutral-50 overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img} alt={p.name} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <img 
+                      src={img} 
+                      alt={p.name} 
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = '/images/product-placeholder.jpg';
+                      }} 
+                    />
                   </div>
                 </Link>
                 <div className="p-5">
