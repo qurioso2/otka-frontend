@@ -5,6 +5,7 @@ import Header from "./ui/Header";
 import Footer from "./ui/Footer";
 import { Toaster } from "sonner";
 import CookieBanner from "./ui/CookieBanner";
+import CartProvider from "./ui/cart/CartProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,13 +34,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ro">
-      <body className={`${inter.variable} antialiased bg-white text-neutral-900`}>
+      <body className={`${inter.variable} antialiased text-neutral-900 gradient-bg`}>
         <Toaster richColors position="top-right" />
-        <div className="min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
+        <CartProvider>
+          <div className="min-h-screen flex flex-col">
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </div>
+        </CartProvider>
         <CookieBanner />
       </body>
     </html>

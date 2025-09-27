@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
+import CartButton from "./CartButton";
 
 export default async function Header() {
   const cookieStore = await cookies();
@@ -25,6 +26,7 @@ export default async function Header() {
         <Link href="/" className="font-semibold text-xl tracking-tight">OTKA</Link>
         <nav className="flex items-center gap-4 text-sm">
           <Link href="/parteneri" className="hover:opacity-70 transition">Parteneri</Link>
+          <CartButton />
           {user ? (
             <>
               <Link href="/parteneri/dashboard" className="hover:opacity-70 transition">Dashboard</Link>
