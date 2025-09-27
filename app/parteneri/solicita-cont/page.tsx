@@ -15,10 +15,11 @@ export default function SolicitaContPartener() {
               <label className="block text-sm font-medium text-neutral-800 mb-2">Nume Companie *</label>
               <input 
                 type="text" 
-                name="company_name" 
+                name="subject" 
+                value="Cerere parteneriat - "
                 required
                 className="w-full rounded-xl border border-neutral-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-900" 
-                placeholder="SC Exemplu SRL"
+                placeholder="Cerere parteneriat - SC Exemplu SRL"
               />
             </div>
             <div>
