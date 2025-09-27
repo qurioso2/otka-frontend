@@ -93,20 +93,22 @@ export default async function Home() {
             const galleryArr = Array.isArray(p.gallery) ? (p.gallery as unknown[]).filter((x): x is string => typeof x === 'string') : null;
             const img = galleryArr?.[0] || "/vercel.svg";
             return (
-              <div key={p.id} className="group rounded-2xl border border-neutral-200 overflow-hidden bg-white hover:shadow-md transition">
+              <div key={p.id} className="group rounded-2xl border border-neutral-200 overflow-hidden bg-white card-shadow transition-all duration-300">
                 <Link href={`/p/${p.slug}`}>
-                  <div className="aspect-[4/3] bg-neutral-50">
+                  <div className="aspect-[4/3] bg-neutral-50 overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img} alt={p.name} className="h-full w-full object-cover" />
+                    <img src={img} alt={p.name} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   </div>
                 </Link>
-                <div className="p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <Link href={`/p/${p.slug}`} className="font-medium text-neutral-900 group-hover:opacity-80 transition">{p.name}</Link>
+                <div className="p-5">
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <Link href={`/p/${p.slug}`} className="font-semibold text-neutral-900 group-hover:text-neutral-700 transition-colors line-clamp-2">{p.name}</Link>
                     <StockBadge qty={p.stock_qty || 0} />
                   </div>
-                  <div className="mt-2 text-neutral-600 text-sm">TVA inclus</div>
-                  <Price value={p.price_public_ttc || 0} />
+                  <div className="mb-3">
+                    <div className="text-neutral-600 text-sm mb-1">TVA inclus</div>
+                    <Price value={p.price_public_ttc || 0} />
+                  </div>
                   <AddToCartButton item={{ id: p.id as number, sku: p.sku, name: p.name, price: p.price_public_ttc || 0, image: img }} />
                 </div>
               </div>
