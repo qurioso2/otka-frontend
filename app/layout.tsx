@@ -14,15 +14,40 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "OTKA — Produse resigilate și expuse",
-  description: "OTKA: listă produse resigilate și ex-demo, cu prețuri avantajoase.",
+  title: "OTKA — Produse resigilate și expuse | Prețuri avantajoase",
+  description: "Descoperă produse resigilate și ex-demo de calitate la prețuri avantajoase. Stocuri limitate, garanție inclusă. Program de parteneriat disponibil.",
+  keywords: "produse resigilate, ex-demo, prețuri avantajoase, electronice, program parteneriat, stocuri limitate",
   openGraph: {
-    title: "OTKA — Produse resigilate și expuse",
-    description: "Listă produse resigilate și ex-demo, cu prețuri avantajoase.",
+    title: "OTKA — Produse resigilate și expuse | Prețuri avantajoase",
+    description: "Descoperă produse resigilate și ex-demo de calitate la prețuri avantajoase. Stocuri limitate, garanție inclusă.",
     url: process.env.NEXT_PUBLIC_URL || "https://otka.ro",
     siteName: "OTKA",
     locale: "ro_RO",
     type: "website",
+    images: [
+      {
+        url: "/logo-og.png",
+        width: 1200,
+        height: 630,
+        alt: "OTKA - Produse resigilate și expuse",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "OTKA — Produse resigilate și expuse",
+    description: "Descoperă produse resigilate și ex-demo de calitate la prețuri avantajoase.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   metadataBase: new URL(process.env.NEXT_PUBLIC_URL || "https://otka.ro"),
 };
