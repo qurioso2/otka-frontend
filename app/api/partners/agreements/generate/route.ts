@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { getServerSupabase } from '../../../auth/server';
+import { getServerSupabase } from '@/app/auth/server';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
-import { r2Client, R2_CONFIG } from '../../../../lib/r2-client';
+import { r2Client, R2_CONFIG } from '@/lib/r2-client';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import crypto from 'crypto';
 
