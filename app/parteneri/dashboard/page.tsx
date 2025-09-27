@@ -9,7 +9,7 @@ export default async function PartnerDashboard() {
 
   const { data: products, error } = await supabase
     .from("products")
-    .select("id,name,sku,price_public_ttc,price_partner_net,stock_qty,gallery")
+    .select("id,name,sku,price_public_ttc,price_original,price_partner_net,stock_qty,gallery")
     .order("id", { ascending: false })
     .limit(1000);
 
