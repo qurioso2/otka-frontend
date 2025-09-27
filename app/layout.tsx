@@ -29,7 +29,7 @@ export const metadata: Metadata = {
         url: "/logo-og.png",
         width: 1200,
         height: 630,
-        alt: "OTKA - Produse resigilate și expuse",
+        alt: "OTKA - Mobilier și Design Interior",
       },
     ],
   },
