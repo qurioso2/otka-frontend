@@ -1,6 +1,8 @@
 import { getServerSupabase } from "../../auth/server";
 import PartnerProducts from "./PartnerProducts";
 import Uploader from "./Uploader";
+import PartnerResources from "./PartnerResources";
+import NewOrder from "./NewOrder";
 import { getCurrentAppUser } from "../../../lib/userProfile";
 
 export default async function PartnerDashboard() {
