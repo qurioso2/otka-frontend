@@ -25,7 +25,7 @@ export default async function Header() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-4 flex items-center justify-between">
         <Link href="/" className="font-semibold text-xl tracking-tight text-neutral-900">OTKA</Link>
         <nav className="flex items-center gap-4 text-sm">
-          <Link href="/parteneri" className="text-neutral-700 hover:text-neutral-900 transition">Parteneri</Link>
+          <Link href="/parteneri" className="rounded-full border border-neutral-300 text-neutral-700 px-4 py-1.5 hover:bg-neutral-50 transition text-sm">Parteneri</Link>
           <CartButton />
           {user ? (
             <>
