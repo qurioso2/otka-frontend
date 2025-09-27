@@ -29,9 +29,9 @@ export async function GET(request: Request) {
     .order('created_at', { ascending: false });
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
-  // Generez CSV cu toate detaliile
+  // Generez CSV cu toate detaliile incluzând info client
   const csvRows = [
-    'Email Partener,ID Comandă,Data,Total Net (RON),Comision 5% (RON),Status'
+    'Email Partener,Client,ID Comandă,Data,Total Net (RON),Preț Public Estimat (RON),Reducere Partener (%),Comision 5% (RON),Status'
   ];
 
   for (const row of data || []) {
