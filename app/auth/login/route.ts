@@ -9,8 +9,9 @@ export async function POST(request: Request) {
   const supabase = await getServerSupabase();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+    const url = new URL('/login', request.url);
+    url.searchParams.set('error', error.message);
+    return NextResponse.redirect(url);
   }
-  // Redirect only on success
   return NextResponse.redirect(new URL('/parteneri/dashboard', request.url));
 }

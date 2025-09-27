@@ -1,5 +1,6 @@
 import { getServerSupabase } from "../../auth/server";
 import PartnerProducts from "./PartnerProducts";
+import Uploader from "./Uploader";
 
 export default async function PartnerDashboard() {
   const supabase = await getServerSupabase();
@@ -11,7 +12,7 @@ export default async function PartnerDashboard() {
     .limit(1000);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-10">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold tracking-tight">Dashboard Partener</h1>
         <form action="/auth/logout" method="POST">
@@ -19,7 +20,7 @@ export default async function PartnerDashboard() {
         </form>
       </div>
 
-      <div className="mt-6">
+      <div>
         {error ? (
           <div className="text-red-600">{error.message}</div>
         ) : (
@@ -27,7 +28,9 @@ export default async function PartnerDashboard() {
         )}
       </div>
 
-      <div className="mt-12 text-sm text-neutral-600">
+      <Uploader />
+
+      <div className="text-sm text-neutral-600">
         <h2 className="text-neutral-900 font-medium">Termeni & Comisioane</h2>
         <p className="mt-2">Comision standard 5% din prețul de vânzare către clientul final. Eligibilitate: comisionul se acordă când comanda e inițiată de lead-ul partenerului. Plată: lunar, la 30 zile de la livrare.</p>
       </div>

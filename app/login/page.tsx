@@ -1,8 +1,9 @@
 import { getServerSupabase } from "../auth/server";
 
-export default async function Login() {
+export default async function Login({ searchParams }: { searchParams?: { error?: string } }) {
   const supabase = await getServerSupabase();
   const { data } = await supabase.auth.getUser();
+  const errorMsg = searchParams?.error;
 
   if (data.user) {
     return (
@@ -20,6 +21,11 @@ export default async function Login() {
     <div className="mx-auto max-w-md px-4 sm:px-6 py-16">
       <h1 className="text-3xl font-semibold tracking-tight">Login Partener</h1>
       <p className="mt-2 text-neutral-600">Accesezi prețurile nete și resursele partenerilor.</p>
+      {errorMsg && (
+        <div className="mt-4 rounded-xl border border-red-200 bg-red-50 text-red-700 px-3 py-2 text-sm">
+          {errorMsg}
+        </div>
+      )}
       <form action="/auth/login" method="POST" className="mt-8 space-y-4">
         <div>
           <label className="block text-sm text-neutral-700">Email</label>
