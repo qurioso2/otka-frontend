@@ -1,6 +1,66 @@
 import Link from 'next/link';
 
+'use client';
+
+import Link from 'next/link';
+import { useState } from 'react';
+// import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+
 export default function SolicitaContPartener() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    company_name: '',
+    vat_id: '',
+    contact_name: '',
+    email: '',
+    phone: '',
+    business_type: '',
+    address: '',
+    annual_volume: '',
+    motivation: ''
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      // Validare de bază
+      if (!formData.company_name || !formData.vat_id || !formData.contact_name || !formData.email) {
+        throw new Error('Câmpurile marcate cu * sunt obligatorii');
+      }
+
+      const response = await fetch('/api/partners/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(errorData || 'Eroare la procesarea cererii');
+      }
+
+      alert('Cererea a fost trimisă cu succes!');
+      router.push('/parteneri/solicita-cont/confirmare');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Eroare de sistem');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
   return (
     <div className="mx-auto max-w-2xl px-4 sm:px-6 py-16">
       <div className="rounded-2xl border border-neutral-200 bg-white p-8 shadow-sm">
@@ -9,7 +69,7 @@ export default function SolicitaContPartener() {
           <p className="mt-3 text-neutral-700">Completează formularul pentru a deveni partener OTKA și a avea acces la prețuri preferențiale.</p>
         </div>
 
-        <form action="/api/partners/register" method="POST" className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-neutral-800 mb-2">
@@ -18,6 +78,8 @@ export default function SolicitaContPartener() {
               <input 
                 type="text" 
                 name="company_name"
+                value={formData.company_name}
+                onChange={handleChange}
                 required
                 className="w-full rounded-xl border border-neutral-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-900" 
                 placeholder="SC Exemplu SRL"
@@ -30,6 +92,8 @@ export default function SolicitaContPartener() {
               <input 
                 type="text" 
                 name="vat_id"
+                value={formData.vat_id}
+                onChange={handleChange}
                 required
                 className="w-full rounded-xl border border-neutral-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-900" 
                 placeholder="RO12345678"
@@ -45,6 +109,8 @@ export default function SolicitaContPartener() {
               <input 
                 type="text" 
                 name="contact_name"
+                value={formData.contact_name}
+                onChange={handleChange}
                 required
                 className="w-full rounded-xl border border-neutral-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-900" 
                 placeholder="Popescu Ion"
@@ -57,6 +123,8 @@ export default function SolicitaContPartener() {
               <input 
                 type="email" 
                 name="email"
+                value={formData.email}
+                onChange={handleChange}
                 required
                 className="w-full rounded-xl border border-neutral-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-900" 
                 placeholder="contact@company.ro"
@@ -72,6 +140,8 @@ export default function SolicitaContPartener() {
               <input 
                 type="tel" 
                 name="phone"
+                value={formData.phone}
+                onChange={handleChange}
                 className="w-full rounded-xl border border-neutral-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-900" 
                 placeholder="+40 123 456 789"
               />
@@ -82,6 +152,8 @@ export default function SolicitaContPartener() {
               </label>
               <select 
                 name="business_type"
+                value={formData.business_type}
+                onChange={handleChange}
                 className="w-full rounded-xl border border-neutral-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-900"
               >
                 <option value="">Selectează...</option>
@@ -100,6 +172,8 @@ export default function SolicitaContPartener() {
             </label>
             <textarea 
               name="address"
+              value={formData.address}
+              onChange={handleChange}
               rows={3}
               className="w-full rounded-xl border border-neutral-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-900 resize-none" 
               placeholder="Strada, numărul, oraș, județ, cod poștal"
@@ -112,6 +186,8 @@ export default function SolicitaContPartener() {
             </label>
             <select 
               name="annual_volume"
+              value={formData.annual_volume}
+              onChange={handleChange}
               className="w-full rounded-xl border border-neutral-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-900"
             >
               <option value="">Selectează...</option>
@@ -128,6 +204,8 @@ export default function SolicitaContPartener() {
             </label>
             <textarea 
               name="motivation"
+              value={formData.motivation}
+              onChange={handleChange}
               rows={4}
               className="w-full rounded-xl border border-neutral-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-neutral-900 resize-none" 
               placeholder="De ce doriți să deveniți partener OTKA? Ce produse vă interesează în principal?"
@@ -152,9 +230,10 @@ export default function SolicitaContPartener() {
           <div className="flex flex-col sm:flex-row gap-4">
             <button 
               type="submit" 
-              className="flex-1 rounded-full bg-black text-white px-6 py-3 text-base font-medium hover:bg-neutral-800 transition"
+              disabled={loading}
+              className="flex-1 rounded-full bg-black text-white px-6 py-3 text-base font-medium hover:bg-neutral-800 transition disabled:opacity-50"
             >
-              Trimite Cererea
+              {loading ? 'Se trimite...' : 'Trimite Cererea'}
             </button>
             <Link 
               href="/login" 
