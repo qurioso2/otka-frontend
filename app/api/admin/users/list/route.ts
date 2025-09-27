@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getServerSupabase } from '../../../../auth/server';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function GET() {
   const supabase = await getServerSupabase();
@@ -8,7 +8,8 @@ export async function GET() {
   const { data: me } = await supabase.from('users').select('role').eq('email', user.email).maybeSingle();
   if (me?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
-  const { data, error } = await supabase.from('users').select('email, role, partner_status, company_name, vat_id, contact_name, phone').order('email');
+  const { data, error } = await supabase.from('users').select('*').order('created_at', { ascending: false });
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
-  return NextResponse.json({ users: data || [] });
+
+  return NextResponse.json(data || []);
 }

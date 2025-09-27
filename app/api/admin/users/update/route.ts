@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
-import { getServerSupabase } from '../../../../auth/server';
+import { NextResponse, NextRequest } from 'next/server';
+import { getServerSupabase } from '@/app/auth/server';
 
-export async function POST(request: Request) {
+export async function PUT(request: NextRequest) {
   const supabase = await getServerSupabase();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -9,10 +9,11 @@ export async function POST(request: Request) {
   if (me?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
   const body = await request.json();
-  const { email, role, partner_status, company_name, vat_id, contact_name, phone } = body || {};
-  if (!email) return NextResponse.json({ error: 'Missing email' }, { status: 400 });
+  const { email, role, partner_status } = body;
+  if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400 });
 
-  const { data, error } = await supabase.from('users').upsert({ email, role, partner_status, company_name, vat_id, contact_name, phone }, { onConflict: 'email' }).select('email');
+  const { error } = await supabase.from('users').update({ role, partner_status }).eq('email', email);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
-  return NextResponse.json({ ok: true, email: data?.[0]?.email });
+
+  return NextResponse.json({ ok: true });
 }
