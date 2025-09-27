@@ -8,12 +8,10 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [clientType, setClientType] = useState<'individual' | 'company'>('individual');
   const [result, setResult] = useState<{ number?: string; url?: string; pdfUrl?: string } | null>(null);
+  const [emailTo, setEmailTo] = useState('');
+  const [sending, setSending] = useState(false);
 
-  useEffect(() => {
-    if (items.length === 0 && !result) {
-      // noop
-    }
-  }, [items, result]);
+  useEffect(() => { /* noop */ }, [items, result]);
 
   const handleSubmit = async (formData: FormData): Promise<void> => {
     if (items.length === 0) { toast.error('Coșul este gol'); return; }
@@ -34,20 +32,35 @@ export default function CheckoutPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Eroare generare proformă');
       setResult({ number: data.number, url: data.url, pdfUrl: data.pdfUrl });
+      setEmailTo(String(formData.get('email') || ''));
       toast.success('Proformă generată');
       clear();
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Eroare';
       toast.error(msg);
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     await handleSubmit(fd);
+  };
+
+  const sendEmail = async () => {
+    if (!result) return;
+    setSending(true);
+    try {
+      const subject = `Proformă OTKA ${result.number ? '#' + result.number : ''}`;
+      const html = `<p>Vă mulțumim pentru comanda lansată!</p><p>Puteți accesa proforma aici: ${result.url ? `<a href="${result.url}">${result.url}</a>` : 'link indisponibil'}</p>`;
+      const res = await fetch('/api/mail/proforma', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ to: emailTo, subject, html, pdfUrl: result.pdfUrl }) });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Mail send failed');
+      toast.success('Proforma a fost trimisă pe email');
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Eroare trimitere email';
+      toast.error(msg);
+    } finally { setSending(false); }
   };
 
   return (
@@ -116,8 +129,12 @@ export default function CheckoutPage() {
         <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
           <div className="font-medium text-emerald-900">Proforma a fost generată cu succes.</div>
           <div className="text-sm mt-1 text-emerald-800">Număr: {result.number || '-'}</div>
-          {result.url && <a href={result.url} target="_blank" className="text-sm underline mr-4">Vezi în SmartBill</a>}
-          {result.pdfUrl && <a href={result.pdfUrl} target="_blank" className="text-sm underline">Descarcă PDF (R2)</a>}
+          <div className="mt-3 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <input value={emailTo} onChange={(e)=>setEmailTo(e.target.value)} placeholder="Introdu emailul pentru trimitere" className="rounded-xl border border-neutral-300 px-3 py-2" />
+            <button onClick={sendEmail} disabled={sending || !emailTo} className="rounded-full bg-black text-white px-4 py-2 text-sm hover:bg-neutral-800 disabled:opacity-50">{sending ? 'Se trimite...' : 'Trimite pe email'}</button>
+            {result.url && <a href={result.url} target="_blank" className="text-sm underline">Vezi în SmartBill</a>}
+            {result.pdfUrl && <a href={result.pdfUrl} target="_blank" className="text-sm underline">Descarcă PDF</a>}
+          </div>
         </div>
       )}
     </div>
