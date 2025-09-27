@@ -1,6 +1,26 @@
 -- MASTER SETUP FOR OTKA (create + hardening)
 -- Run this in Supabase SQL Editor. Execute in order.
 
+-- 0) Clean-up previous objects (safe if not existing)
+-- USERS policies
+drop policy if exists users_select_auth on public.users;
+drop policy if exists users_insert_auth on public.users;
+drop policy if exists users_update_auth on public.users;
+drop policy if exists users_select_self on public.users;
+drop policy if exists users_select_admin on public.users;
+drop policy if exists users_update_self on public.users;
+drop policy if exists users_update_admin on public.users;
+drop policy if exists users_insert_admin on public.users;
+-- PRODUCTS policies
+drop policy if exists public_read_visible_products on public.products;
+drop policy if exists auth_read_all_products on public.products;
+drop policy if exists products_select_anon on public.products;
+drop policy if exists products_select_auth on public.products;
+-- Triggers/func
+drop trigger if exists protect_users_admin_cols on public.users;
+drop function if exists public.protect_users_admin_cols();
+drop function if exists public.is_admin(text);
+
 -- 1) Ensure required tables exist (based on your current schema)
 create table if not exists public.users (
   id bigserial primary key,
@@ -77,31 +97,13 @@ create table if not exists public.orders (
 -- 2) Enable RLS
 alter table public.users enable row level security;
 alter table public.products enable row level security;
--- (Optional) enable on other tables later as needed
 
--- 3) Drop existing permissive policies to avoid conflicts
--- USERS
-drop policy if exists users_select_auth on public.users;
-drop policy if exists users_insert_auth on public.users;
-drop policy if exists users_update_auth on public.users;
-drop policy if exists users_select_self on public.users;
-drop policy if exists users_select_admin on public.users;
-drop policy if exists users_update_self on public.users;
-drop policy if exists users_update_admin on public.users;
-drop policy if exists users_insert_admin on public.users;
-
--- PRODUCTS
-drop policy if exists public_read_visible_products on public.products;
-drop policy if exists auth_read_all_products on public.products;
-drop policy if exists products_select_anon on public.products;
-drop policy if exists products_select_auth on public.products;
-
--- 4) Hardened policies
+-- 3) Hardened policies
 -- USERS: 
 --  - Auth user poate vedea DOAR propriul profil
 --  - Admin poate vedea toți
---  - Auth user poate edita doar propriile câmpuri non-critice (NU rol/status)
---  - Admin poate insera/update orice
+--  - Auth user poate edita doar câmpuri non-critice (NU rol/status) – impus prin trigger mai jos
+--  - Admin poate insera/update orice (RLS)
 create policy users_select_self on public.users
 for select to authenticated
 using (auth.email() = email);
@@ -113,11 +115,7 @@ using (exists (select 1 from public.users u where u.email = auth.email() and u.r
 create policy users_update_self on public.users
 for update to authenticated
 using (auth.email() = email)
-with check (
-  auth.email() = email
-  and coalesce(role, 'visitor') = coalesce(old.role, 'visitor')
-  and coalesce(partner_status, 'pending') = coalesce(old.partner_status, 'pending')
-);
+with check (auth.email() = email);
 
 create policy users_update_admin on public.users
 for update to authenticated
@@ -139,7 +137,39 @@ create policy products_select_auth on public.products
 for select to authenticated
 using (true);
 
--- 5) (Opțional) seed minimal admin (modificați emailul)
+-- 4) Trigger to protect admin-only columns on users (role, partner_status)
+create function public.is_admin(email text)
+returns boolean
+language sql
+stable
+as $$
+  select exists (
+    select 1 from public.users u where u.email = $1 and u.role = 'admin'
+  );
+$$;
+
+create function public.protect_users_admin_cols()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  -- Only admins can modify role or partner_status
+  if not public.is_admin(auth.email()) then
+    if (NEW.role is distinct from OLD.role) or (NEW.partner_status is distinct from OLD.partner_status) then
+      raise exception 'Not allowed to modify role/partner_status';
+    end if;
+  end if;
+  return NEW;
+end;
+$$;
+
+create trigger protect_users_admin_cols
+before update on public.users
+for each row execute function public.protect_users_admin_cols();
+
+-- 5) (Opțional) seed minimal admin (modificați emailul și rulați o dată)
 -- insert into public.users (email, role, partner_status) values ('admin@otka.ro','admin','active') on conflict (email) do nothing;
 
 -- END
