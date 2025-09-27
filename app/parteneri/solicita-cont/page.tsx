@@ -136,7 +136,7 @@ export default function SolicitaContPartener() {
               type="submit" 
               className="flex-1 rounded-full bg-black text-white px-6 py-3 text-base font-medium hover:bg-neutral-800 transition"
             >
-              Trimite Cererea
+              Deschide Email pentru Trimitere
             </button>
             <Link 
               href="/login" 
@@ -144,6 +144,15 @@ export default function SolicitaContPartener() {
             >
               Am deja cont
             </Link>
+          </div>
+          
+          <div className="mt-6 p-4 bg-blue-50 rounded-xl">
+            <h3 className="font-semibold text-blue-900 mb-2">📧 Alternativ - Contact Direct</h3>
+            <div className="text-sm text-blue-800">
+              <p><strong>Email:</strong> <a href="mailto:parteneri@otka.ro" className="underline">parteneri@otka.ro</a></p>
+              <p><strong>Telefon:</strong> <a href="tel:+40123456789" className="underline">+40 123 456 789</a></p>
+              <p className="mt-2">Includeți în email datele companiei: nume, CUI, persoana de contact și tipul de activitate.</p>
+            </div>
           </div>
         </form>
 
