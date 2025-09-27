@@ -30,7 +30,6 @@ export default async function Header() {
           {user ? (
             <>
               <Link href="/parteneri/dashboard" className="rounded-full border border-neutral-300 text-neutral-700 px-4 py-1.5 hover:bg-neutral-50 transition text-sm">Dashboard</Link>
-              <Link href="/parteneri/orders" className="rounded-full border border-neutral-300 text-neutral-700 px-4 py-1.5 hover:bg-neutral-50 transition text-sm">Comenzi</Link>
               <form action="/auth/logout" method="POST">
                 <button className="rounded-full bg-black text-white px-4 py-1.5 hover:bg-neutral-800 transition text-sm">Logout</button>
               </form>
