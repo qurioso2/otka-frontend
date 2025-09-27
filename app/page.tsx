@@ -95,10 +95,10 @@ export default async function Home() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <a href="#produse" className="btn-primary inline-flex items-center justify-center rounded-full text-white px-8 py-3 text-base font-medium shadow-lg">
-                Vezi toate produsele
+                Descoperă Colecția
               </a>
               <a href="/parteneri" className="inline-flex items-center justify-center rounded-full border-2 border-neutral-900 text-neutral-900 px-8 py-3 text-base font-medium hover:bg-neutral-900 hover:text-white transition">
-                Devino partener
+                Parteneriat Design
               </a>
             </div>
           </div>
