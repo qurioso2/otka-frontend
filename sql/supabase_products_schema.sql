@@ -5,6 +5,7 @@ create table if not exists public.products (
   name text not null,
   slug text not null unique,
   price_public_ttc numeric not null default 0,
+  price_original numeric, -- Prețul original înainte de reducere
   price_partner_net numeric,
   stock_qty integer not null default 0,
   gallery jsonb,
