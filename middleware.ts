@@ -10,7 +10,7 @@ export async function middleware(req: NextRequest) {
 
   const { data: { session } } = await supabase.auth.getSession();
 
-  if (!session && req.nextUrl.pathname.startsWith('/parteneri')) {
+  if (!session && req.nextUrl.pathname.startsWith('/parteneri/dashboard')) {
     const url = req.nextUrl.clone();
     url.pathname = '/login';
     return NextResponse.redirect(url);
@@ -20,5 +20,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/parteneri/:path*'],
+  matcher: ['/parteneri/dashboard/:path*', '/parteneri/dashboard'],
 };
