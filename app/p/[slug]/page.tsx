@@ -1,13 +1,11 @@
 import { supabase } from "../../../lib/supabaseClient";
 import type { Database } from "../../../types/supabase";
 import Link from "next/link";
-import dynamic from 'next/dynamic';
+import AddToCartClient from './AddToCartClient';
 
 export const revalidate = 60; // ISR
 
 type ProductRow = Database["public"]["Tables"]["products"]["Row"];
-
-const AddToCartClient = dynamic(() => import('./AddToCartClient'), { ssr: false });
 
 type PageProps = { params: Promise<{ slug: string }> };
 
