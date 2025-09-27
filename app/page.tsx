@@ -1,9 +1,16 @@
 import { supabase } from "../lib/supabaseClient";
-import type { Database } from "../types/supabase";
 import Link from "next/link";
 import AddToCartButton from "./ui/AddToCartButton";
 
-type ProductRow = Database["public"]["Tables"]["products"]["Row"];
+interface ProductPublic {
+  id: number;
+  sku: string;
+  name: string;
+  slug: string;
+  price_public_ttc: number;
+  stock_qty: number;
+  gallery: unknown[] | null;
+}
 
 function StockBadge({ qty }: { qty: number }) {
   const status = qty > 0 ? "Disponibil" : "Rezervat";
@@ -32,13 +39,12 @@ function CardSkeleton() {
 
 export default async function Home() {
   const { data: products, error } = await supabase
-    .from("products")
-    .select("id,sku,name,slug,price_public_ttc,stock_qty,gallery,visible")
-    .eq("visible", true)
+    .from("products_public")
+    .select("id,sku,name,slug,price_public_ttc,stock_qty,gallery")
     .order("id", { ascending: false })
     .limit(24);
 
-  const rows: ProductRow[] = (products as ProductRow[] | null) ?? [];
+  const rows: ProductPublic[] = (products as ProductPublic[] | null) ?? [];
 
   return (
     <div>
