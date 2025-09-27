@@ -3,7 +3,7 @@
 
 -- 1) Create/replace a public view without price_partner_net
 create or replace view public.products_public as
-select id, sku, name, slug, price_public_ttc, stock_qty, gallery, visible
+select id, sku, name, slug, price_public_ttc, price_original, stock_qty, gallery, visible
 from public.products
 where visible = true;
 
