@@ -11,9 +11,10 @@ export async function getServerSupabase() {
     process.env.SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get: (name) => cookieStore.get(name)?.value,
-        set: (name, value, options) => cookieStore.set(name, value, options),
-        remove: (name, options) => cookieStore.delete(name, options),
+        getAll: () => cookieStore.getAll(),
+        setAll: (cookies) => {
+          cookies.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+        },
       },
     }
   );
