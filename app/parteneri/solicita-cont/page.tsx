@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { toast } from 'sonner';
+// import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
 export default function SolicitaContPartener() {
