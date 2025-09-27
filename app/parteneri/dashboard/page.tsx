@@ -3,7 +3,6 @@ import PartnerProducts from "./PartnerProducts";
 
 export default async function PartnerDashboard() {
   const supabase = await getServerSupabase();
-  const { data: { user } } = await supabase.auth.getUser();
 
   const { data: products, error } = await supabase
     .from("products")
