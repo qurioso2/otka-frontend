@@ -46,7 +46,18 @@ export default async function ProductPage(props: { params: Promise<{ slug: strin
             {p.location && <div><span className="text-neutral-500">Locație:</span> {p.location}</div>}
           </div>
 
-          <div className="mt-10">
+          <div className="mt-6">
+            <div className="rounded-2xl border border-neutral-200 bg-white p-4">
+              <div className="text-sm text-neutral-600">TVA inclus</div>
+              <div className="text-2xl font-semibold text-neutral-900 mt-1">{new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_public_ttc || 0)}</div>
+              <div className="mt-3">
+                {/* Add to cart */}
+                {/* @ts-expect-error Server Component -> Client interop via dynamic import not necessary here */}
+                <a href={`/api/add-to-cart?id=${p.id}`} className="hidden"/>
+              </div>
+            </div>
+          </div>
+          <div className="mt-6">
             <Link href="/" className="inline-flex rounded-full bg-black text-white px-5 py-2.5 text-sm">Înapoi</Link>
           </div>
         </div>
