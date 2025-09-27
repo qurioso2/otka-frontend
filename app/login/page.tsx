@@ -1,10 +1,11 @@
 import { getServerSupabase } from "../auth/server";
 
-export default async function Login({ searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } }) {
+export default async function Login(props: { searchParams?: Promise<Record<string, string | string[] | undefined>> }) {
   const supabase = await getServerSupabase();
   const { data } = await supabase.auth.getUser();
-  const errorParam = searchParams?.error;
-  const errorMsg = Array.isArray(errorParam) ? errorParam[0] : errorParam;
+  const sp = props.searchParams ? await props.searchParams : undefined;
+  const err = sp?.error;
+  const errorMsg = Array.isArray(err) ? err[0] : err;
 
   if (data.user) {
     return (

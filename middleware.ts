@@ -10,7 +10,10 @@ export async function middleware(req: NextRequest) {
 
   const { data: { session } } = await supabase.auth.getSession();
 
-  if (!session && req.nextUrl.pathname.startsWith('/parteneri/dashboard')) {
+  const protectedPaths = ['/parteneri/dashboard', '/admin'];
+  const isProtected = protectedPaths.some(p => req.nextUrl.pathname === p || req.nextUrl.pathname.startsWith(p + '/'));
+
+  if (!session && isProtected) {
     const url = req.nextUrl.clone();
     url.pathname = '/login';
     return NextResponse.redirect(url);
@@ -20,5 +23,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/parteneri/dashboard/:path*', '/parteneri/dashboard'],
+  matcher: ['/parteneri/dashboard/:path*', '/parteneri/dashboard', '/admin'],
 };
