@@ -118,7 +118,7 @@ export default async function PartnerOrders() {
           <h3 className="text-lg font-medium text-neutral-900 mb-2">Nu aveți comenzi încă</h3>
           <p className="text-neutral-600 mb-6">Începeți prima comandă pentru a primi o ofertă personalizată</p>
           <Link
-            href="/parteneri/dashboard"
+            href="/parteneri/dashboard#comandă-nouă"
             className="inline-flex items-center bg-black text-white px-6 py-3 rounded-full hover:bg-neutral-800 transition"
           >
             Creați Prima Comandă
