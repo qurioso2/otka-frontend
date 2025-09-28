@@ -1,4 +1,4 @@
-import { getServerSupabase } from '../../../auth/server';
+import { getServerSupabase } from '../../../../auth/server';
 import { redirect } from 'next/navigation';
 import ClientEditor from './ClientEditor';
 
