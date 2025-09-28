@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSupabase } from '../../../auth/server';
+import { getServerSupabase } from '../../auth/server';
 
 export async function POST(request: NextRequest) {
   try {
