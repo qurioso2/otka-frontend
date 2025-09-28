@@ -88,103 +88,95 @@ function OverviewTab({ setActiveTab }: { setActiveTab: (tab: string) => void }) 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
       {/* Quick Stats */}
-      <div className="otka-card">
-        <div className="otka-card-body">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-otka-blue-500 rounded-xl flex items-center justify-center">
-                <span className="text-white text-xl">📦</span>
-              </div>
+      <div className="bg-white border-2 border-gray-300 rounded-2xl shadow-sm p-6">
+        <div className="flex items-center">
+          <div className="flex-shrink-0">
+            <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
+              <span className="text-white text-xl">📦</span>
             </div>
-            <div className="ml-4">
-              <p className="otka-text-sm">Total Produse</p>
-              <p className="text-2xl font-bold text-otka-gray-900" data-testid="total-products">-</p>
-            </div>
+          </div>
+          <div className="ml-4">
+            <p className="text-sm text-gray-600 font-medium">Total Produse</p>
+            <p className="text-2xl font-bold text-gray-900" data-testid="total-products">-</p>
           </div>
         </div>
       </div>
 
-      <div className="otka-card">
-        <div className="otka-card-body">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-otka-green-500 rounded-xl flex items-center justify-center">
-                <span className="text-white text-xl">👥</span>
-              </div>
+      <div className="bg-white border-2 border-gray-300 rounded-2xl shadow-sm p-6">
+        <div className="flex items-center">
+          <div className="flex-shrink-0">
+            <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+              <span className="text-white text-xl">👥</span>
             </div>
-            <div className="ml-4">
-              <p className="otka-text-sm">Parteneri Activi</p>
-              <p className="text-2xl font-bold text-otka-gray-900" data-testid="active-partners">-</p>
-            </div>
+          </div>
+          <div className="ml-4">
+            <p className="text-sm text-gray-600 font-medium">Parteneri Activi</p>
+            <p className="text-2xl font-bold text-gray-900" data-testid="active-partners">-</p>
           </div>
         </div>
       </div>
 
-      <div className="otka-card">
-        <div className="otka-card-body">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
-                <span className="text-white text-xl">📋</span>
-              </div>
+      <div className="bg-white border-2 border-gray-300 rounded-2xl shadow-sm p-6">
+        <div className="flex items-center">
+          <div className="flex-shrink-0">
+            <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
+              <span className="text-white text-xl">📋</span>
             </div>
-            <div className="ml-4">
-              <p className="otka-text-sm">Comenzi Astăzi</p>
-              <p className="text-2xl font-bold text-otka-gray-900" data-testid="orders-today">-</p>
-            </div>
+          </div>
+          <div className="ml-4">
+            <p className="text-sm text-gray-600 font-medium">Comenzi Astăzi</p>
+            <p className="text-2xl font-bold text-gray-900" data-testid="orders-today">-</p>
           </div>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="lg:col-span-2 xl:col-span-3 otka-card">
-        <div className="otka-card-body">
-          <h3 className="otka-heading-3 mb-6">Acțiuni Rapide</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <button 
-              onClick={() => setActiveTab('products')}
-              className="p-6 border-2 border-dashed border-otka-gray-400 rounded-xl hover:border-otka-blue-500 hover:bg-otka-blue-50 transition-all duration-200 group"
-            >
-              <div className="text-center">
-                <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">📦</div>
-                <div className="otka-text-bold">Gestionare Produse</div>
-                <div className="otka-text-sm">Adaugă și modifică catalog</div>
-              </div>
-            </button>
-            
-            <button 
-              onClick={() => setActiveTab('users')}
-              className="p-6 border-2 border-dashed border-otka-gray-400 rounded-xl hover:border-otka-green-500 hover:bg-otka-green-50 transition-all duration-200 group"
-            >
-              <div className="text-center">
-                <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">👥</div>
-                <div className="otka-text-bold">Gestionare Parteneri</div>
-                <div className="otka-text-sm">Invită și activează</div>
-              </div>
-            </button>
-            
-            <button 
-              onClick={() => setActiveTab('resources')}
-              className="p-6 border-2 border-dashed border-otka-gray-400 rounded-xl hover:border-purple-500 hover:bg-purple-50 transition-all duration-200 group"
-            >
-              <div className="text-center">
-                <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">📚</div>
-                <div className="otka-text-bold">Resurse Parteneri</div>
-                <div className="otka-text-sm">Cataloage și materiale</div>
-              </div>
-            </button>
-            
-            <button 
-              onClick={() => setActiveTab('workflow')}
-              className="p-6 border-2 border-dashed border-otka-gray-400 rounded-xl hover:border-yellow-500 hover:bg-yellow-50 transition-all duration-200 group"
-            >
-              <div className="text-center">
-                <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">❓</div>
-                <div className="otka-text-bold">Ghid Utilizare</div>
-                <div className="otka-text-sm">Vezi workflow complet</div>
-              </div>
-            </button>
-          </div>
+      <div className="lg:col-span-2 xl:col-span-3 bg-white border-2 border-gray-300 rounded-2xl shadow-sm p-6">
+        <h3 className="text-xl font-bold text-gray-900 mb-6">Acțiuni Rapide</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <button 
+            onClick={() => setActiveTab('products')}
+            className="p-6 border-2 border-dashed border-gray-400 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 group"
+          >
+            <div className="text-center">
+              <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">📦</div>
+              <div className="text-gray-800 font-bold">Gestionare Produse</div>
+              <div className="text-sm text-gray-600 font-medium">Adaugă și modifică catalog</div>
+            </div>
+          </button>
+          
+          <button 
+            onClick={() => setActiveTab('users')}
+            className="p-6 border-2 border-dashed border-gray-400 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all duration-200 group"
+          >
+            <div className="text-center">
+              <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">👥</div>
+              <div className="text-gray-800 font-bold">Gestionare Parteneri</div>
+              <div className="text-sm text-gray-600 font-medium">Invită și activează</div>
+            </div>
+          </button>
+          
+          <button 
+            onClick={() => setActiveTab('resources')}
+            className="p-6 border-2 border-dashed border-gray-400 rounded-xl hover:border-purple-500 hover:bg-purple-50 transition-all duration-200 group"
+          >
+            <div className="text-center">
+              <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">📚</div>
+              <div className="text-gray-800 font-bold">Resurse Parteneri</div>
+              <div className="text-sm text-gray-600 font-medium">Cataloage și materiale</div>
+            </div>
+          </button>
+          
+          <button 
+            onClick={() => setActiveTab('workflow')}
+            className="p-6 border-2 border-dashed border-gray-400 rounded-xl hover:border-yellow-500 hover:bg-yellow-50 transition-all duration-200 group"
+          >
+            <div className="text-center">
+              <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">❓</div>
+              <div className="text-gray-800 font-bold">Ghid Utilizare</div>
+              <div className="text-sm text-gray-600 font-medium">Vezi workflow complet</div>
+            </div>
+          </button>
         </div>
       </div>
     </div>
