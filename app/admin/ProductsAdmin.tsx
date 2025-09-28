@@ -23,11 +23,13 @@ export default function ProductsAdmin() {
     sku: '',
     name: '',
     price_public_ttc: '',
+    price_original: '',
     price_partner_net: '',
     stock_qty: '',
     description: '',
-    gallery: ''
+    gallery: [] as string[]
   });
+  const [imageFiles, setImageFiles] = useState<FileList | null>(null);
 
   const loadProducts = async () => {
     setLoading(true);
