@@ -95,21 +95,30 @@ export default function ProductsAdmin() {
         slug: newProduct.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
       };
 
-      const res = await fetch('/api/admin/products/create', {
+      // Determine if we're editing or creating
+      const isEditing = editingProduct !== null;
+      const endpoint = isEditing ? '/api/admin/products/update' : '/api/admin/products/create';
+      
+      if (isEditing) {
+        productData.id = editingProduct.id;
+      }
+
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(productData)
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to create product');
+      if (!res.ok) throw new Error(data.error || `Failed to ${isEditing ? 'update' : 'create'} product`);
 
-      toast.success('Produs adăugat cu succes!');
+      toast.success(isEditing ? 'Produs actualizat cu succes!' : 'Produs adăugat cu succes!');
       setNewProduct({
         sku: '', name: '', price_public_ttc: '', price_original: '', price_partner_net: '',
         stock_qty: '', description: '', gallery: []
       });
       setImageFiles(null);
+      setEditingProduct(null);
       await loadProducts();
       setActiveView('list');
     } catch (error: any) {
