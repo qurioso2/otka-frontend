@@ -14,8 +14,7 @@ interface ProductPublic {
 }
 
 async function getHeroUrl() {
-  const timestamp = Date.now();
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL || ''}/api/public/og?t=${timestamp}`, { cache: 'no-store', headers: { 'x-next-headers': JSON.stringify(Object.fromEntries(headers())) } });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL || ''}/api/public/og`, { cache: 'no-store', headers: { 'x-next-headers': JSON.stringify(Object.fromEntries(headers())) } });
   const data = await res.json().catch(()=>({ url: '/images/product-placeholder.jpg' }));
   return data.url as string;
 }
