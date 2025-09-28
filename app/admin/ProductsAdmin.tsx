@@ -91,7 +91,6 @@ export default function ProductsAdmin() {
         price_public_ttc: parseFloat(newProduct.price_public_ttc) || 0,
         price_partner_net: parseFloat(newProduct.price_partner_net) || 0,
         stock_qty: parseInt(newProduct.stock_qty) || 0,
-        description: newProduct.description,
         gallery: galleryUrls,
         slug: newProduct.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
       };
