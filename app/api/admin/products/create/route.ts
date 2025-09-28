@@ -54,15 +54,17 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Create product - add defaults for missing values
+    // Create product - process validated data from frontend
     const productToInsert = {
-      sku,
-      name,
-      price_public_ttc: parseFloat(price_public_ttc),
-      price_partner_net: price_partner_net ? parseFloat(price_partner_net) : 0,
-      stock_qty: stock_qty ? parseInt(stock_qty) : 0,
+      sku: sku?.trim(),
+      name: name?.trim(),
       slug: slug || name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
-      gallery: Array.isArray(gallery) ? gallery : []
+      price_public_ttc: typeof price_public_ttc === 'number' ? price_public_ttc : parseFloat(price_public_ttc),
+      price_partner_net: typeof price_partner_net === 'number' ? price_partner_net : (parseFloat(price_partner_net) || 0),
+      stock_qty: typeof stock_qty === 'number' ? stock_qty : (parseInt(stock_qty) || 0),
+      gallery: Array.isArray(gallery) ? gallery : [],
+      ...(price_original && { price_original: typeof price_original === 'number' ? price_original : parseFloat(price_original) }),
+      ...(description && { description: description.trim() })
     };
 
     console.log('Inserting product:', productToInsert);
