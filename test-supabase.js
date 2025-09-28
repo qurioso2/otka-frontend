@@ -33,6 +33,18 @@ async function testConnection() {
       console.log('✅ Products table accessible');
     }
     
+    // Test products_public table (used by homepage)
+    const { data: productsPublic, error: productsPublicError } = await supabase
+      .from('products_public')
+      .select('id')
+      .limit(1);
+    
+    if (productsPublicError) {
+      console.log('❌ Products_public table error:', productsPublicError.message);
+    } else {
+      console.log('✅ Products_public table accessible');
+    }
+    
     // Test partner_orders table
     const { data: orders, error: ordersError } = await supabase
       .from('partner_orders')
