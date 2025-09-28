@@ -11,5 +11,5 @@ export const r2Client = new S3Client({
 
 export const R2_CONFIG = {
   bucketName: process.env.R2_BUCKET_NAME!,
-  publicUrl: process.env.NEXT_PUBLIC_R2_PUBLIC_URL!,
+  publicUrl: process.env.NEXT_PUBLIC_R2_PUBLIC_URL || 'https://pub-52df54499f9f4836a88ab79b2ff9f8cb.r2.dev',
 };
