@@ -389,7 +389,7 @@ export default function ProductsAdmin() {
             <p className="text-sm text-neutral-800 font-semibold">Completează informațiile pentru un produs nou</p>
           </div>
 
-          <form onSubmit={addProduct} className="space-y-6" data-testid="add-product-form">
+          <form onSubmit={handleSubmit} className="space-y-6" data-testid="add-product-form">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-bold text-neutral-900 mb-2">
