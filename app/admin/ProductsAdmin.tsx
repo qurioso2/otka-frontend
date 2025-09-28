@@ -49,17 +49,48 @@ export default function ProductsAdmin() {
     loadProducts();
   }, []);
 
+  const uploadImages = async (files: FileList): Promise<string[]> => {
+    const uploadedUrls: string[] = [];
+    
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (!res.ok) throw new Error(`Failed to upload ${file.name}`);
+      
+      const data = await res.json();
+      uploadedUrls.push(data.url);
+    }
+    
+    return uploadedUrls;
+  };
+
   const addProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     
     try {
+      let galleryUrls = [...newProduct.gallery];
+      
+      // Upload new images if any
+      if (imageFiles && imageFiles.length > 0) {
+        const uploadedUrls = await uploadImages(imageFiles);
+        galleryUrls = [...galleryUrls, ...uploadedUrls];
+      }
+
       const productData = {
         ...newProduct,
         price_public_ttc: parseFloat(newProduct.price_public_ttc) || 0,
+        price_original: parseFloat(newProduct.price_original) || null,
         price_partner_net: parseFloat(newProduct.price_partner_net) || 0,
         stock_qty: parseInt(newProduct.stock_qty) || 0,
-        gallery: newProduct.gallery ? [newProduct.gallery] : [],
+        gallery: galleryUrls,
         slug: newProduct.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
       };
 
@@ -74,9 +105,10 @@ export default function ProductsAdmin() {
 
       toast.success('Produs adăugat cu succes!');
       setNewProduct({
-        sku: '', name: '', price_public_ttc: '', price_partner_net: '',
-        stock_qty: '', description: '', gallery: ''
+        sku: '', name: '', price_public_ttc: '', price_original: '', price_partner_net: '',
+        stock_qty: '', description: '', gallery: []
       });
+      setImageFiles(null);
       await loadProducts();
       setActiveView('list');
     } catch (error: any) {
