@@ -13,7 +13,7 @@ const tabs = [
   { id: 'overview', name: 'Prezentare Generală', icon: '📊' },
   { id: 'products', name: 'Produse', icon: '📦' },
   { id: 'users', name: 'Utilizatori & Parteneri', icon: '👥' },
-  { id: 'resources', name: 'Resurse Parteneri', icon: '📚' },
+  // { id: 'resources', name: 'Resurse Parteneri', icon: '📚' }, // Temporarily disabled
   { id: 'clients', name: 'Clienți & Comenzi', icon: '🛒' },
   { id: 'orders', name: 'Comenzi Parteneri', icon: '📋' },
   { id: 'commissions', name: 'Comisioane', icon: '💰' },
