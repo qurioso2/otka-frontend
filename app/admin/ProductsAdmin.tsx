@@ -113,30 +113,30 @@ export default function ProductsAdmin() {
       <div className="flex space-x-4 border-b border-gray-200">
         <button
           onClick={() => setActiveView('list')}
-          className={`pb-2 px-1 text-sm font-medium border-b-2 transition-colors ${
+          className={`pb-2 px-3 text-sm font-bold border-b-2 transition-colors ${
             activeView === 'list'
-              ? 'border-blue-500 text-blue-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? 'border-blue-500 text-blue-700'
+              : 'border-transparent text-gray-700 hover:text-gray-900'
           }`}
         >
           📋 Lista Produse ({products.length})
         </button>
         <button
           onClick={() => setActiveView('add')}
-          className={`pb-2 px-1 text-sm font-medium border-b-2 transition-colors ${
+          className={`pb-2 px-3 text-sm font-bold border-b-2 transition-colors ${
             activeView === 'add'
-              ? 'border-blue-500 text-blue-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? 'border-blue-500 text-blue-700'
+              : 'border-transparent text-gray-700 hover:text-gray-900'
           }`}
         >
           ➕ Adaugă Produs
         </button>
         <button
           onClick={() => setActiveView('import')}
-          className={`pb-2 px-1 text-sm font-medium border-b-2 transition-colors ${
+          className={`pb-2 px-3 text-sm font-bold border-b-2 transition-colors ${
             activeView === 'import'
-              ? 'border-blue-500 text-blue-600'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? 'border-blue-500 text-blue-700'
+              : 'border-transparent text-gray-700 hover:text-gray-900'
           }`}
         >
           📁 Import CSV
