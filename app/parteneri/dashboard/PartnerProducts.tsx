@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import ProductImage from '../../ui/ProductImage';
 
 type Product = {
   id: number;
@@ -60,14 +61,15 @@ export default function PartnerProducts({ initialProducts }: { initialProducts: 
           </thead>
           <tbody>
             {filtered.map(p => {
-              const firstImg = Array.isArray(p.gallery) && typeof p.gallery[0] === 'string' ? (p.gallery[0] as string) : '/vercel.svg';
+              const firstImg = Array.isArray(p.gallery) && typeof p.gallery[0] === 'string' ? (p.gallery[0] as string) : '/images/product-placeholder.jpg';
               return (
                 <tr key={p.id} className="border-t border-neutral-200">
                   <td className="px-4 py-3 font-mono text-xs text-neutral-600">{p.sku}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={firstImg} alt={p.name} className="h-10 w-14 rounded object-cover bg-neutral-100" />
+                      <div className="h-10 w-14 rounded overflow-hidden bg-neutral-100">
+                        <ProductImage src={firstImg} alt={p.name} className="h-full w-full object-cover" />
+                      </div>
                       <div className="text-neutral-900">{p.name}</div>
                     </div>
                   </td>

@@ -6,24 +6,33 @@ type Client = { id: number; email?: string|null; name?: string|null; company?: s
 
 type Order = { id: number; client_id: number; partner_email: string; total_net: number; total_vat: number; total_gross: number; status: string; note?: string|null; created_at: string };
 
+type UserRow = { email: string; role: 'visitor'|'partner'|'admin'; partner_status: 'pending'|'active'|'suspended'|null; company_name?: string|null };
+
 export default function ClientsAdmin() {
   const [clients, setClients] = useState<Client[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [partners, setPartners] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ email: '', name: '', company: '' });
+  const [form, setForm] = useState({ email: '', name: '', company: '', partner_email: '' });
   const [orderForm, setOrderForm] = useState({ client_id: 0, total_net: '', total_vat: '0', total_gross: '', status: 'completed', note: '' });
 
   const load = async () => {
     setLoading(true);
     try {
-      const [c, o] = await Promise.all([
+      const [c, o, u] = await Promise.all([
         fetch('/api/admin/clients/list').then(r=>r.json()),
-        fetch('/api/admin/orders/list').then(r=>r.json())
+        fetch('/api/admin/orders/list').then(r=>r.json()),
+        fetch('/api/admin/users/list').then(r=>r.json()),
       ]);
       if (c.error) throw new Error(c.error);
       if (o.error) throw new Error(o.error);
+      if (u.error) throw new Error(u.error);
       setClients(c.clients || []);
       setOrders(o.orders || []);
+      const partnerRows = (u.users || []).filter((x: UserRow) => x.role === 'partner');
+      setPartners(partnerRows);
+      // Setează implicit primul partener dacă există
+      if (partnerRows.length && !form.partner_email) setForm(prev => ({ ...prev, partner_email: partnerRows[0].email }));
     } catch (e:any) { toast.error(e.message); }
     finally { setLoading(false); }
   };
@@ -32,11 +41,12 @@ export default function ClientsAdmin() {
 
   const addClient = async () => {
     try {
+      if (!form.partner_email) throw new Error('Selectează partenerul cu care se asociază clientul');
       const res = await fetch('/api/admin/clients/create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Create failed');
       toast.success('Client creat');
-      setForm({ email:'', name:'', company:'' });
+      setForm({ email:'', name:'', company:'', partner_email: partners[0]?.email || '' });
       load();
     } catch (e:any) { toast.error(e.message); }
   };
@@ -91,6 +101,20 @@ export default function ClientsAdmin() {
                 onChange={e=>setForm({...form, company:e.target.value})} 
                 className="w-full rounded-xl border-2 border-gray-400 px-4 py-2 text-gray-900 font-medium focus:border-blue-500 focus:ring-2 focus:ring-blue-200" 
               />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-800 mb-1">Asociere cu Partener</label>
+              <select 
+                value={form.partner_email}
+                onChange={(e)=>setForm({...form, partner_email:e.target.value})}
+                className="w-full rounded-xl border-2 border-gray-400 px-4 py-2 text-gray-900 font-bold focus:border-blue-500"
+              >
+                <option value="">Selectează partener...</option>
+                {partners.map(p => (
+                  <option key={p.email} value={p.email}>{p.company_name ? `${p.company_name} — ${p.email}` : p.email}</option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-600 mt-1">Clientul va fi asociat cu partenerul selectat. Comisioanele viitoare se calculează automat.</p>
             </div>
             <button 
               onClick={addClient} 
@@ -253,7 +277,6 @@ export default function ClientsAdmin() {
               ))}
             </tbody>
           </table>
-          
           {orders.length === 0 && (
             <div className="text-center py-8">
               <p className="text-gray-700 font-bold">Nu există comenzi înregistrate</p>
