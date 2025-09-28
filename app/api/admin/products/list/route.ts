@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSupabase } from '../../auth/server';
+import { getServerSupabase } from '../../auth/server.tsx';
 
 export async function GET(request: NextRequest) {
   try {
