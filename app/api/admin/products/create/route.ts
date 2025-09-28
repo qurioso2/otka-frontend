@@ -38,9 +38,19 @@ export async function POST(request: NextRequest) {
     } = body;
 
     // Validation
-    if (!sku || !name || !price_public_ttc) {
+    if (!sku || !name || price_public_ttc === undefined || price_public_ttc === '') {
       return NextResponse.json({ 
-        error: 'Missing required fields: sku, name, price_public_ttc' 
+        error: 'Missing required fields: sku, name, price_public_ttc',
+        received: { sku: !!sku, name: !!name, price_public_ttc: price_public_ttc }
+      }, { status: 400 });
+    }
+
+    // Validate numeric fields
+    const parsedPrice = parseFloat(price_public_ttc);
+    if (isNaN(parsedPrice) || parsedPrice < 0) {
+      return NextResponse.json({ 
+        error: 'Invalid price_public_ttc value',
+        received: price_public_ttc 
       }, { status: 400 });
     }
 
