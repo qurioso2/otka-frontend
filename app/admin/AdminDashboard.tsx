@@ -6,7 +6,7 @@ import UsersAdmin from './UsersAdmin';
 import ClientsAdmin from './ClientsAdmin';
 import CommissionSummary from './CommissionSummary';
 import OrdersAdmin from './OrdersAdmin';
-import ResourcesAdmin from './ResourcesAdmin';
+// import ResourcesAdmin from './ResourcesAdmin'; // Temporarily disabled
 import WorkflowExplainer from './WorkflowExplainer';
 
 const tabs = [
