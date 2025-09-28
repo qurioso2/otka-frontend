@@ -1,94 +1,150 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #111111;
-}
+/* OTKA Design System - Base Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    @apply text-otka-gray-800 bg-otka-gray-50;
+    font-feature-settings: 'cv02','cv03','cv04','cv11';
   }
 }
 
-html { scroll-behavior: smooth; }
-
-/* Gradient background – mai accentuat pentru mai mult contrast */
-.gradient-bg {
-  background:
-    radial-gradient(1400px 900px at 15% -15%, rgba(234, 243, 255, 0.6) 0%, transparent 40%),
-    radial-gradient(1400px 900px at 85% -25%, rgba(243, 234, 255, 0.6) 0%, transparent 45%),
-    radial-gradient(800px 600px at 50% 100%, rgba(250, 245, 255, 0.3) 0%, transparent 60%),
-    linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%);
+@layer components {
+  /* OTKA Button System - Consistent across app */
+  .otka-btn {
+    @apply inline-flex items-center justify-center font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .otka-btn-primary {
+    @apply otka-btn bg-otka-blue-600 text-white hover:bg-otka-blue-700 focus:ring-otka-blue-500 shadow-sm;
+  }
+  
+  .otka-btn-secondary {
+    @apply otka-btn bg-otka-gray-200 text-otka-gray-800 hover:bg-otka-gray-300 focus:ring-otka-gray-500;
+  }
+  
+  .otka-btn-success {
+    @apply otka-btn bg-otka-green-600 text-white hover:bg-otka-green-700 focus:ring-otka-green-500 shadow-sm;
+  }
+  
+  .otka-btn-outline {
+    @apply otka-btn border-2 border-otka-gray-400 text-otka-gray-700 hover:bg-otka-gray-100 focus:ring-otka-gray-500;
+  }
+  
+  .otka-btn-sm {
+    @apply px-3 py-1.5 text-sm rounded-lg;
+  }
+  
+  .otka-btn-md {
+    @apply px-4 py-2 text-sm rounded-xl;
+  }
+  
+  .otka-btn-lg {
+    @apply px-6 py-3 text-base rounded-xl;
+  }
+  
+  /* OTKA Input System */
+  .otka-input {
+    @apply w-full border-2 border-otka-gray-300 rounded-xl px-4 py-2 text-otka-gray-900 font-medium placeholder-otka-gray-400 focus:border-otka-blue-500 focus:ring-2 focus:ring-otka-blue-200 transition-colors;
+  }
+  
+  .otka-select {
+    @apply w-full border-2 border-otka-gray-300 rounded-xl px-4 py-2 text-otka-gray-900 font-semibold focus:border-otka-blue-500 focus:ring-2 focus:ring-otka-blue-200 transition-colors;
+  }
+  
+  /* OTKA Card System */
+  .otka-card {
+    @apply bg-white border-2 border-otka-gray-300 rounded-2xl shadow-sm;
+  }
+  
+  .otka-card-header {
+    @apply p-6 border-b-2 border-otka-gray-200;
+  }
+  
+  .otka-card-body {
+    @apply p-6;
+  }
+  
+  /* OTKA Typography */
+  .otka-heading-1 {
+    @apply text-3xl font-bold text-otka-gray-900;
+  }
+  
+  .otka-heading-2 {
+    @apply text-2xl font-bold text-otka-gray-900;
+  }
+  
+  .otka-heading-3 {
+    @apply text-xl font-bold text-otka-gray-900;
+  }
+  
+  .otka-text {
+    @apply text-otka-gray-700 font-medium;
+  }
+  
+  .otka-text-sm {
+    @apply text-sm text-otka-gray-600 font-medium;
+  }
+  
+  .otka-text-bold {
+    @apply text-otka-gray-800 font-bold;
+  }
+  
+  /* OTKA Table System */
+  .otka-table {
+    @apply min-w-full border-2 border-otka-gray-300 rounded-xl overflow-hidden;
+  }
+  
+  .otka-table-header {
+    @apply bg-otka-gray-100 border-b-2 border-otka-gray-300;
+  }
+  
+  .otka-table-cell {
+    @apply px-4 py-3 text-sm font-semibold text-otka-gray-800;
+  }
+  
+  .otka-table-header-cell {
+    @apply px-4 py-3 text-sm font-bold text-otka-gray-900 uppercase tracking-wider;
+  }
+  
+  /* OTKA Status Badges */
+  .otka-badge {
+    @apply inline-flex px-2 py-1 text-xs font-bold rounded-full;
+  }
+  
+  .otka-badge-success {
+    @apply otka-badge bg-otka-green-100 text-otka-green-800;
+  }
+  
+  .otka-badge-warning {
+    @apply otka-badge bg-yellow-100 text-yellow-800;
+  }
+  
+  .otka-badge-error {
+    @apply otka-badge bg-red-100 text-red-800;
+  }
+  
+  .otka-badge-info {
+    @apply otka-badge bg-otka-blue-100 text-otka-blue-800;
+  }
 }
 
-body { color: var(--foreground); }
-
-.container { max-width: 72rem; margin: 0 auto; }
-
-* { transition: color .2s ease, background-color .2s ease, box-shadow .2s ease, opacity .2s ease, transform .2s ease; }
-
-/* Îmbunătățiri pentru contrast și citibilitate */
-.card-shadow {
-  box-shadow: 
-    0 1px 3px 0 rgba(0, 0, 0, 0.1),
-    0 1px 2px -1px rgba(0, 0, 0, 0.1);
-}
-
-.card-shadow:hover {
-  box-shadow: 
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -4px rgba(0, 0, 0, 0.1);
-}
-
-/* Text contrast îmbunătățit */
-.text-contrast {
-  color: #1f2937;
-  font-weight: 500;
-}
-
-/* Button hover effects îmbunătățite */
-.btn-primary {
-  background: linear-gradient(135deg, #000000 0%, #1f2937 100%);
-  transition: all 0.2s ease;
-}
-
-.btn-primary:hover {
-  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-  transform: translateY(-1px);
-}
-
-/* Îmbunătățiri pentru input fields - contrast mai bun */
-input[type="text"], 
-input[type="email"], 
-input[type="password"], 
-input[type="number"], 
-input[type="tel"], 
-input[type="url"], 
-select, 
-textarea {
-  color: #1f2937 !important; /* Text foarte închis pentru contrast maxim */
-  background-color: #ffffff !important;
-  border: 1px solid #d1d5db !important;
-  font-weight: 500;
-}
-
-input[type="text"]:focus, 
-input[type="email"]:focus, 
-input[type="password"]:focus, 
-input[type="number"]:focus, 
-input[type="tel"]:focus, 
-input[type="url"]:focus, 
-select:focus, 
-textarea:focus {
-  color: #111827 !important; /* Și mai închis la focus */
-  border-color: #000000 !important;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
-}
-
-input::placeholder, 
-textarea::placeholder {
-  color: #6b7280 !important; /* Placeholder contrast îmbunătățit */
-  opacity: 1;
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }
