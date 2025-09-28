@@ -52,7 +52,7 @@ export default async function Home() {
                 </div>
               )}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={heroUrl || "/images/product-placeholder.jpg"} alt="Amenajare interioară" className="w-full h-auto rounded-2xl border border-neutral-200" />
+              <img src={`${heroUrl || "/images/product-placeholder.jpg"}?v=${Date.now()}`} alt="Amenajare interioară" className="w-full h-auto rounded-2xl border border-neutral-200" />
             </div>
           </div>
         </div>
