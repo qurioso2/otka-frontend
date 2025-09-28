@@ -79,20 +79,11 @@ export default function ProductsAdmin() {
     try {
       let galleryUrls = [...newProduct.gallery];
       
-      // Upload new images if any
-      if (imageFiles && imageFiles.length > 0) {
-        const uploadedUrls = await uploadImages(imageFiles);
-        galleryUrls = [...galleryUrls, ...uploadedUrls];
-      }
-
+      // Simplified - test with minimal fields first
       const productData = {
         sku: newProduct.sku,
         name: newProduct.name,
-        price_public_ttc: parseFloat(newProduct.price_public_ttc) || 0,
-        price_partner_net: parseFloat(newProduct.price_partner_net) || 0,
-        stock_qty: parseInt(newProduct.stock_qty) || 0,
-        gallery: galleryUrls,
-        slug: newProduct.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+        price_public_ttc: newProduct.price_public_ttc
       };
 
       const res = await fetch('/api/admin/products/create', {
