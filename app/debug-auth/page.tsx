@@ -149,6 +149,50 @@ export default async function DebugAuth() {
         </div>
       )}
 
+      {/* Admin Logic Test - EXACT replica of admin/page.tsx logic */}
+      {authInfo.isAuthenticated && (
+        <div className="mb-6 p-6 bg-white border-2 border-orange-200 rounded-xl">
+          <h2 className="text-xl font-semibold mb-4">🧪 Admin Page Logic Test</h2>
+          <p className="text-sm text-gray-600 mb-4">This tests the EXACT same logic used in /admin page:</p>
+          
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <span className="font-medium">Query:</span>
+              <span className="text-xs text-gray-600 font-mono">{adminLogicTest.query}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium">Profile Found:</span>
+              <span className={adminLogicTest.profile ? 'text-green-600' : 'text-red-600'}>
+                {adminLogicTest.profile ? '✅ Yes' : '❌ No'}
+              </span>
+            </div>
+            {adminLogicTest.profile && (
+              <div className="flex justify-between">
+                <span className="font-medium">Role from Query:</span>
+                <span className="font-bold">{adminLogicTest.profile.role}</span>
+              </div>
+            )}
+            <div className="flex justify-between">
+              <span className="font-medium">isAdmin Result:</span>
+              <span className={adminLogicTest.isAdmin ? 'text-green-600' : 'text-red-600'}>
+                {adminLogicTest.isAdmin ? '✅ True' : '❌ False'}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium">Admin Page Access:</span>
+              <span className={adminLogicTest.adminPageWouldPass ? 'text-green-600' : 'text-red-600'}>
+                {adminLogicTest.adminPageWouldPass ? '✅ Would Allow' : '❌ Would Deny'}
+              </span>
+            </div>
+            {adminLogicTest.error && (
+              <div className="mt-2 p-2 bg-red-50 rounded">
+                <span className="text-red-700">Query Error: {adminLogicTest.error}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Admin Users Information */}
       <div className="mb-6 p-6 bg-white border-2 border-gray-200 rounded-xl">
         <h2 className="text-xl font-semibold mb-4">👑 Admin Users in Database</h2>
