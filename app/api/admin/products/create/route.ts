@@ -52,7 +52,6 @@ export async function POST(request: NextRequest) {
         name,
         slug: slug || name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
         price_public_ttc: parseFloat(price_public_ttc),
-        price_original: price_original ? parseFloat(price_original) : null,
         price_partner_net: parseFloat(price_partner_net) || 0,
         stock_qty: parseInt(stock_qty) || 0,
         description,
