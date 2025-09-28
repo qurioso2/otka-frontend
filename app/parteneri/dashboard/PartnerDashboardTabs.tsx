@@ -7,6 +7,7 @@ import NewOrder from './NewOrder';
 import OrdersList from './OrdersList';
 import PartnerCommissions from './PartnerCommissions';
 import ContractCard from './ContractCard';
+import DraftsList from './DraftsList';
 
 export default function PartnerDashboardTabs({
   isActivePartner,
@@ -18,10 +19,7 @@ export default function PartnerDashboardTabs({
   const [tab, setTab] = useState('resources');
 
   const TabButton = ({ id, label }: { id: string; label: string }) => (
-    <button
-      onClick={() => setTab(id)}
-      className={`px-4 py-2 text-sm font-semibold rounded-full border ${tab===id? 'bg-neutral-900 text-white border-neutral-900' : 'border-neutral-300 text-neutral-800 hover:bg-neutral-50'}`}
-    >{label}</button>
+    <button onClick={() => setTab(id)} className={`px-4 py-2 text-sm font-semibold rounded-full border ${tab===id? 'bg-neutral-900 text-white border-neutral-900' : 'border-neutral-300 text-neutral-800 hover:bg-neutral-50'}`}>{label}</button>
   );
 
   return (
@@ -30,6 +28,7 @@ export default function PartnerDashboardTabs({
         <TabButton id="resources" label="Liste de preț & cataloage" />
         <TabButton id="stock" label="Produse în stoc" />
         <TabButton id="new-order" label="Comandă nouă" />
+        <TabButton id="drafts" label="Drafturi" />
         <TabButton id="orders" label="Comenzile mele" />
         <TabButton id="commissions" label="Situație comisioane" />
         <TabButton id="contract" label="Contract comision" />
@@ -39,6 +38,7 @@ export default function PartnerDashboardTabs({
       {tab === 'resources' && <PartnerResources />}
       {tab === 'stock' && <PartnerProducts initialProducts={initialProducts} />}
       {tab === 'new-order' && isActivePartner && agreement && <NewOrder />}
+      {tab === 'drafts' && <DraftsList />}
       {tab === 'orders' && <OrdersList />}
       {tab === 'commissions' && <PartnerCommissions />}
       {tab === 'contract' && <ContractCard />}
