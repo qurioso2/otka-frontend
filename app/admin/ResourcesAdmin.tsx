@@ -132,16 +132,16 @@ export default function ResourcesAdmin() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="otka-card">
-        <div className="otka-card-header">
+      <div className="bg-white border-2 border-gray-300 rounded-2xl shadow-sm">
+        <div className="p-6 border-b-2 border-gray-200">
           <div className="flex justify-between items-start">
             <div>
-              <h2 className="otka-heading-2">📚 Resurse pentru Parteneri</h2>
-              <p className="mt-1 otka-text">Gestionează cataloagele, listele de prețuri și materialele pentru parteneri</p>
+              <h2 className="text-2xl font-bold text-gray-900">📚 Resurse pentru Parteneri</h2>
+              <p className="mt-1 text-gray-700 font-medium">Gestionează cataloagele, listele de prețuri și materialele pentru parteneri</p>
             </div>
             <button
               onClick={() => setShowAddForm(!showAddForm)}
-              className="otka-btn otka-btn-primary otka-btn-md"
+              className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 font-semibold transition"
             >
               {showAddForm ? '✕ Anulează' : '➕ Adaugă Resursă'}
             </button>
