@@ -294,10 +294,18 @@ export default function ProductsAdmin() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <button className="text-blue-700 hover:text-blue-900 mr-3 font-bold" data-testid={`product-edit-${product.id}`}>
+                      <button 
+                        onClick={() => handleEditProduct(product)}
+                        className="text-blue-700 hover:text-blue-900 mr-3 font-bold" 
+                        data-testid={`product-edit-${product.id}`}
+                      >
                         ✏️ Edit
                       </button>
-                      <button className="text-red-700 hover:text-red-900 font-bold" data-testid={`product-delete-${product.id}`}>
+                      <button 
+                        onClick={() => handleDeleteProduct(product.id)}
+                        className="text-red-700 hover:text-red-900 font-bold" 
+                        data-testid={`product-delete-${product.id}`}
+                      >
                         🗑️ Șterge
                       </button>
                     </td>
