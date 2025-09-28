@@ -30,9 +30,11 @@ export async function POST(request: NextRequest) {
       name,
       slug,
       price_public_ttc,
+      price_original,
       price_partner_net,
       stock_qty,
-      gallery
+      gallery,
+      description
     } = body;
 
     // Validation
