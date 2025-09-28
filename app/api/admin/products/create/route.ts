@@ -64,7 +64,6 @@ export async function POST(request: NextRequest) {
         price_public_ttc: parseFloat(price_public_ttc),
         price_partner_net: parseFloat(price_partner_net) || 0,
         stock_qty: parseInt(stock_qty) || 0,
-        description,
         gallery: Array.isArray(gallery) ? gallery : (gallery ? [gallery] : [])
       }])
       .select()
