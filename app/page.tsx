@@ -1,7 +1,5 @@
 import { supabase } from "../lib/supabaseClient";
-import Link from "next/link";
-import AddToCartButton from "./ui/AddToCartButton";
-import ProductImage from "./ui/ProductImage";
+import ProductsInfinite from "./ui/ProductsInfinite";
 import { headers } from 'next/headers';
 
 interface ProductPublic {
