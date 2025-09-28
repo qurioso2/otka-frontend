@@ -125,46 +125,46 @@ function OverviewTab() {
       </div>
 
       {/* Quick Actions */}
-      <div className="lg:col-span-2 xl:col-span-3 bg-white rounded-xl border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Acțiuni Rapide</h3>
+      <div className="lg:col-span-2 xl:col-span-3 bg-white rounded-xl border border-gray-300 shadow-sm p-6">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">Acțiuni Rapide</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <button 
-            onClick={() => document.querySelector('[data-tab="products"]')?.click()}
-            className="p-4 border border-dashed border-gray-300 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors"
+            onClick={() => setActiveTab('products')}
+            className="p-4 border-2 border-gray-400 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
           >
             <div className="text-center">
               <div className="text-2xl mb-2">📦</div>
-              <div className="text-sm font-medium text-gray-700">Adaugă Produs</div>
+              <div className="text-sm font-semibold text-gray-800">Adaugă Produs</div>
             </div>
           </button>
           
           <button 
-            onClick={() => document.querySelector('[data-tab="users"]')?.click()}
-            className="p-4 border border-dashed border-gray-300 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors"
+            onClick={() => setActiveTab('users')}
+            className="p-4 border-2 border-gray-400 rounded-lg hover:border-green-500 hover:bg-green-50 transition-colors"
           >
             <div className="text-center">
               <div className="text-2xl mb-2">👥</div>
-              <div className="text-sm font-medium text-gray-700">Invită Partener</div>
+              <div className="text-sm font-semibold text-gray-800">Invită Partener</div>
             </div>
           </button>
           
           <button 
-            onClick={() => document.querySelector('[data-tab="clients"]')?.click()}
-            className="p-4 border border-dashed border-gray-300 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors"
+            onClick={() => setActiveTab('clients')}
+            className="p-4 border-2 border-gray-400 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-colors"
           >
             <div className="text-center">
               <div className="text-2xl mb-2">🛒</div>
-              <div className="text-sm font-medium text-gray-700">Adaugă Comandă</div>
+              <div className="text-sm font-semibold text-gray-800">Adaugă Comandă</div>
             </div>
           </button>
           
           <button 
-            onClick={() => document.querySelector('[data-tab="workflow"]')?.click()}
-            className="p-4 border border-dashed border-gray-300 rounded-lg hover:border-yellow-300 hover:bg-yellow-50 transition-colors"
+            onClick={() => setActiveTab('workflow')}
+            className="p-4 border-2 border-gray-400 rounded-lg hover:border-yellow-500 hover:bg-yellow-50 transition-colors"
           >
             <div className="text-center">
               <div className="text-2xl mb-2">❓</div>
-              <div className="text-sm font-medium text-gray-700">Vezi Workflow</div>
+              <div className="text-sm font-semibold text-gray-800">Vezi Workflow</div>
             </div>
           </button>
         </div>
