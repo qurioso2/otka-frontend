@@ -465,7 +465,7 @@ export default function ProductsAdmin() {
                 disabled={loading}
                 data-testid="submit-add-product"
               >
-                {loading ? 'Se salvează...' : (editingProduct ? 'Actualizează Produs' : 'Salvează Produs')}
+                {loading ? 'Se salvează...' : 'Salvează Produs'}
               </button>
             </div>
           </form>
