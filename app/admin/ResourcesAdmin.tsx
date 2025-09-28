@@ -28,8 +28,11 @@ export default function ResourcesAdmin() {
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState('');
   const [fileType, setFileType] = useState<string>('');
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editDesc, setEditDesc] = useState('');
+  const [editType, setEditType] = useState<string>('price_list');
 
-  // Upload form state
   const [manufacturer, setManufacturer] = useState('');
   const [title, setTitle] = useState('');
   const [type, setType] = useState<string>('price_list');
@@ -66,40 +69,23 @@ export default function ResourcesAdmin() {
 
     try {
       setLoading(true);
-      // 1) Upload către R2
       const fd = new FormData();
       fd.append('file', file);
       const up = await fetch('/api/upload', { method: 'POST', body: fd });
       const upJson = await up.json();
       if (!up.ok) throw new Error(upJson.error || 'Upload a eșuat');
 
-      // 2) Creare resursă în Supabase
       const name = `${manufacturer} - ${title}`;
-      const body = {
-        name,
-        description: desc || undefined,
-        file_type: type,
-        file_url: upJson.url,
-        file_size: file.size,
-        mime_type: file.type,
-        visible: true,
-        partner_access: true,
-      };
-      const res = await fetch('/api/admin/resources/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
+      const body = { name, description: desc || undefined, file_type: type, file_url: upJson.url, file_size: file.size, mime_type: file.type, visible: true, partner_access: true };
+      const res = await fetch('/api/admin/resources/create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Salvare a eșuat');
       toast.success('Resursă adăugată');
-      // Reset
       setManufacturer(''); setTitle(''); setDesc(''); setType('price_list'); setFile(null);
       (document.getElementById('res-file') as HTMLInputElement | null)?.value && ((document.getElementById('res-file') as HTMLInputElement).value = '');
       load();
-    } catch (e: any) {
-      toast.error(e.message);
-    } finally { setLoading(false); }
+    } catch (e: any) { toast.error(e.message); }
+    finally { setLoading(false); }
   };
 
   const update = async (id: string, patch: Partial<Resource>) => {
@@ -110,6 +96,19 @@ export default function ResourcesAdmin() {
       toast.success('Salvat');
       load();
     } catch (e: any) { toast.error(e.message); }
+  };
+
+  const startEdit = (r: Resource) => {
+    setEditingId(r.id);
+    setEditName(r.name);
+    setEditDesc(r.description || '');
+    setEditType(r.file_type);
+  };
+
+  const saveEdit = async () => {
+    if (!editingId) return;
+    await update(editingId, { name: editName, description: editDesc, file_type: editType });
+    setEditingId(null);
   };
 
   const del = async (id: string) => {
@@ -125,7 +124,6 @@ export default function ResourcesAdmin() {
 
   return (
     <div className="space-y-6" data-testid="resources-admin">
-      {/* Form upload */}
       <div className="rounded-2xl border-2 border-neutral-300 bg-white p-6">
         <h3 className="text-lg font-bold text-neutral-900 mb-4">Încarcă Resursă (R2)</h3>
         <form onSubmit={doUpload} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -139,9 +137,7 @@ export default function ResourcesAdmin() {
           </div>
           <div>
             <label className="block text-sm font-semibold text-neutral-800 mb-1">Tip</label>
-            <select value={type} onChange={(e)=>setType(e.target.value)} className="w-full rounded-xl border-2 border-neutral-300 px-3 py-2 focus:border-blue-500">
-              {TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
-            </select>
+            <select value={type} onChange={(e)=>setType(e.target.value)} className="w-full rounded-xl border-2 border-neutral-300 px-3 py-2 focus:border-blue-500">{TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}</select>
           </div>
           <div>
             <label className="block text-sm font-semibold text-neutral-800 mb-1">Descriere (opțional)</label>
@@ -157,7 +153,6 @@ export default function ResourcesAdmin() {
         </form>
       </div>
 
-      {/* Filters */}
       <div className="flex flex-wrap items-end gap-3">
         <div>
           <label className="block text-xs font-semibold text-neutral-700 mb-1">Caută</label>
@@ -173,7 +168,6 @@ export default function ResourcesAdmin() {
         <button onClick={load} className="rounded-full border-2 border-neutral-300 px-4 py-2 text-sm font-bold hover:bg-neutral-50">Reîncarcă</button>
       </div>
 
-      {/* List */}
       <div className="overflow-x-auto rounded-2xl border border-neutral-200">
         <table className="min-w-full text-sm">
           <thead className="bg-neutral-50">
@@ -190,10 +184,27 @@ export default function ResourcesAdmin() {
             {filtered.map(r => (
               <tr key={r.id} className="border-t border-neutral-200">
                 <td className="px-4 py-3">
-                  <div className="font-semibold text-neutral-900">{r.name}</div>
-                  <div className="text-neutral-500 text-xs">{r.description}</div>
+                  {editingId === r.id ? (
+                    <>
+                      <input value={editName} onChange={(e)=>setEditName(e.target.value)} className="w-full rounded-lg border border-neutral-300 px-2 py-1 mb-1" />
+                      <input value={editDesc} onChange={(e)=>setEditDesc(e.target.value)} className="w-full rounded-lg border border-neutral-300 px-2 py-1" placeholder="Descriere" />
+                    </>
+                  ) : (
+                    <>
+                      <div className="font-semibold text-neutral-900">{r.name}</div>
+                      <div className="text-neutral-500 text-xs">{r.description}</div>
+                    </>
+                  )}
                 </td>
-                <td className="px-4 py-3">{TYPES.find(t=>t.value===r.file_type)?.label || r.file_type}</td>
+                <td className="px-4 py-3">
+                  {editingId === r.id ? (
+                    <select value={editType} onChange={(e)=>setEditType(e.target.value)} className="rounded-lg border border-neutral-300 px-2 py-1">
+                      {TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                    </select>
+                  ) : (
+                    TYPES.find(t=>t.value===r.file_type)?.label || r.file_type
+                  )}
+                </td>
                 <td className="px-4 py-3">
                   <label className="inline-flex items-center gap-2 text-xs">
                     <input type="checkbox" checked={r.visible} onChange={(e)=>update(r.id, { visible: e.target.checked })} /> Vizibil
@@ -204,11 +215,19 @@ export default function ResourcesAdmin() {
                     <input type="checkbox" checked={r.partner_access} onChange={(e)=>update(r.id, { partner_access: e.target.checked })} /> Acces parteneri
                   </label>
                 </td>
-                <td className="px-4 py-3">
-                  <a className="underline text-blue-700" href={r.file_url} target="_blank">Descarcă</a>
-                </td>
-                <td className="px-4 py-3">
-                  <button onClick={()=>del(r.id)} className="text-red-600 hover:text-red-800">Șterge</button>
+                <td className="px-4 py-3"><a className="underline text-blue-700" href={r.file_url} target="_blank">Descarcă</a></td>
+                <td className="px-4 py-3 space-x-2">
+                  {editingId === r.id ? (
+                    <>
+                      <button onClick={saveEdit} className="text-green-700 hover:text-green-900">Salvează</button>
+                      <button onClick={()=>setEditingId(null)} className="text-neutral-600 hover:text-neutral-800">Renunță</button>
+                    </>
+                  ) : (
+                    <>
+                      <button onClick={()=>startEdit(r)} className="text-blue-700 hover:text-blue-900">Editează</button>
+                      <button onClick={()=>del(r.id)} className="text-red-600 hover:text-red-800">Șterge</button>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}

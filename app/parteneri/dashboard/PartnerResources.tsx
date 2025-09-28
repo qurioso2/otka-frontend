@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 
 interface PartnerResource {
   id: string;
-  name: string; // format recomandat: "Apple - Catalog 2025"
+  name: string; // format: "Producător - Titlu"
   description: string;
   file_type: 'price_list'|'catalog'|'images'|'materials'|string;
   file_url: string;
@@ -25,6 +25,7 @@ type Row = {
 export default function PartnerResources() {
   const [resources, setResources] = useState<PartnerResource[]>([]);
   const [loading, setLoading] = useState(true);
+  const [manufacturerFilter, setManufacturerFilter] = useState<string>('');
 
   useEffect(() => { loadResources(); }, []);
 
@@ -52,7 +53,15 @@ export default function PartnerResources() {
       else if (r.file_type === 'materials') row.materials = r.file_url;
       map.set(manufacturer, row);
     }
-    return Array.from(map.values()).sort((a,b)=>a.manufacturer.localeCompare(b.manufacturer));
+    let arr = Array.from(map.values()).sort((a,b)=>a.manufacturer.localeCompare(b.manufacturer));
+    if (manufacturerFilter) arr = arr.filter(r => r.manufacturer === manufacturerFilter);
+    return arr;
+  }, [resources, manufacturerFilter]);
+
+  const manufacturers = useMemo(() => {
+    const set = new Set<string>();
+    resources.forEach(r => set.add(r.name?.split(' - ')[0] || r.name || '—'));
+    return Array.from(set).sort((a,b)=>a.localeCompare(b));
   }, [resources]);
 
   if (loading) {
@@ -71,8 +80,19 @@ export default function PartnerResources() {
   return (
     <div className="rounded-2xl border border-neutral-200 bg-white">
       <div className="p-6 border-b border-neutral-200">
-        <h3 className="font-semibold text-lg text-neutral-900">Resurse Parteneri</h3>
-        <p className="text-sm text-neutral-600 mt-1">Producători, liste de preț, cataloage și materiale (din R2)</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="font-semibold text-lg text-neutral-900">Resurse Parteneri</h3>
+            <p className="text-sm text-neutral-600 mt-1">Producători, liste de preț, cataloage și materiale (din R2)</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <select value={manufacturerFilter} onChange={(e)=>setManufacturerFilter(e.target.value)} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm">
+              <option value="">Toți producătorii</option>
+              {manufacturers.map(m => <option key={m} value={m}>{m}</option>)}
+            </select>
+            <button onClick={()=>{ setManufacturerFilter(''); }} className="rounded-full border border-neutral-300 px-3 py-1.5 text-sm hover:bg-neutral-50">Reset</button>
+          </div>
+        </div>
       </div>
 
       <div className="p-4 overflow-x-auto">

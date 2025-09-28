@@ -20,11 +20,27 @@ export default function OrdersList() {
     })();
   }, []);
 
+  const exportCSV = () => {
+    const header = ['order_number','status','created_at','items_count'];
+    const rows = orders.map((o) => [o.order_number || o.id, o.status, o.created_at, (Array.isArray(o.partner_order_items) ? o.partner_order_items.length : (o.items_count || 0))]);
+    const csv = [header.join(','), ...rows.map(r => r.map(v => typeof v === 'string' && v.includes(',') ? `"${v.replace(/"/g,'""')}"` : v).join(','))].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'comenzile-mele.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="rounded-2xl border border-neutral-200 bg-white">
-      <div className="p-6 border-b border-neutral-200">
-        <h3 className="font-semibold text-lg text-neutral-900">Comenzile Mele</h3>
-        <p className="text-sm text-neutral-600 mt-1">Status, valori și date</p>
+      <div className="p-6 border-b border-neutral-200 flex items-center justify-between">
+        <div>
+          <h3 className="font-semibold text-lg text-neutral-900">Comenzile Mele</h3>
+          <p className="text-sm text-neutral-600 mt-1">Status, valori și date</p>
+        </div>
+        <button onClick={exportCSV} className="rounded-full border border-neutral-300 px-4 py-2 text-sm hover:bg-neutral-50">Export CSV</button>
       </div>
       <div className="p-4 overflow-x-auto">
         <table className="min-w-full text-sm">
