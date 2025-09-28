@@ -33,7 +33,6 @@ export async function POST(request: NextRequest) {
       price_original,
       price_partner_net,
       stock_qty,
-      description,
       gallery
     } = body;
 
