@@ -58,10 +58,25 @@ export default async function PartnerDashboard() {
 
       {isActivePartner && agreement && (
         <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm">
-          <div className="text-emerald-900 font-medium">Contract semnat</div>
-          <div className="mt-1 text-emerald-800">Versiune: {agreement.version} · Data: {agreement.accepted_at ? new Date(agreement.accepted_at as unknown as string).toLocaleDateString('ro-RO') : '-'}</div>
-          {agreement.pdf_url && <a href={agreement.pdf_url} target="_blank" className="underline">Descarcă PDF</a>}
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-emerald-900 font-medium">Contract semnat</div>
+              <div className="mt-1 text-emerald-800">Versiune: {agreement.version} · Data: {agreement.accepted_at ? new Date(agreement.accepted_at as unknown as string).toLocaleDateString('ro-RO') : '-'}</div>
+              {agreement.pdf_url && <a href={agreement.pdf_url} target="_blank" className="underline">Descarcă PDF</a>}
+            </div>
+            <Link 
+              href="/parteneri/orders" 
+              className="bg-emerald-600 text-white px-4 py-2 rounded-full hover:bg-emerald-700 transition text-sm"
+            >
+              Vezi Comenzi
+            </Link>
+          </div>
         </div>
+      )}
+
+      {/* Secțiune pentru Comenzi Noi - doar pentru parteneri activi */}
+      {isActivePartner && agreement && (
+        <NewOrder />
       )}
 
       <div>
