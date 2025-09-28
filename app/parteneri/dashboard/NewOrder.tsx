@@ -125,7 +125,7 @@ export default function NewOrder() {
   };
 
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white">
+    <div id="comandă-nouă" className="rounded-2xl border border-neutral-200 bg-white">
       <div className="p-6 border-b border-neutral-200">
         <div className="flex items-center justify-between">
           <div>
