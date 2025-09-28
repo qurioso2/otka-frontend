@@ -5,6 +5,7 @@ export default async function DebugAuth() {
   
   let authInfo: any = {};
   let usersInfo: any = {};
+  let adminLogicTest: any = {};
   let error: string | null = null;
 
   try {
@@ -29,7 +30,7 @@ export default async function DebugAuth() {
       error: usersError?.message || null
     };
 
-    // If user is authenticated, check their profile
+    // If user is authenticated, check their profile EXACTLY like admin page does
     if (user?.email) {
       const { data: profile, error: profileError } = await supabase
         .from('users')
@@ -40,6 +41,23 @@ export default async function DebugAuth() {
       authInfo.profile = profile;
       authInfo.profileError = profileError?.message || null;
       authInfo.isAdmin = profile?.role === 'admin';
+    }
+
+    // Test the EXACT admin logic from admin/page.tsx
+    if (user) {
+      const { data: adminProfile, error: adminProfileError } = await supabase
+        .from('users')
+        .select('role')
+        .eq('email', user.email!)
+        .maybeSingle();
+      
+      adminLogicTest = {
+        query: `SELECT role FROM users WHERE email = '${user.email}'`,
+        profile: adminProfile,
+        error: adminProfileError?.message || null,
+        isAdmin: adminProfile?.role === 'admin',
+        adminPageWouldPass: !!user && adminProfile?.role === 'admin'
+      };
     }
 
   } catch (e: any) {
