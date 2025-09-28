@@ -85,7 +85,11 @@ export default function ProductsAdmin() {
         galleryUrls = [...galleryUrls, ...uploadedUrls];
       }
 
-      const productData = {
+      // Determine if we're editing or creating
+      const isEditing = editingProduct !== null;
+      const endpoint = isEditing ? '/api/admin/products/update' : '/api/admin/products/create';
+
+      const productData: any = {
         ...newProduct,
         price_public_ttc: parseFloat(newProduct.price_public_ttc) || 0,
         price_original: parseFloat(newProduct.price_original) || null,
@@ -94,10 +98,6 @@ export default function ProductsAdmin() {
         gallery: galleryUrls,
         slug: newProduct.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
       };
-
-      // Determine if we're editing or creating
-      const isEditing = editingProduct !== null;
-      const endpoint = isEditing ? '/api/admin/products/update' : '/api/admin/products/create';
       
       if (isEditing) {
         productData.id = editingProduct.id;
