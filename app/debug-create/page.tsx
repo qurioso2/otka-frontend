@@ -28,7 +28,6 @@ export default function DebugCreate() {
         price_public_ttc: '150.00',
         price_partner_net: '120.00',
         stock_qty: '5',
-        description: 'Produs de test pentru debugging',
         gallery: []
       };
 
