@@ -21,7 +21,6 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
     'use server';
     const newStatus = formData.get('status') as string;
     const admin_notes = formData.get('admin_notes') as string;
-    const supa = await getServerSupabase();
     await fetch(process.env.NEXT_PUBLIC_URL + '/api/admin/partner-orders/update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ order_id: id, status: newStatus, admin_notes }) });
   }
 
@@ -64,21 +63,80 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
             </table>
           </div>
         </div>
-        <div className="rounded-2xl border border-neutral-200 bg-white p-4">
-          <form action={updateStatus} className="space-y-3">
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">Status</label>
-              <select name="status" defaultValue={order.status} className="w-full border border-neutral-300 rounded px-3 py-2">
-                {['draft','submitted','under_review','approved','confirmed_signed','proforma_generated','paid','in_production','shipped','delivered','cancelled'].map(s => (<option key={s} value={s}>{s}</option>))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 mb-1">Note Admin</label>
-              <textarea name="admin_notes" defaultValue={order.admin_notes || ''} rows={5} className="w-full border border-neutral-300 rounded px-3 py-2" />
-            </div>
-            <button className="rounded-full bg-neutral-900 text-white px-5 py-2 text-sm font-bold hover:bg-neutral-800">Salvează</button>
-          </form>
+        <div className="space-y-6">
+          <div className="rounded-2xl border border-neutral-200 bg-white p-4">
+            <form action={updateStatus} className="space-y-3">
+              <div>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">Status</label>
+                <select name="status" defaultValue={order.status} className="w-full border border-neutral-300 rounded px-3 py-2">
+                  {['draft','submitted','under_review','approved','confirmed_signed','proforma_generated','paid','in_production','shipped','delivered','cancelled'].map(s => (<option key={s} value={s}>{s}</option>))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-neutral-700 mb-1">Note Admin</label>
+                <textarea name="admin_notes" defaultValue={order.admin_notes || ''} rows={5} className="w-full border border-neutral-300 rounded px-3 py-2" />
+              </div>
+              <button className="rounded-full bg-neutral-900 text-white px-5 py-2 text-sm font-bold hover:bg-neutral-800">Salvează</button>
+            </form>
+          </div>
+
+          <UploadBlock id={id} label="Încarcă Proformă" patchKey="proforma_url" statusOnUpload="proforma_generated" currentUrl={order.proforma_url} />
+          <PreviewBlock title="Previzualizare Proformă" url={order.proforma_url} />
+          {order.confirmation_document_url && <PreviewBlock title="Confirmare semnată" url={order.confirmation_document_url} />}
         </div>
+      </div>
+    </div>
+  );
+}
+
+'use client';
+import { useState } from 'react';
+
+function UploadBlock({ id, label, patchKey, statusOnUpload, currentUrl }: { id: string; label: string; patchKey: string; statusOnUpload?: string; currentUrl?: string|null }) {
+  const [file, setFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const upload = async () => {
+    if (!file) return;
+    setLoading(true);
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const up = await fetch('/api/upload', { method: 'POST', body: fd });
+      const upJson = await up.json();
+      if (!up.ok) throw new Error(upJson.error || 'Upload error');
+
+      const body: any = { order_id: id };
+      body[patchKey] = upJson.url;
+      if (statusOnUpload) body.status = statusOnUpload;
+
+      const res = await fetch('/api/admin/partner-orders/update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Update failed');
+      window.location.reload();
+    } catch (e:any) { alert(e.message); }
+    finally { setLoading(false); }
+  };
+
+  return (
+    <div className="rounded-2xl border border-neutral-200 bg-white p-4">
+      <div className="font-medium mb-2">{label}</div>
+      {currentUrl && <div className="text-sm mb-2">Fișier existent: <a href={currentUrl} target="_blank" className="underline">Descarcă</a></div>}
+      <div className="flex items-center gap-3">
+        <input type="file" accept="application/pdf" onChange={(e)=>setFile(e.target.files?.[0] || null)} />
+        <button onClick={upload} disabled={!file || loading} className="rounded-full bg-neutral-900 text-white px-5 py-2 text-sm font-bold hover:bg-neutral-800 disabled:opacity-50">{loading ? 'Se încarcă...' : 'Încarcă PDF'}</button>
+      </div>
+    </div>
+  );
+}
+
+function PreviewBlock({ title, url }: { title: string; url?: string|null }) {
+  if (!url) return null;
+  return (
+    <div className="rounded-2xl border border-neutral-200 bg-white">
+      <div className="p-3 border-b font-medium">{title}</div>
+      <div className="h-96">
+        <iframe src={url} className="w-full h-full" title={title} />
       </div>
     </div>
   );

@@ -1,17 +1,32 @@
 import nodemailer from 'nodemailer';
 
-export async function getZohoTransport() {
+export function getMailer() {
   const host = process.env.ZOHO_SMTP_HOST;
   const port = Number(process.env.ZOHO_SMTP_PORT || 465);
   const user = process.env.ZOHO_SMTP_USER;
   const pass = process.env.ZOHO_SMTP_PASS;
-  if (!host || !user || !pass) throw new Error('Zoho SMTP not configured');
-  const secure = port === 465;
-  return nodemailer.createTransport({ host, port, secure, auth: { user, pass } });
-}
+  const from = process.env.ZOHO_FROM_EMAIL || user;
 
-export async function sendZohoMail({ to, subject, html, attachments }: { to: string; subject: string; html: string; attachments?: { filename: string; content: Buffer }[]; }) {
-  const transporter = await getZohoTransport();
-  const from = process.env.ZOHO_FROM_EMAIL || process.env.ZOHO_SMTP_USER!;
-  await transporter.sendMail({ from, to, subject, html, attachments });
+  if (!host || !user || !pass) {
+    return null;
+  }
+
+  const transporter = nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465, // true for 465, false for 587
+    auth: { user, pass },
+  });
+
+  const send = async (to: string, subject: string, html: string) => {
+    try {
+      await transporter.sendMail({ from, to, subject, html });
+      return { ok: true };
+    } catch (e:any) {
+      console.error('Email send error:', e?.message || e);
+      return { ok: false, error: e?.message || 'send failed' };
+    }
+  };
+
+  return { send };
 }
