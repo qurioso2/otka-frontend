@@ -90,12 +90,20 @@ export default async function PartnerOrders() {
           <h1 className="text-2xl font-semibold tracking-tight text-neutral-900">Comenzile Mele</h1>
           <p className="text-neutral-600">Urmăriți statusul comenzilor dvs.</p>
         </div>
-        <Link
-          href="/parteneri/dashboard"
-          className="bg-black text-white px-4 py-2 rounded-full hover:bg-neutral-800 transition"
-        >
-          Comandă Nouă
-        </Link>
+        <div className="flex gap-2">
+          <Link
+            href="/parteneri/dashboard"
+            className="bg-neutral-600 text-white px-4 py-2 rounded-full hover:bg-neutral-700 transition"
+          >
+            Dashboard
+          </Link>
+          <Link
+            href="/parteneri/dashboard#comandă-nouă"
+            className="bg-black text-white px-4 py-2 rounded-full hover:bg-neutral-800 transition"
+          >
+            Comandă Nouă
+          </Link>
+        </div>
       </div>
 
       {error && (
