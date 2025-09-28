@@ -6,14 +6,14 @@ import UsersAdmin from './UsersAdmin';
 import ClientsAdmin from './ClientsAdmin';
 import CommissionSummary from './CommissionSummary';
 import OrdersAdmin from './OrdersAdmin';
-// import ResourcesAdmin from './ResourcesAdmin'; // Temporarily disabled
+import ResourcesAdmin from './ResourcesAdmin';
 import WorkflowExplainer from './WorkflowExplainer';
 
 const tabs = [
   { id: 'overview', name: 'Prezentare Generală', icon: '📊' },
   { id: 'products', name: 'Produse', icon: '📦' },
   { id: 'users', name: 'Utilizatori & Parteneri', icon: '👥' },
-  // { id: 'resources', name: 'Resurse Parteneri', icon: '📚' }, // Temporarily disabled
+  { id: 'resources', name: 'Resurse Parteneri', icon: '📚' },
   { id: 'clients', name: 'Clienți & Comenzi', icon: '🛒' },
   { id: 'orders', name: 'Comenzi Parteneri', icon: '📋' },
   { id: 'commissions', name: 'Comisioane', icon: '💰' },
@@ -32,7 +32,7 @@ export default function AdminDashboard() {
       case 'users':
         return <UsersAdmin />;
       case 'resources':
-        return <div className="text-center py-12"><p className="text-gray-700 font-semibold">Resurse parteneri - în dezvoltare</p></div>;
+        return <ResourcesAdmin />;
       case 'clients':
         return <ClientsAdmin />;
       case 'orders':
@@ -135,47 +135,28 @@ function OverviewTab({ setActiveTab }: { setActiveTab: (tab: string) => void }) 
       <div className="lg:col-span-2 xl:col-span-3 bg-white border-2 border-neutral-500 rounded-2xl shadow-sm p-6">
         <h3 className="text-xl font-extrabold text-neutral-950 mb-6">Acțiuni Rapide</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button 
-            onClick={() => setActiveTab('products')}
-            data-testid="quick-action-products"
-            className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover:border-blue-600 hover:bg-blue-50 transition-all duration-200 group"
-          >
+          <button onClick={() => setActiveTab('products')} data-testid="quick-action-products" className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover:border-blue-600 hover:bg-blue-50 transition-all duration-200 group">
             <div className="text-center">
               <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">📦</div>
               <div className="text-neutral-950 font-extrabold">Gestionare Produse</div>
               <div className="text-sm text-neutral-800 font-semibold">Adaugă și modifică catalog</div>
             </div>
           </button>
-          
-          <button 
-            onClick={() => setActiveTab('users')}
-            data-testid="quick-action-users"
-            className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover:border-green-600 hover:bg-green-50 transition-all duration-200 group"
-          >
+          <button onClick={() => setActiveTab('users')} data-testid="quick-action-users" className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover:border-green-600 hover:bg-green-50 transition-all duration-200 group">
             <div className="text-center">
               <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">👥</div>
               <div className="text-neutral-950 font-extrabold">Gestionare Parteneri</div>
               <div className="text-sm text-neutral-800 font-semibold">Invită și activează</div>
             </div>
           </button>
-          
-          <button 
-            onClick={() => setActiveTab('resources')}
-            data-testid="quick-action-resources"
-            className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover:border-purple-600 hover:bg-purple-50 transition-all duration-200 group"
-          >
+          <button onClick={() => setActiveTab('resources')} data-testid="quick-action-resources" className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover:border-purple-600 hover:bg-purple-50 transition-all duration-200 group">
             <div className="text-center">
               <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">📚</div>
               <div className="text-neutral-950 font-extrabold">Resurse Parteneri</div>
               <div className="text-sm text-neutral-800 font-semibold">Cataloage și materiale</div>
             </div>
           </button>
-          
-          <button 
-            onClick={() => setActiveTab('workflow')}
-            data-testid="quick-action-workflow"
-            className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover-border-yellow-600 hover:bg-yellow-50 transition-all duration-200 group"
-          >
+          <button onClick={() => setActiveTab('workflow')} data-testid="quick-action-workflow" className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover-border-yellow-600 hover:bg-yellow-50 transition-all duration-200 group">
             <div className="text-center">
               <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">❓</div>
               <div className="text-neutral-950 font-extrabold">Ghid Utilizare</div>
