@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 import * as XLSX from 'xlsx';
 
@@ -52,6 +53,8 @@ export default function OrdersAdmin() {
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [filterPartner, setFilterPartner] = useState<string>('all');
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
 
   const loadOrders = async () => {
     setLoading(true);
@@ -68,46 +71,36 @@ export default function OrdersAdmin() {
     }
   };
 
-  useEffect(() => {
-    loadOrders();
-  }, []);
+  useEffect(() => { loadOrders(); }, []);
 
   const updateOrderStatus = async (orderId: string, newStatus: string, adminNotes?: string) => {
     try {
-      const res = await fetch('/api/admin/partner-orders/update', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          order_id: orderId, 
-          status: newStatus,
-          admin_notes: adminNotes
-        })
-      });
-
+      const res = await fetch('/api/admin/partner-orders/update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ order_id: orderId, status: newStatus, admin_notes: adminNotes }) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to update order');
-
       toast.success(`Comandă actualizată la status: ${statusLabels[newStatus as keyof typeof statusLabels]}`);
       loadOrders();
-    } catch (error: any) {
-      toast.error(error.message);
-    }
+    } catch (error: any) { toast.error(error.message); }
+  };
+
+  const inDateRange = (created_at: string) => {
+    const d = new Date(created_at).getTime();
+    const f = fromDate ? new Date(fromDate).getTime() : -Infinity;
+    const t = toDate ? new Date(toDate).getTime() + 24*60*60*1000 : Infinity;
+    return d >= f && d < t;
   };
 
   const filteredOrders = orders.filter(order => {
     const statusMatch = filterStatus === 'all' || order.status === filterStatus;
     const partnerMatch = filterPartner === 'all' || order.partner_email === filterPartner;
-    return statusMatch && partnerMatch;
+    const dateMatch = inDateRange(order.created_at);
+    return statusMatch && partnerMatch && dateMatch;
   });
 
   const uniquePartners = [...new Set(orders.map(o => o.partner_email))];
 
   const toggleSelect = (id: string) => {
-    setSelected(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
-      return next;
-    });
+    setSelected(prev => { const next = new Set(prev); if (next.has(id)) next.delete(id); else next.add(id); return next; });
   };
 
   const bulkUpdate = async (status: string) => {
@@ -117,12 +110,10 @@ export default function OrdersAdmin() {
       toast.success('Status actualizat în bloc');
       setSelected(new Set());
       loadOrders();
-    } catch (e) { /* already toasted */ }
+    } catch (e) {}
   };
 
-  const exportXlsx = () => {
-    window.open('/api/admin/partner-orders/export-xlsx', '_blank');
-  };
+  const exportXlsx = () => { window.open('/api/admin/partner-orders/export-xlsx', '_blank'); };
 
   return (
     <div className="space-y-6">
@@ -139,25 +130,28 @@ export default function OrdersAdmin() {
         </div>
 
         {/* Filters */}
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-          <div>
+        <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
+          <div className="sm:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">Filtrează după status</label>
             <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
               <option value="all">Toate statusurile</option>
               {Object.entries(statusLabels).map(([value, label]) => (<option key={value} value={value}>{label}</option>))}
             </select>
           </div>
-          <div>
+          <div className="sm:col-span-2">
             <label className="block text-sm font-medium text-gray-700 mb-1">Filtrează după partener</label>
             <select value={filterPartner} onChange={(e) => setFilterPartner(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
               <option value="all">Toți partenerii</option>
               {uniquePartners.map(email => (<option key={email} value={email}>{email}</option>))}
             </select>
           </div>
-          <div className="sm:col-span-2 flex items-end gap-2">
-            <button onClick={()=>bulkUpdate('approved')} className="rounded-full bg-green-600 text-white px-4 py-2 text-sm font-bold hover:bg-green-700">Aprobă</button>
-            <button onClick={()=>bulkUpdate('under_review')} className="rounded-full bg-yellow-500 text-white px-4 py-2 text-sm font-bold hover:bg-yellow-600">În verificare</button>
-            <button onClick={()=>bulkUpdate('cancelled')} className="rounded-full bg-red-600 text-white px-4 py-2 text-sm font-bold hover:bg-red-700">Anulează</button>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">De la</label>
+            <input type="date" value={fromDate} onChange={(e)=>setFromDate(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Până la</label>
+            <input type="date" value={toDate} onChange={(e)=>setToDate(e.target.value)} className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
           </div>
         </div>
       </div>
@@ -167,9 +161,7 @@ export default function OrdersAdmin() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3">
-                  <span className="sr-only">Select</span>
-                </th>
+                <th className="px-6 py-3"><span className="sr-only">Select</span></th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comandă</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Partener</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -181,38 +173,24 @@ export default function OrdersAdmin() {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredOrders.map((order) => (
                 <tr key={order.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap align-top">
-                    <input type="checkbox" checked={selected.has(order.id)} onChange={()=>toggleSelect(order.id)} />
-                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap align-top"><input type="checkbox" checked={selected.has(order.id)} onChange={()=>toggleSelect(order.id)} /></td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
-                      <div className="text-sm font-medium text-gray-900">{order.order_number}</div>
+                      <div className="text-sm font-medium text-gray-900"><Link href={`/admin/orders/${order.id}`} className="underline">{order.order_number}</Link></div>
                       <div className="text-sm text-gray-500">{order.items_count} produse</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{order.partner_email}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[order.status as keyof typeof statusColors]}`}>{statusLabels[order.status as keyof typeof statusLabels] || order.status}</span>
-                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap"><div className="text-sm text-gray-900">{order.partner_email}</div></td>
+                  <td className="px-6 py-4 whitespace-nowrap"><span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[order.status as keyof typeof statusColors]}`}>{statusLabels[order.status as keyof typeof statusLabels] || order.status}</span></td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(order.total_gross || 0)}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(order.created_at).toLocaleDateString('ro-RO')}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                    <select value={order.status} onChange={(e) => updateOrderStatus(order.id, e.target.value)} className="text-xs border border-gray-300 rounded px-2 py-1">
-                      {Object.entries(statusLabels).map(([value, label]) => (<option key={value} value={value}>{label}</option>))}
-                    </select>
-                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2"><select value={order.status} onChange={(e) => updateOrderStatus(order.id, e.target.value)} className="text-xs border border-gray-300 rounded px-2 py-1">{Object.entries(statusLabels).map(([value, label]) => (<option key={value} value={value}>{label}</option>))}</select></td>
                 </tr>
               ))}
             </tbody>
           </table>
-
           {filteredOrders.length === 0 && (
-            <div className="text-center py-12">
-              <div className="text-gray-400 text-4xl mb-2">📋</div>
-              <p className="text-gray-500">{orders.length === 0 ? 'Nu există comenzi de la parteneri' : 'Nu există comenzi pentru filtrele selectate'}</p>
-            </div>
+            <div className="text-center py-12"><div className="text-gray-400 text-4xl mb-2">📋</div><p className="text-gray-500">{orders.length === 0 ? 'Nu există comenzi de la parteneri' : 'Nu există comenzi pentru filtrele selectate'}</p></div>
           )}
         </div>
       </div>
