@@ -30,7 +30,7 @@ export default function ProductsAdmin() {
     gallery: [] as string[]
   });
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
-  const [editingProduct, setEditingProduct] = useState<any>(null);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   const loadProducts = async () => {
     setLoading(true);
