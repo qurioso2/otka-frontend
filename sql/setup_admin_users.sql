@@ -1,16 +1,24 @@
--- SETUP UTILIZATORI ADMIN - DIAGNOZA SI CONFIGURARE
+-- SETUP UTILIZATORI ADMIN - DIAGNOZA SI CONFIGURARE (VERSIUNE CORECTATA)
 -- Acest script verifică și configurează utilizatorii admin
 
 -- 1) DIAGNOZA - Verifică utilizatorii existenți
 SELECT 
   'UTILIZATORI EXISTENTI:' as info,
+  id,
   email, 
   role, 
   partner_status,
   company_name,
-  contact_name
+  contact_name,
+  phone
 FROM public.users 
-ORDER BY role DESC, email;
+ORDER BY 
+  CASE role 
+    WHEN 'admin' THEN 1 
+    WHEN 'partner' THEN 2 
+    ELSE 3 
+  END, 
+  email;
 
 -- 2) VERIFICA FUNCTIILE DE AUTENTIFICARE
 SELECT 
