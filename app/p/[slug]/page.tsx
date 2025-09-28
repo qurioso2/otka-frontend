@@ -71,17 +71,7 @@ export default async function ProductPage({ params }: PageProps) {
         </div>
       </div>
 
-      {galleryArr.length > 1 && (
-        <div className="mt-12">
-          <h2 className="text-lg font-medium text-neutral-900">Galerie</h2>
-          <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-3">
-            {galleryArr.slice(1).map((g, i) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img key={i} src={g} alt={`${p.name} ${i+1}`} className="rounded-xl border border-neutral-200 object-cover" />
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Galeria este acum integrată în ProductGallery */}
     </div>
   );
 }
