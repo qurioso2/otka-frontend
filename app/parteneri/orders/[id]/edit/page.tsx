@@ -1,5 +1,6 @@
 import { getServerSupabase } from '../../../auth/server';
 import { redirect } from 'next/navigation';
+import ClientEditor from './ClientEditor';
 
 export default async function EditDraftPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
