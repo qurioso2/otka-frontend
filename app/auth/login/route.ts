@@ -13,5 +13,13 @@ export async function POST(request: Request) {
     url.searchParams.set('error', error.message);
     return NextResponse.redirect(url);
   }
+
+  // Check if user is admin to redirect to admin dashboard
+  const { data: profile } = await supabase.from('users').select('role').eq('email', email).maybeSingle();
+  
+  if (profile?.role === 'admin') {
+    return NextResponse.redirect(new URL('/admin', request.url));
+  }
+  
   return NextResponse.redirect(new URL('/parteneri/dashboard', request.url));
 }
