@@ -390,16 +390,31 @@ export default function ProductsAdmin() {
 
               <div>
                 <label className="block text-sm font-bold text-neutral-900 mb-2">
-                  URL Imagine Principală
+                  Imagini Produs
                 </label>
                 <input
-                  type="url"
-                  value={newProduct.gallery}
-                  onChange={(e) => setNewProduct({...newProduct, gallery: e.target.value})}
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={(e) => setImageFiles(e.target.files)}
                   className="w-full border-2 border-neutral-500 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="https://cdn.otka.ro/images/produs.jpg"
-                  data-testid="field-gallery"
+                  data-testid="field-images"
                 />
+                <p className="text-xs text-neutral-600 mt-1">
+                  Selectează una sau mai multe imagini. Prima imagine va fi imaginea principală.
+                </p>
+                {imageFiles && imageFiles.length > 0 && (
+                  <div className="mt-2">
+                    <p className="text-sm font-medium text-green-700">
+                      {imageFiles.length} imagine(i) selectate:
+                    </p>
+                    <ul className="text-xs text-neutral-600 mt-1">
+                      {Array.from(imageFiles).map((file, i) => (
+                        <li key={i}>• {file.name}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
 
