@@ -326,7 +326,23 @@ export default function ProductsAdmin() {
 
               <div>
                 <label className="block text-sm font-bold text-neutral-900 mb-2">
-                  Preț Public (cu TVA) *
+                  Preț de Listă (tăiat)
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={newProduct.price_original}
+                  onChange={(e) => setNewProduct({...newProduct, price_original: e.target.value})}
+                  className="w-full border-2 border-neutral-500 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="0.00"
+                  data-testid="field-price-original"
+                />
+                <p className="text-xs text-neutral-600 mt-1">Prețul tăiat care va fi afișat pe site (opțional)</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-neutral-900 mb-2">
+                  Preț de Vânzare (cu TVA) *
                 </label>
                 <input
                   type="number"
