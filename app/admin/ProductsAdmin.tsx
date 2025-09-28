@@ -85,11 +85,7 @@ export default function ProductsAdmin() {
         galleryUrls = [...galleryUrls, ...uploadedUrls];
       }
 
-      // Determine if we're editing or creating
-      const isEditing = editingProduct !== null;
-      const endpoint = isEditing ? '/api/admin/products/update' : '/api/admin/products/create';
-
-      const productData: any = {
+      const productData = {
         ...newProduct,
         price_public_ttc: parseFloat(newProduct.price_public_ttc) || 0,
         price_original: parseFloat(newProduct.price_original) || null,
@@ -98,21 +94,17 @@ export default function ProductsAdmin() {
         gallery: galleryUrls,
         slug: newProduct.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
       };
-      
-      if (isEditing) {
-        productData.id = editingProduct.id;
-      }
 
-      const res = await fetch(endpoint, {
+      const res = await fetch('/api/admin/products/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(productData)
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || `Failed to ${isEditing ? 'update' : 'create'} product`);
+      if (!res.ok) throw new Error(data.error || 'Failed to create product');
 
-      toast.success(isEditing ? 'Produs actualizat cu succes!' : 'Produs adăugat cu succes!');
+      toast.success('Produs adăugat cu succes!');
       setNewProduct({
         sku: '', name: '', price_public_ttc: '', price_original: '', price_partner_net: '',
         stock_qty: '', description: '', gallery: []
