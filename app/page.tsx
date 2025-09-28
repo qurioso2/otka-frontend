@@ -91,11 +91,7 @@ export default async function Home() {
 
   return (
     <div>
-      {/* Structured Data pentru SEO */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 
       {/* Hero */}
       <section className="border-b border-neutral-200 bg-white">
@@ -109,17 +105,13 @@ export default async function Home() {
                 Descoperă colecția noastră de mobilier, corpuri de iluminat și obiecte decorative pentru amenajări interioare. Produse de calitate, design modern, prețuri avantajoase.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                <a href="#produse" className="btn-primary">
-                  Descoperă Colecția
-                </a>
-                <a href="/parteneri" className="inline-flex items-center justify-center rounded-full border-2 border-neutral-900 text-neutral-900 px-6 py-2.5 text-sm font-bold hover:bg-neutral-900 hover:text-white transition">
-                  Parteneriat Design
-                </a>
+                <a href="#produse" className="btn-primary">Descoperă Colecția</a>
+                <a href="/parteneri" className="inline-flex items-center justify-center rounded-full border-2 border-neutral-900 text-neutral-900 px-6 py-2.5 text-sm font-bold hover:bg-neutral-900 hover:text-white transition">Parteneriat Design</a>
               </div>
             </div>
             <div className="hidden md:block">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/hero.jpg" alt="Amenajare interioară" className="w-full h-auto rounded-2xl border border-neutral-200 card-shadow" />
+              <img src="/images/product-placeholder.jpg" alt="Amenajare interioară" className="w-full h-auto rounded-2xl border border-neutral-200 card-shadow" />
             </div>
           </div>
         </div>
@@ -127,9 +119,7 @@ export default async function Home() {
 
       {/* Products grid */}
       <section id="produse" className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
-        {error && (
-          <div className="text-red-600">{error.message}</div>
-        )}
+        {error && (<div className="text-red-600">{error.message}</div>)}
 
         {!error && rows.length === 0 && (
           <div className="text-center py-20">
@@ -148,11 +138,7 @@ export default async function Home() {
               <div key={p.id} className="group rounded-2xl border border-neutral-200 overflow-hidden bg-white card-shadow transition-all duration-300">
                 <Link href={`/p/${p.slug}`}>
                   <div className="aspect-[4/3] bg-neutral-50 overflow-hidden">
-                    <ProductImage 
-                      src={img} 
-                      alt={p.name} 
-                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+                    <ProductImage src={img} alt={p.name} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   </div>
                 </Link>
                 <div className="p-5">

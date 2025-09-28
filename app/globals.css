@@ -5,12 +5,8 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* For consistency, we keep a light theme even if user prefers dark mode */
+/* Remove dark override to avoid black backgrounds in dashboards */
 
 body {
   color: var(--foreground);

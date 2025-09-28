@@ -1,26 +1,32 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 interface PartnerResource {
   id: string;
-  name: string;
+  name: string; // format recomandat: "Apple - Catalog 2025"
   description: string;
-  file_type: string;
+  file_type: 'price_list'|'catalog'|'images'|'materials'|string;
   file_url: string;
   file_size?: number;
   mime_type?: string;
   created_at: string;
 }
 
+type Row = {
+  manufacturer: string;
+  price_list?: string;
+  catalog?: string;
+  images?: string;
+  materials?: string;
+};
+
 export default function PartnerResources() {
   const [resources, setResources] = useState<PartnerResource[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadResources();
-  }, []);
+  useEffect(() => { loadResources(); }, []);
 
   const loadResources = async () => {
     setLoading(true);
@@ -32,33 +38,22 @@ export default function PartnerResources() {
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Eroare la încărcare';
       toast.error(msg);
-    } finally {
-      setLoading(false);
+    } finally { setLoading(false); }
+  };
+
+  const rows: Row[] = useMemo(() => {
+    const map = new Map<string, Row>();
+    for (const r of resources) {
+      const manufacturer = r.name?.split(' - ')[0] || r.name || '—';
+      const row = map.get(manufacturer) || { manufacturer };
+      if (r.file_type === 'price_list') row.price_list = r.file_url;
+      else if (r.file_type === 'catalog') row.catalog = r.file_url;
+      else if (r.file_type === 'images') row.images = r.file_url;
+      else if (r.file_type === 'materials') row.materials = r.file_url;
+      map.set(manufacturer, row);
     }
-  };
-
-  const getFileTypeLabel = (type: string) => {
-    switch(type) {
-      case 'price_list': return 'Listă Prețuri';
-      case 'catalog': return 'Catalog';
-      case 'images': return 'Imagini';
-      case 'materials': return 'Materiale';
-      default: return 'Document';
-    }
-  };
-
-  const getFileIcon = (mimeType: string) => {
-    if (mimeType?.includes('pdf')) return '📄';
-    if (mimeType?.includes('zip')) return '📦';
-    if (mimeType?.includes('image')) return '🖼️';
-    return '📁';
-  };
-
-  const formatFileSize = (bytes?: number) => {
-    if (!bytes) return '';
-    const mb = bytes / (1024 * 1024);
-    return mb > 1 ? `${mb.toFixed(1)} MB` : `${(bytes / 1024).toFixed(0)} KB`;
-  };
+    return Array.from(map.values()).sort((a,b)=>a.manufacturer.localeCompare(b.manufacturer));
+  }, [resources]);
 
   if (loading) {
     return (
@@ -76,61 +71,38 @@ export default function PartnerResources() {
   return (
     <div className="rounded-2xl border border-neutral-200 bg-white">
       <div className="p-6 border-b border-neutral-200">
-        <h3 className="font-semibold text-lg text-neutral-900">Resurse și Documente</h3>
-        <p className="text-sm text-neutral-600 mt-1">Liste prețuri, cataloage și materiale pentru parteneri</p>
+        <h3 className="font-semibold text-lg text-neutral-900">Resurse Parteneri</h3>
+        <p className="text-sm text-neutral-600 mt-1">Producători, liste de preț, cataloage și materiale (din R2)</p>
       </div>
-      
-      <div className="p-6">
-        {resources.length === 0 ? (
-          <div className="text-center py-8 text-neutral-500">
-            <div className="text-4xl mb-4">📚</div>
-            <p>Nu sunt resurse disponibile momentan</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {resources.map((resource) => (
-              <div key={resource.id} className="border border-neutral-200 rounded-xl p-4 hover:shadow-md transition-shadow">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{getFileIcon(resource.mime_type || '')}</span>
-                    <div>
-                      <h4 className="font-medium text-neutral-900">{resource.name}</h4>
-                      <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                        {getFileTypeLabel(resource.file_type)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                
-                {resource.description && (
-                  <p className="text-sm text-neutral-600 mb-3">{resource.description}</p>
-                )}
-                
-                <div className="flex items-center justify-between">
-                  <div className="text-xs text-neutral-500">
-                    {formatFileSize(resource.file_size)}
-                    {resource.created_at && (
-                      <span className="ml-2">
-                        {new Date(resource.created_at).toLocaleDateString('ro-RO')}
-                      </span>
-                    )}
-                  </div>
-                  <a
-                    href={resource.file_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-black text-white px-3 py-1.5 rounded-full text-sm hover:bg-neutral-800 transition"
-                  >
-                    <span>Descarcă</span>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                    </svg>
-                  </a>
-                </div>
-              </div>
+
+      <div className="p-4 overflow-x-auto">
+        <table className="min-w-full text-sm">
+          <thead className="bg-neutral-50">
+            <tr className="text-left">
+              <th className="px-4 py-3">Producător</th>
+              <th className="px-4 py-3">Listă de preț</th>
+              <th className="px-4 py-3">Catalog</th>
+              <th className="px-4 py-3">Materiale</th>
+              <th className="px-4 py-3">Imagini</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.manufacturer} className="border-t border-neutral-200">
+                <td className="px-4 py-3 font-medium text-neutral-900">{r.manufacturer}</td>
+                <td className="px-4 py-3">{r.price_list ? <a className="underline text-blue-700" target="_blank" href={r.price_list}>Descarcă</a> : <span className="text-neutral-400">—</span>}</td>
+                <td className="px-4 py-3">{r.catalog ? <a className="underline text-blue-700" target="_blank" href={r.catalog}>Descarcă</a> : <span className="text-neutral-400">—</span>}</td>
+                <td className="px-4 py-3">{r.materials ? <a className="underline text-blue-700" target="_blank" href={r.materials}>Descarcă</a> : <span className="text-neutral-400">—</span>}</td>
+                <td className="px-4 py-3">{r.images ? <a className="underline text-blue-700" target="_blank" href={r.images}>Descarcă</a> : <span className="text-neutral-400">—</span>}</td>
+              </tr>
             ))}
-          </div>
-        )}
+            {rows.length === 0 && (
+              <tr>
+                <td colSpan={5} className="px-4 py-8 text-center text-neutral-500">Nu sunt resurse disponibile</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
