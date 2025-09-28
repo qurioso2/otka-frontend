@@ -452,15 +452,7 @@ export default function ProductsAdmin() {
             <div className="flex justify-end space-x-3">
               <button
                 type="button"
-                onClick={() => {
-                  setActiveView('list');
-                  setEditingProduct(null);
-                  setNewProduct({
-                    sku: '', name: '', price_public_ttc: '', price_original: '', price_partner_net: '',
-                    stock_qty: '', description: '', gallery: []
-                  });
-                  setImageFiles(null);
-                }}
+                onClick={() => setActiveView('list')}
                 className="px-4 py-2 border-2 border-neutral-500 rounded-lg text-neutral-900 hover:bg-neutral-50 font-bold"
                 disabled={loading}
                 data-testid="cancel-add-product"
