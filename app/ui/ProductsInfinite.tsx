@@ -59,7 +59,21 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
                 </div>
                 <div className="mb-3">
                   <div className="text-neutral-600 text-sm mb-1">TVA inclus</div>
-                  <div className="mt-1 text-lg font-semibold text-neutral-900">{new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_public_ttc || 0)}</div>
+                  <div className="flex items-center gap-2">
+                    {p.price_original && p.price_original > p.price_public_ttc && (
+                      <div className="text-sm text-neutral-500 line-through">
+                        {new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_original)}
+                      </div>
+                    )}
+                    <div className="text-lg font-semibold text-neutral-900">
+                      {new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_public_ttc || 0)}
+                    </div>
+                    {p.price_original && p.price_original > p.price_public_ttc && (
+                      <div className="text-xs text-green-600 font-semibold bg-green-100 px-2 py-1 rounded">
+                        -{Math.round(((p.price_original - p.price_public_ttc) / p.price_original) * 100)}%
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <AddToCartButton item={{ id: p.id as number, sku: p.sku, name: p.name, price: p.price_public_ttc || 0, image: img }} />
               </div>
