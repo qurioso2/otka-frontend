@@ -193,13 +193,13 @@ export default function ProductsAdmin() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
                       {product.sku}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">
                       {new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(product.price_public_ttc)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">
                       {new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(product.price_partner_net)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
