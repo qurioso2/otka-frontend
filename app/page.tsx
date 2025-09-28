@@ -15,15 +15,12 @@ interface ProductPublic {
 }
 
 function StockBadge({ qty, status }: { qty: number; status?: string }) {
-  // Verifică status-ul explicit först
   if (status === 'reserved') {
     return <span className="rounded-full bg-orange-100 text-orange-800 px-2 py-1 text-xs font-medium">Rezervat</span>;
   }
   if (status === 'discontinued') {
     return <span className="rounded-full bg-gray-100 text-gray-800 px-2 py-1 text-xs font-medium">Discontinuat</span>;
   }
-  
-  // Apoi verifică cantitatea
   if (qty === 0) {
     return <span className="rounded-full bg-red-100 text-red-800 px-2 py-1 text-xs font-medium">Epuizat</span>;
   }
@@ -33,7 +30,6 @@ function StockBadge({ qty, status }: { qty: number; status?: string }) {
   if (qty <= 10) {
     return <span className="rounded-full bg-blue-100 text-blue-800 px-2 py-1 text-xs font-medium">Stoc limitat ({qty})</span>;
   }
-  
   return <span className="rounded-full bg-green-100 text-green-800 px-2 py-1 text-xs font-medium">În stoc ({qty})</span>;
 }
 
@@ -65,7 +61,6 @@ export default async function Home() {
 
   const rows: ProductPublic[] = (products as ProductPublic[] | null) ?? [];
 
-  // Structured data pentru SEO
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "FurnitureStore",
@@ -101,50 +96,54 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      {/* Hero Section - îmbunătățit pentru SEO și contrast */}
-      <section className="border-b border-neutral-200">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-24">
-          <div className="text-center">
-            <h1 className="text-5xl sm:text-6xl font-bold tracking-tight text-neutral-900 leading-tight">
-              Mobilier și Design Interior
-            </h1>
-            <p className="mt-6 text-xl text-neutral-700 max-w-3xl mx-auto leading-relaxed">
-              Descoperă colecția noastră de mobilier, corpuri de iluminat și obiecte decorative pentru amenajări interioare. 
-              Produse de calitate, design modern, prețuri avantajoase.
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="#produse" className="btn-primary inline-flex items-center justify-center rounded-full text-white px-8 py-3 text-base font-medium shadow-lg">
-                Descoperă Colecția
-              </a>
-              <a href="/parteneri" className="inline-flex items-center justify-center rounded-full border-2 border-neutral-900 text-neutral-900 px-8 py-3 text-base font-medium hover:bg-neutral-900 hover:text-white transition">
-                Parteneriat Design
-              </a>
+
+      {/* Hero */}
+      <section className="border-b border-neutral-200 bg-white">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-neutral-950 leading-tight">
+                Mobilier și Design Interior
+              </h1>
+              <p className="mt-4 text-lg text-neutral-700 leading-relaxed">
+                Descoperă colecția noastră de mobilier, corpuri de iluminat și obiecte decorative pentru amenajări interioare. Produse de calitate, design modern, prețuri avantajoase.
+              </p>
+              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                <a href="#produse" className="btn-primary">
+                  Descoperă Colecția
+                </a>
+                <a href="/parteneri" className="inline-flex items-center justify-center rounded-full border-2 border-neutral-900 text-neutral-900 px-6 py-2.5 text-sm font-bold hover:bg-neutral-900 hover:text-white transition">
+                  Parteneriat Design
+                </a>
+              </div>
+            </div>
+            <div className="hidden md:block">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/hero.jpg" alt="Amenajare interioară" className="w-full h-auto rounded-2xl border border-neutral-200 card-shadow" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Products */}
+      {/* Products grid */}
       <section id="produse" className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
         {error && (
           <div className="text-red-600">{error.message}</div>
         )}
 
-        {/* Empty state */}
         {!error && rows.length === 0 && (
           <div className="text-center py-20">
-            <h3 className="text-xl font-medium text-neutral-900">Nu există produse vizibile momentan</h3>
+            <h3 className="text-xl font-semibold text-neutral-900">Nu există produse vizibile momentan</h3>
             <p className="mt-2 text-neutral-600">Reveniți în curând sau contactați-ne pentru disponibilitate.</p>
           </div>
         )}
 
-        {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {rows.length === 0 && Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} />)}
 
           {rows.map((p) => {
             const galleryArr = Array.isArray(p.gallery) ? (p.gallery as unknown[]).filter((x): x is string => typeof x === 'string') : null;
-            const img = galleryArr?.[0] || "/vercel.svg";
+            const img = galleryArr?.[0] || "/images/product-placeholder.jpg";
             return (
               <div key={p.id} className="group rounded-2xl border border-neutral-200 overflow-hidden bg-white card-shadow transition-all duration-300">
                 <Link href={`/p/${p.slug}`}>
