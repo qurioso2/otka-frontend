@@ -1,28 +1,28 @@
-import { getServerSupabase } from '../../../auth/server';
-import { redirect } from 'next/navigation';
+'use client';
 
-export default async function AdminOrderDetail({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const supabase = await getServerSupabase();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user?.email) redirect('/login');
-  const { data: me } = await supabase.from('users').select('role').eq('email', user.email).maybeSingle();
-  if (me?.role !== 'admin') redirect('/');
+import { useEffect, useState } from 'react';
 
-  const { data: order, error } = await supabase
-    .from('partner_orders')
-    .select('*, partner_order_items(*)')
-    .eq('id', id)
-    .maybeSingle();
-  if (error) return <div className="mx-auto max-w-4xl px-4 sm:px-6 py-10 text-red-600">{error.message}</div>;
-  if (!order) return <div className="mx-auto max-w-4xl px-4 sm:px-6 py-10">Comanda nu există.</div>;
+export default function AdminOrderDetail({ params }: { params: Promise<{ id: string }> }) {
+  const [order, setOrder] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  async function updateStatus(formData: FormData) {
-    'use server';
-    const newStatus = formData.get('status') as string;
-    const admin_notes = formData.get('admin_notes') as string;
-    await fetch(process.env.NEXT_PUBLIC_URL + '/api/admin/partner-orders/update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ order_id: id, status: newStatus, admin_notes }) });
-  }
+  useEffect(() => {
+    (async () => {
+      try {
+        const { id } = await params;
+        const res = await fetch(`/api/admin/partner-orders/detail?id=${id}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Load failed');
+        setOrder(data);
+      } catch (e:any) { setError(e.message); }
+      finally { setLoading(false); }
+    })();
+  }, [params]);
+
+  if (loading) return <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">Se încarcă...</div>;
+  if (error) return <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 text-red-600">{error}</div>;
+  if (!order) return <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">Comanda nu există.</div>;
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-6">
@@ -64,23 +64,7 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
           </div>
         </div>
         <div className="space-y-6">
-          <div className="rounded-2xl border border-neutral-200 bg-white p-4">
-            <form action={updateStatus} className="space-y-3">
-              <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-1">Status</label>
-                <select name="status" defaultValue={order.status} className="w-full border border-neutral-300 rounded px-3 py-2">
-                  {['draft','submitted','under_review','approved','confirmed_signed','proforma_generated','paid','in_production','shipped','delivered','cancelled'].map(s => (<option key={s} value={s}>{s}</option>))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-1">Note Admin</label>
-                <textarea name="admin_notes" defaultValue={order.admin_notes || ''} rows={5} className="w-full border border-neutral-300 rounded px-3 py-2" />
-              </div>
-              <button className="rounded-full bg-neutral-900 text-white px-5 py-2 text-sm font-bold hover:bg-neutral-800">Salvează</button>
-            </form>
-          </div>
-
-          <UploadBlock id={id} label="Încarcă Proformă" patchKey="proforma_url" statusOnUpload="proforma_generated" currentUrl={order.proforma_url} />
+          <UploadBlock id={order.id} label="Încarcă Proformă" patchKey="proforma_url" statusOnUpload="proforma_generated" currentUrl={order.proforma_url} />
           <PreviewBlock title="Previzualizare Proformă" url={order.proforma_url} />
           {order.confirmation_document_url && <PreviewBlock title="Confirmare semnată" url={order.confirmation_document_url} />}
         </div>
@@ -88,9 +72,6 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
     </div>
   );
 }
-
-'use client';
-import { useState } from 'react';
 
 function UploadBlock({ id, label, patchKey, statusOnUpload, currentUrl }: { id: string; label: string; patchKey: string; statusOnUpload?: string; currentUrl?: string|null }) {
   const [file, setFile] = useState<File | null>(null);
@@ -100,19 +81,13 @@ function UploadBlock({ id, label, patchKey, statusOnUpload, currentUrl }: { id: 
     if (!file) return;
     setLoading(true);
     try {
-      const fd = new FormData();
-      fd.append('file', file);
+      const fd = new FormData(); fd.append('file', file);
       const up = await fetch('/api/upload', { method: 'POST', body: fd });
-      const upJson = await up.json();
-      if (!up.ok) throw new Error(upJson.error || 'Upload error');
+      const upJson = await up.json(); if (!up.ok) throw new Error(upJson.error || 'Upload error');
 
-      const body: any = { order_id: id };
-      body[patchKey] = upJson.url;
-      if (statusOnUpload) body.status = statusOnUpload;
-
+      const body: any = { order_id: id }; body[patchKey] = upJson.url; if (statusOnUpload) body.status = statusOnUpload;
       const res = await fetch('/api/admin/partner-orders/update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Update failed');
+      const json = await res.json(); if (!res.ok) throw new Error(json.error || 'Update failed');
       window.location.reload();
     } catch (e:any) { alert(e.message); }
     finally { setLoading(false); }
