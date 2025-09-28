@@ -110,7 +110,6 @@ export default function ProductsAdmin() {
         stock_qty: '', description: '', gallery: []
       });
       setImageFiles(null);
-      setEditingProduct(null);
       await loadProducts();
       setActiveView('list');
     } catch (error: any) {
