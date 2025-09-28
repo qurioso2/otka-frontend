@@ -7,6 +7,7 @@ import ClientsAdmin from './ClientsAdmin';
 import CommissionSummary from './CommissionSummary';
 import OrdersAdmin from './OrdersAdmin';
 import ResourcesAdmin from './ResourcesAdmin';
+import PublicAssetsAdmin from './PublicAssetsAdmin';
 import WorkflowExplainer from './WorkflowExplainer';
 
 const tabs = [
@@ -14,6 +15,7 @@ const tabs = [
   { id: 'products', name: 'Produse', icon: '📦' },
   { id: 'users', name: 'Utilizatori & Parteneri', icon: '👥' },
   { id: 'resources', name: 'Resurse Parteneri', icon: '📚' },
+  { id: 'public-assets', name: 'Imagini Publice', icon: '🖼️' },
   { id: 'clients', name: 'Clienți & Comenzi', icon: '🛒' },
   { id: 'orders', name: 'Comenzi Parteneri', icon: '📋' },
   { id: 'commissions', name: 'Comisioane', icon: '💰' },
@@ -33,6 +35,8 @@ export default function AdminDashboard() {
         return <UsersAdmin />;
       case 'resources':
         return <ResourcesAdmin />;
+      case 'public-assets':
+        return <PublicAssetsAdmin />;
       case 'clients':
         return <ClientsAdmin />;
       case 'orders':
@@ -156,11 +160,11 @@ function OverviewTab({ setActiveTab }: { setActiveTab: (tab: string) => void }) 
               <div className="text-sm text-neutral-800 font-semibold">Cataloage și materiale</div>
             </div>
           </button>
-          <button onClick={() => setActiveTab('workflow')} data-testid="quick-action-workflow" className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover-border-yellow-600 hover:bg-yellow-50 transition-all duration-200 group">
+          <button onClick={() => setActiveTab('public-assets')} data-testid="quick-action-public-assets" className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover:border-pink-600 hover:bg-pink-50 transition-all duration-200 group">
             <div className="text-center">
-              <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">❓</div>
-              <div className="text-neutral-950 font-extrabold">Ghid Utilizare</div>
-              <div className="text-sm text-neutral-800 font-semibold">Vezi workflow complet</div>
+              <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">🖼️</div>
+              <div className="text-neutral-950 font-extrabold">Imagini Publice</div>
+              <div className="text-sm text-neutral-800 font-semibold">Hero, OG, bannere</div>
             </div>
           </button>
         </div>
