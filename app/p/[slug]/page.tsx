@@ -2,6 +2,7 @@ import { supabase } from "../../../lib/supabaseClient";
 import type { Database } from "../../../types/supabase";
 import Link from "next/link";
 import AddToCartClient from './AddToCartClient';
+import ProductGallery from './ProductGallery';
 
 export const revalidate = 60; // ISR
 
