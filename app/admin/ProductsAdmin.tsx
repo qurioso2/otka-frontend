@@ -226,11 +226,11 @@ export default function ProductsAdmin() {
             
             {products.length === 0 && (
               <div className="text-center py-12">
-                <div className="text-gray-400 text-4xl mb-2">📦</div>
-                <p className="text-gray-500">Nu există produse în catalog</p>
+                <div className="text-gray-600 text-4xl mb-2">📦</div>
+                <p className="text-gray-800 font-medium">Nu există produse în catalog</p>
                 <button 
                   onClick={() => setActiveView('add')}
-                  className="mt-2 text-blue-600 hover:text-blue-800 font-medium"
+                  className="mt-2 text-blue-700 hover:text-blue-900 font-bold underline"
                 >
                   Adaugă primul produs
                 </button>
