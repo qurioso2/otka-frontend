@@ -435,19 +435,7 @@ export default function ProductsAdmin() {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-bold text-neutral-900 mb-2">
-                Descriere Produs
-              </label>
-              <textarea
-                rows={4}
-                value={newProduct.description}
-                onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                className="w-full border-2 border-neutral-500 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Descrierea detaliată a produsului..."
-                data-testid="field-description"
-              />
-            </div>
+            {/* Descrierea va fi adăugată când schema BD va fi actualizată */}
 
             <div className="flex justify-end space-x-3">
               <button
