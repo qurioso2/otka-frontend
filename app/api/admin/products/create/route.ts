@@ -23,6 +23,8 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json();
+    console.log('Received product data:', body); // Debug log
+    
     const {
       sku,
       name,
