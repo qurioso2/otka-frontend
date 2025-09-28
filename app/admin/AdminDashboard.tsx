@@ -32,7 +32,7 @@ export default function AdminDashboard() {
       case 'users':
         return <UsersAdmin />;
       case 'resources':
-        return <ResourcesAdmin />;
+        return <div className="text-center py-12"><p className="text-gray-500">Resurse parteneri - în dezvoltare</p></div>;
       case 'clients':
         return <ClientsAdmin />;
       case 'orders':
