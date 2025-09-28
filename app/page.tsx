@@ -45,6 +45,12 @@ export default async function Home() {
               </div>
             </div>
             <div className="hidden md:block">
+              {/* Debug info in development */}
+              {process.env.NODE_ENV === 'development' && (
+                <div className="mb-2 p-2 bg-yellow-100 text-xs">
+                  Hero URL: {heroUrl}
+                </div>
+              )}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={heroUrl || "/images/product-placeholder.jpg"} alt="Amenajare interioară" className="w-full h-auto rounded-2xl border border-neutral-200" />
             </div>
