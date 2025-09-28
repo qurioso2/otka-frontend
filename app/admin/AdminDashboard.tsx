@@ -54,9 +54,27 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-neutral-50" data-testid="admin-dashboard">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-extrabold tracking-tight text-neutral-950" data-testid="admin-title">Dashboard Admin OTKA</h1>
-          <p className="mt-2 text-neutral-800 font-semibold">Administrare completă pentru platforma de mobilier & B2B parteneri</p>
+        <div className="mb-8 flex justify-between items-start">
+          <div>
+            <h1 className="text-3xl font-extrabold tracking-tight text-neutral-950" data-testid="admin-title">Dashboard Admin OTKA</h1>
+            <p className="mt-2 text-neutral-800 font-semibold">Administrare completă pentru platforma de mobilier & B2B parteneri</p>
+          </div>
+          <div className="flex gap-3">
+            <a 
+              href="/parteneri/dashboard" 
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+            >
+              <span className="mr-2">👥</span>
+              Dashboard Partener
+            </a>
+            <a 
+              href="/" 
+              className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium"
+            >
+              <span className="mr-2">🏠</span>
+              Site Public
+            </a>
+          </div>
         </div>
 
         {/* Tab Navigation */}
