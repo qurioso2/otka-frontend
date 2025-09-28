@@ -14,9 +14,13 @@ interface ProductPublic {
 }
 
 async function getHeroUrl() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL || ''}/api/public/og`, { cache: 'no-store', headers: { 'x-next-headers': JSON.stringify(Object.fromEntries(headers())) } });
-  const data = await res.json().catch(()=>({ url: '/images/product-placeholder.jpg' }));
-  return data.url as string;
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_URL || ''}/api/public/og`, { cache: 'no-store' });
+    const data = await res.json();
+    return data.url || '/images/product-placeholder.jpg';
+  } catch (error) {
+    return '/images/product-placeholder.jpg';
+  }
 }
 
 export default async function Home() {
