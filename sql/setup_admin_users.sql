@@ -7,9 +7,10 @@ SELECT
   email, 
   role, 
   partner_status,
-  created_at
+  company_name,
+  contact_name
 FROM public.users 
-ORDER BY role DESC, created_at DESC;
+ORDER BY role DESC, email;
 
 -- 2) VERIFICA FUNCTIILE DE AUTENTIFICARE
 SELECT 
