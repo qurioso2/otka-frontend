@@ -17,3 +17,8 @@ export async function PUT(request: NextRequest) {
 
   return NextResponse.json({ ok: true });
 }
+
+// Backward compatibility: allow POST as well (frontend was using POST)
+export async function POST(request: NextRequest) {
+  return PUT(request);
+}

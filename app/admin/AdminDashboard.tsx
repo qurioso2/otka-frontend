@@ -32,7 +32,7 @@ export default function AdminDashboard() {
       case 'users':
         return <UsersAdmin />;
       case 'resources':
-        return <div className="text-center py-12"><p className="text-gray-500">Resurse parteneri - în dezvoltare</p></div>;
+        return <div className="text-center py-12"><p className="text-gray-700 font-semibold">Resurse parteneri - în dezvoltare</p></div>;
       case 'clients':
         return <ClientsAdmin />;
       case 'orders':
@@ -47,29 +47,30 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-neutral-50" data-testid="admin-dashboard">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard Admin OTKA</h1>
-          <p className="mt-2 text-gray-600 font-medium">Administrare completă pentru platforma de mobilier & B2B parteneri</p>
+          <h1 className="text-3xl font-extrabold tracking-tight text-neutral-950" data-testid="admin-title">Dashboard Admin OTKA</h1>
+          <p className="mt-2 text-neutral-800 font-semibold">Administrare completă pentru platforma de mobilier & B2B parteneri</p>
         </div>
 
         {/* Tab Navigation */}
-        <div className="border-b-2 border-gray-300 mb-8">
+        <div className="border-b-2 border-neutral-400 mb-8" data-testid="admin-tabs">
           <nav className="-mb-0.5 flex space-x-2 overflow-x-auto pb-2">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`${
-                  activeTab === tab.id
-                    ? 'border-blue-500 text-blue-700 bg-blue-50'
-                    : 'border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-400'
-                } whitespace-nowrap py-3 px-4 border-b-2 font-bold text-sm flex items-center gap-2 rounded-t-xl transition-all duration-200`}
+                data-testid={`admin-tab-${tab.id}-button`}
+                className={`$${''}
+                  ${activeTab === tab.id
+                    ? 'border-blue-600 text-blue-900 bg-blue-100'
+                    : 'border-transparent text-neutral-800 hover:text-neutral-950 hover:border-neutral-500'}
+                  whitespace-nowrap py-3 px-4 border-b-2 font-extrabold text-sm flex items-center gap-2 rounded-t-xl transition-all duration-200`}
               >
-                <span className="text-lg">{tab.icon}</span>
-                {tab.name}
+                <span className="text-lg" aria-hidden>{tab.icon}</span>
+                <span>{tab.name}</span>
               </button>
             ))}
           </nav>
@@ -88,93 +89,97 @@ function OverviewTab({ setActiveTab }: { setActiveTab: (tab: string) => void }) 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
       {/* Quick Stats */}
-      <div className="bg-white border-2 border-gray-300 rounded-2xl shadow-sm p-6">
+      <div className="bg-white border-2 border-neutral-500 rounded-2xl shadow-sm p-6">
         <div className="flex items-center">
           <div className="flex-shrink-0">
-            <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
               <span className="text-white text-xl">📦</span>
             </div>
           </div>
           <div className="ml-4">
-            <p className="text-sm text-gray-600 font-medium">Total Produse</p>
-            <p className="text-2xl font-bold text-gray-900" data-testid="total-products">-</p>
+            <p className="text-sm text-neutral-800 font-semibold">Total Produse</p>
+            <p className="text-2xl font-extrabold text-neutral-950" data-testid="total-products">-</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-white border-2 border-gray-300 rounded-2xl shadow-sm p-6">
+      <div className="bg-white border-2 border-neutral-500 rounded-2xl shadow-sm p-6">
         <div className="flex items-center">
           <div className="flex-shrink-0">
-            <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center">
               <span className="text-white text-xl">👥</span>
             </div>
           </div>
           <div className="ml-4">
-            <p className="text-sm text-gray-600 font-medium">Parteneri Activi</p>
-            <p className="text-2xl font-bold text-gray-900" data-testid="active-partners">-</p>
+            <p className="text-sm text-neutral-800 font-semibold">Parteneri Activi</p>
+            <p className="text-2xl font-extrabold text-neutral-950" data-testid="active-partners">-</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-white border-2 border-gray-300 rounded-2xl shadow-sm p-6">
+      <div className="bg-white border-2 border-neutral-500 rounded-2xl shadow-sm p-6">
         <div className="flex items-center">
           <div className="flex-shrink-0">
-            <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center">
               <span className="text-white text-xl">📋</span>
             </div>
           </div>
           <div className="ml-4">
-            <p className="text-sm text-gray-600 font-medium">Comenzi Astăzi</p>
-            <p className="text-2xl font-bold text-gray-900" data-testid="orders-today">-</p>
+            <p className="text-sm text-neutral-800 font-semibold">Comenzi Astăzi</p>
+            <p className="text-2xl font-extrabold text-neutral-950" data-testid="orders-today">-</p>
           </div>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="lg:col-span-2 xl:col-span-3 bg-white border-2 border-gray-300 rounded-2xl shadow-sm p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Acțiuni Rapide</h3>
+      <div className="lg:col-span-2 xl:col-span-3 bg-white border-2 border-neutral-500 rounded-2xl shadow-sm p-6">
+        <h3 className="text-xl font-extrabold text-neutral-950 mb-6">Acțiuni Rapide</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <button 
             onClick={() => setActiveTab('products')}
-            className="p-6 border-2 border-dashed border-gray-400 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all duration-200 group"
+            data-testid="quick-action-products"
+            className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover:border-blue-600 hover:bg-blue-50 transition-all duration-200 group"
           >
             <div className="text-center">
               <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">📦</div>
-              <div className="text-gray-800 font-bold">Gestionare Produse</div>
-              <div className="text-sm text-gray-600 font-medium">Adaugă și modifică catalog</div>
+              <div className="text-neutral-950 font-extrabold">Gestionare Produse</div>
+              <div className="text-sm text-neutral-800 font-semibold">Adaugă și modifică catalog</div>
             </div>
           </button>
           
           <button 
             onClick={() => setActiveTab('users')}
-            className="p-6 border-2 border-dashed border-gray-400 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all duration-200 group"
+            data-testid="quick-action-users"
+            className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover:border-green-600 hover:bg-green-50 transition-all duration-200 group"
           >
             <div className="text-center">
               <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">👥</div>
-              <div className="text-gray-800 font-bold">Gestionare Parteneri</div>
-              <div className="text-sm text-gray-600 font-medium">Invită și activează</div>
+              <div className="text-neutral-950 font-extrabold">Gestionare Parteneri</div>
+              <div className="text-sm text-neutral-800 font-semibold">Invită și activează</div>
             </div>
           </button>
           
           <button 
             onClick={() => setActiveTab('resources')}
-            className="p-6 border-2 border-dashed border-gray-400 rounded-xl hover:border-purple-500 hover:bg-purple-50 transition-all duration-200 group"
+            data-testid="quick-action-resources"
+            className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover:border-purple-600 hover:bg-purple-50 transition-all duration-200 group"
           >
             <div className="text-center">
               <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">📚</div>
-              <div className="text-gray-800 font-bold">Resurse Parteneri</div>
-              <div className="text-sm text-gray-600 font-medium">Cataloage și materiale</div>
+              <div className="text-neutral-950 font-extrabold">Resurse Parteneri</div>
+              <div className="text-sm text-neutral-800 font-semibold">Cataloage și materiale</div>
             </div>
           </button>
           
           <button 
             onClick={() => setActiveTab('workflow')}
-            className="p-6 border-2 border-dashed border-gray-400 rounded-xl hover:border-yellow-500 hover:bg-yellow-50 transition-all duration-200 group"
+            data-testid="quick-action-workflow"
+            className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover:border-yellow-600 hover:bg-yellow-50 transition-all duration-200 group"
           >
             <div className="text-center">
               <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">❓</div>
-              <div className="text-gray-800 font-bold">Ghid Utilizare</div>
-              <div className="text-sm text-gray-600 font-medium">Vezi workflow complet</div>
+              <div className="text-neutral-950 font-extrabold">Ghid Utilizare</div>
+              <div className="text-sm text-neutral-800 font-semibold">Vezi workflow complet</div>
             </div>
           </button>
         </div>
