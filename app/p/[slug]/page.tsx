@@ -41,7 +41,21 @@ export default async function ProductPage({ params }: PageProps) {
         <div>
           <h1 className="text-3xl font-semibold tracking-tight text-neutral-900">{p.name}</h1>
           <div className="mt-2 text-neutral-600 text-sm">TVA inclus</div>
-          <div className="mt-1 text-2xl font-semibold text-neutral-900">{new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_public_ttc || 0)}</div>
+          <div className="flex items-center gap-3 mt-2">
+            {p.price_original && p.price_original > p.price_public_ttc && (
+              <div className="text-lg text-neutral-500 line-through">
+                {new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_original)}
+              </div>
+            )}
+            <div className="text-2xl font-semibold text-neutral-900">
+              {new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_public_ttc || 0)}
+            </div>
+            {p.price_original && p.price_original > p.price_public_ttc && (
+              <div className="text-sm text-green-600 font-semibold bg-green-100 px-3 py-1 rounded-full">
+                -{Math.round(((p.price_original - p.price_public_ttc) / p.price_original) * 100)}%
+              </div>
+            )}
+          </div>
 
           <div className="mt-6 space-y-3 text-neutral-700">
             <div><span className="text-neutral-500">SKU:</span> {p.sku}</div>
