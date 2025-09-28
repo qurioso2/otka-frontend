@@ -77,17 +77,61 @@ export default function ProductsAdmin() {
     setLoading(true);
     
     try {
-      let galleryUrls = [...newProduct.gallery];
-      
-      // Send all required fields with defaults if empty
-      const productData = {
-        sku: newProduct.sku,
-        name: newProduct.name,
-        price_public_ttc: newProduct.price_public_ttc,
-        price_partner_net: newProduct.price_partner_net || '0',
-        stock_qty: newProduct.stock_qty || '0',
-        gallery: []
+      // 1. Generează slug din numele produsului
+      const generateSlug = (name: string) => {
+        return name
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '') // elimină caractere speciale
+          .trim()
+          .replace(/\s+/g, '-') // înlocuiește spațiile cu -
+          .replace(/-+/g, '-'); // elimină - multiple
       };
+
+      // 2. Upload imaginile mai întâi (dacă există)
+      let galleryUrls: string[] = [...newProduct.gallery];
+      if (imageFiles && imageFiles.length > 0) {
+        try {
+          const uploadedUrls = await uploadImages(imageFiles);
+          galleryUrls = [...galleryUrls, ...uploadedUrls];
+        } catch (uploadError) {
+          console.error('Eroare upload imagini:', uploadError);
+          toast.error('Eroare la upload imagini, produsul va fi salvat fără imagini');
+        }
+      }
+
+      // 3. Validare și conversie tipuri de date
+      const price_public_ttc = parseFloat(newProduct.price_public_ttc);
+      const price_partner_net = parseFloat(newProduct.price_partner_net) || 0;
+      const stock_qty = parseInt(newProduct.stock_qty) || 0;
+
+      // Validare prețuri
+      if (isNaN(price_public_ttc) || price_public_ttc <= 0) {
+        throw new Error('Prețul public trebuie să fie un număr valid mai mare ca 0');
+      }
+      if (isNaN(price_partner_net) || price_partner_net < 0) {
+        throw new Error('Prețul partener trebuie să fie un număr valid >= 0');
+      }
+      if (stock_qty < 0) {
+        throw new Error('Stocul trebuie să fie un număr >= 0');
+      }
+
+      // 4. Pregătește datele cu tipurile corecte
+      const productData = {
+        sku: newProduct.sku.trim(),
+        name: newProduct.name.trim(),
+        slug: generateSlug(newProduct.name),
+        price_public_ttc: price_public_ttc,
+        price_partner_net: price_partner_net,
+        stock_qty: stock_qty,
+        gallery: galleryUrls,
+        description: newProduct.description?.trim() || null,
+        // Adaugă price_original dacă este setat
+        ...(newProduct.price_original && {
+          price_original: parseFloat(newProduct.price_original)
+        })
+      };
+
+      console.log('Trimitere date produs:', productData); // Pentru debug
 
       const res = await fetch('/api/admin/products/create', {
         method: 'POST',
@@ -96,21 +140,63 @@ export default function ProductsAdmin() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to create product');
+      
+      if (!res.ok) {
+        console.error('Eroare API:', data);
+        throw new Error(data.error || `Eroare ${res.status}: ${data.message || 'Failed to create product'}`);
+      }
 
       toast.success('Produs adăugat cu succes!');
+      
+      // Reset form
       setNewProduct({
-        sku: '', name: '', price_public_ttc: '', price_original: '', price_partner_net: '',
-        stock_qty: '', description: '', gallery: []
+        sku: '', 
+        name: '', 
+        price_public_ttc: '', 
+        price_original: '', 
+        price_partner_net: '',
+        stock_qty: '', 
+        description: '', 
+        gallery: []
       });
       setImageFiles(null);
+      
       await loadProducts();
       setActiveView('list');
+      
     } catch (error: any) {
-      toast.error(error.message);
+      console.error('Eroare adăugare produs:', error);
+      toast.error(error.message || 'Eroare necunoscută la adăugarea produsului');
     } finally {
       setLoading(false);
     }
+  };
+
+  // Funcție helper pentru validarea formularului
+  const validateForm = () => {
+    const errors: string[] = [];
+    
+    if (!newProduct.sku.trim()) errors.push('SKU este obligatoriu');
+    if (!newProduct.name.trim()) errors.push('Numele produsului este obligatoriu');
+    if (!newProduct.price_public_ttc) errors.push('Prețul public este obligatoriu');
+    
+    const price = parseFloat(newProduct.price_public_ttc);
+    if (isNaN(price) || price <= 0) errors.push('Prețul public trebuie să fie un număr valid > 0');
+    
+    return errors;
+  };
+
+  // Actualizează handleSubmit să folosească validarea
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const errors = validateForm();
+    if (errors.length > 0) {
+      toast.error(`Erori de validare:\n${errors.join('\n')}`);
+      return;
+    }
+    
+    addProduct(e);
   };
 
   const handleCSVUpload = async (e: React.FormEvent<HTMLFormElement>) => {
