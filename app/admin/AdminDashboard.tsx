@@ -63,11 +63,11 @@ export default function AdminDashboard() {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 data-testid={`admin-tab-${tab.id}-button`}
-                className={`$${''}
-                  ${activeTab === tab.id
+                className={`${
+                  activeTab === tab.id
                     ? 'border-blue-600 text-blue-900 bg-blue-100'
-                    : 'border-transparent text-neutral-800 hover:text-neutral-950 hover:border-neutral-500'}
-                  whitespace-nowrap py-3 px-4 border-b-2 font-extrabold text-sm flex items-center gap-2 rounded-t-xl transition-all duration-200`}
+                    : 'border-transparent text-neutral-800 hover:text-neutral-950 hover:border-neutral-500'
+                } whitespace-nowrap py-3 px-4 border-b-2 font-extrabold text-sm flex items-center gap-2 rounded-t-xl transition-all duration-200`}
               >
                 <span className="text-lg" aria-hidden>{tab.icon}</span>
                 <span>{tab.name}</span>
@@ -174,7 +174,7 @@ function OverviewTab({ setActiveTab }: { setActiveTab: (tab: string) => void }) 
           <button 
             onClick={() => setActiveTab('workflow')}
             data-testid="quick-action-workflow"
-            className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover:border-yellow-600 hover:bg-yellow-50 transition-all duration-200 group"
+            className="p-6 border-2 border-dashed border-neutral-600 rounded-xl hover-border-yellow-600 hover:bg-yellow-50 transition-all duration-200 group"
           >
             <div className="text-center">
               <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">❓</div>
