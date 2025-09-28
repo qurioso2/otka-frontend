@@ -82,44 +82,44 @@ function OverviewTab() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
       {/* Quick Stats */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-xl border border-gray-300 shadow-sm p-6">
         <div className="flex items-center">
           <div className="flex-shrink-0">
-            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-              <span className="text-blue-600 font-semibold">📦</span>
+            <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+              <span className="text-white text-lg">📦</span>
             </div>
           </div>
-          <div className="ml-3">
-            <p className="text-sm font-medium text-gray-500">Total Produse</p>
-            <p className="text-2xl font-semibold text-gray-900" data-testid="total-products">-</p>
+          <div className="ml-4">
+            <p className="text-sm font-medium text-gray-600">Total Produse</p>
+            <p className="text-2xl font-bold text-gray-900" data-testid="total-products">-</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-xl border border-gray-300 shadow-sm p-6">
         <div className="flex items-center">
           <div className="flex-shrink-0">
-            <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-              <span className="text-green-600 font-semibold">👥</span>
+            <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+              <span className="text-white text-lg">👥</span>
             </div>
           </div>
-          <div className="ml-3">
-            <p className="text-sm font-medium text-gray-500">Parteneri Activi</p>
-            <p className="text-2xl font-semibold text-gray-900" data-testid="active-partners">-</p>
+          <div className="ml-4">
+            <p className="text-sm font-medium text-gray-600">Parteneri Activi</p>
+            <p className="text-2xl font-bold text-gray-900" data-testid="active-partners">-</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-white rounded-xl border border-gray-300 shadow-sm p-6">
         <div className="flex items-center">
           <div className="flex-shrink-0">
-            <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-              <span className="text-purple-600 font-semibold">📋</span>
+            <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
+              <span className="text-white text-lg">📋</span>
             </div>
           </div>
-          <div className="ml-3">
-            <p className="text-sm font-medium text-gray-500">Comenzi Astăzi</p>
-            <p className="text-2xl font-semibold text-gray-900" data-testid="orders-today">-</p>
+          <div className="ml-4">
+            <p className="text-sm font-medium text-gray-600">Comenzi Astăzi</p>
+            <p className="text-2xl font-bold text-gray-900" data-testid="orders-today">-</p>
           </div>
         </div>
       </div>
