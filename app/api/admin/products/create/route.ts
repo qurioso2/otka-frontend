@@ -53,18 +53,18 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Create product
+    // Create product with minimal fields
+    const productToInsert = {
+      sku,
+      name,
+      price_public_ttc: parseFloat(price_public_ttc)
+    };
+
+    console.log('Inserting product:', productToInsert);
+
     const { data: product, error } = await supabase
       .from('products')
-      .insert([{
-        sku,
-        name,
-        slug: slug || name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
-        price_public_ttc: parseFloat(price_public_ttc),
-        price_partner_net: parseFloat(price_partner_net) || 0,
-        stock_qty: parseInt(stock_qty) || 0,
-        gallery: Array.isArray(gallery) ? gallery : (gallery ? [gallery] : [])
-      }])
+      .insert([productToInsert])
       .select()
       .single();
 
