@@ -1,9 +1,6 @@
 import { getServerSupabase } from "../../auth/server";
-import PartnerProducts from "./PartnerProducts";
-import Uploader from "./Uploader";
-import NewOrder from "./NewOrder";
 import { getCurrentAppUser } from "../../../lib/userProfile";
-import Link from "next/link";
+import PartnerDashboardTabs from "./PartnerDashboardTabs";
 
 export default async function PartnerDashboard() {
   const supabase = await getServerSupabase();
@@ -27,7 +24,7 @@ export default async function PartnerDashboard() {
   const isAdmin = appUser?.role === 'admin';
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-10">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold tracking-tight">Dashboard Partener</h1>
         <form action="/auth/logout" method="POST">
@@ -41,56 +38,14 @@ export default async function PartnerDashboard() {
         </div>
       )}
 
-      {isAdmin && (
-        <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
-          <div className="font-medium">Administrator Access</div>
-          <div className="mt-1">Accesați <a href="/admin" className="underline font-medium">zona de administrare</a> pentru funcții avansate (gestiune parteneri, comenzi, comisioane).</div>
-        </div>
-      )}
-
-      {isActivePartner && !agreement && (
-        <div className="rounded-2xl border border-neutral-200 bg-white p-4">
-          <h3 className="font-medium text-neutral-900">Trebuie să acceptați termenii programului de parteneriat</h3>
-          <p className="mt-1 text-sm text-neutral-600">Vă rugăm să parcurgeți și să acceptați termenii pentru a continua.</p>
-          <a href="/parteneri/acceptare" className="mt-3 inline-flex rounded-full bg-black text-white px-4 py-2 text-sm">Acceptă termeni</a>
-        </div>
-      )}
-
-      {isActivePartner && agreement && (
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="text-emerald-900 font-medium">Contract semnat</div>
-              <div className="mt-1 text-emerald-800">Versiune: {agreement.version} · Data: {agreement.accepted_at ? new Date(agreement.accepted_at as unknown as string).toLocaleDateString('ro-RO') : '-'}</div>
-              {agreement.pdf_url && <a href={agreement.pdf_url} target="_blank" className="underline">Descarcă PDF</a>}
-            </div>
-            <Link 
-              href="/parteneri/orders" 
-              className="bg-emerald-600 text-white px-4 py-2 rounded-full hover:bg-emerald-700 transition text-sm"
-            >
-              Vezi Comenzi
-            </Link>
-          </div>
-        </div>
-      )}
-
-      {/* Secțiune pentru Comenzi Noi - doar pentru parteneri activi */}
-      {isActivePartner && agreement && (
-        <NewOrder />
-      )}
-
-      <div>
-        {error ? (
-          <div className="text-red-600">{error.message}</div>
-        ) : (
-          <PartnerProducts initialProducts={(products || []).map(p => ({
-            ...p,
-            price_partner_net: isActivePartner ? p.price_partner_net : null,
-          })) as any} />
-        )}
-      </div>
-
-      <Uploader />
+      {/* Tabbed UI pentru parteneri */}
+      <PartnerDashboardTabs
+        isActivePartner={isActivePartner}
+        isAdmin={isAdmin}
+        agreement={agreement}
+        initialProducts={(products || []).map(p => ({...p, price_partner_net: isActivePartner ? p.price_partner_net : null}))}
+        profile={appUser}
+      />
     </div>
   );
 }
