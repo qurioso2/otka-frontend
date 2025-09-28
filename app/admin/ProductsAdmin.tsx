@@ -188,8 +188,8 @@ export default function ProductsAdmin() {
                           />
                         )}
                         <div>
-                          <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                          <div className="text-sm text-gray-500">/{product.slug}</div>
+                          <div className="text-sm font-bold text-gray-900">{product.name}</div>
+                          <div className="text-sm font-medium text-gray-700">/{product.slug}</div>
                         </div>
                       </div>
                     </td>
