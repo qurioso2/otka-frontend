@@ -1,6 +1,7 @@
 import { supabase } from "../lib/supabaseClient";
 import Link from "next/link";
 import AddToCartButton from "./ui/AddToCartButton";
+import ProductImage from "./ui/ProductImage";
 
 interface ProductPublic {
   id: number;
