@@ -53,11 +53,15 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Create product with minimal fields
+    // Create product - add defaults for missing values
     const productToInsert = {
       sku,
       name,
-      price_public_ttc: parseFloat(price_public_ttc)
+      price_public_ttc: parseFloat(price_public_ttc),
+      price_partner_net: price_partner_net ? parseFloat(price_partner_net) : 0,
+      stock_qty: stock_qty ? parseInt(stock_qty) : 0,
+      slug: slug || name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+      gallery: Array.isArray(gallery) ? gallery : []
     };
 
     console.log('Inserting product:', productToInsert);
