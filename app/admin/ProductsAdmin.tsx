@@ -354,6 +354,7 @@ export default function ProductsAdmin() {
                   required
                   data-testid="field-price-public"
                 />
+                <p className="text-xs text-neutral-600 mt-1">Prețul final de vânzare care va fi afișat pe site</p>
               </div>
 
               <div>
