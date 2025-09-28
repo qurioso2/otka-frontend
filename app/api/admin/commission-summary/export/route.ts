@@ -39,11 +39,21 @@ export async function GET(request: Request) {
     const commission = totalNet * 0.05;
     const date = new Date(row.created_at).toLocaleDateString('ro-RO');
     
+    // Estimez prețul public cu o marjă de 20-30% pentru parteneri
+    const estimatedPublicPrice = totalNet * 1.25; // 25% markup estimate
+    const partnerDiscount = ((estimatedPublicPrice - totalNet) / estimatedPublicPrice * 100);
+    
+    const clientInfo = row.clients ? 
+      (row.clients.company_name || row.clients.name || '-') : '-';
+    
     csvRows.push([
       row.partner_email,
+      clientInfo,
       row.order_id || '-',
       date,
       totalNet.toFixed(2),
+      estimatedPublicPrice.toFixed(2),
+      partnerDiscount.toFixed(1) + '%',
       commission.toFixed(2),
       row.status
     ].join(','));
