@@ -35,10 +35,7 @@ export default async function ProductPage({ params }: PageProps) {
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 py-10">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div className="rounded-2xl border border-neutral-200 overflow-hidden bg-white">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={img} alt={p.name} className="w-full object-cover" />
-        </div>
+        <ProductGallery images={galleryArr} productName={p.name} />
         <div>
           <h1 className="text-3xl font-semibold tracking-tight text-neutral-900">{p.name}</h1>
           <div className="mt-2 text-neutral-600 text-sm">TVA inclus</div>
