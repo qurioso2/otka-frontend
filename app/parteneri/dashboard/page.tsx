@@ -1,7 +1,9 @@
 import { getServerSupabase } from "../../auth/server";
 import PartnerProducts from "./PartnerProducts";
 import Uploader from "./Uploader";
+import NewOrder from "./NewOrder";
 import { getCurrentAppUser } from "../../../lib/userProfile";
+import Link from "next/link";
 
 export default async function PartnerDashboard() {
   const supabase = await getServerSupabase();
