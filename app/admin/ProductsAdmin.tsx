@@ -79,11 +79,14 @@ export default function ProductsAdmin() {
     try {
       let galleryUrls = [...newProduct.gallery];
       
-      // Simplified - test with minimal fields first
+      // Send all required fields with defaults if empty
       const productData = {
         sku: newProduct.sku,
         name: newProduct.name,
-        price_public_ttc: newProduct.price_public_ttc
+        price_public_ttc: newProduct.price_public_ttc,
+        price_partner_net: newProduct.price_partner_net || '0',
+        stock_qty: newProduct.stock_qty || '0',
+        gallery: []
       };
 
       const res = await fetch('/api/admin/products/create', {
