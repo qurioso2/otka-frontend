@@ -17,6 +17,10 @@ async function getHeroUrl() {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_URL || ''}/api/public/og`, { cache: 'no-store' });
     const data = await res.json();
+    // Fix the URL if it has the placeholder domain
+    if (data.url && data.url.includes('pub-your-r2-domain.cloudflare.com')) {
+      return data.url.replace('pub-your-r2-domain.cloudflare.com', 'pub-52df54499f9f4836a88ab79b2ff9f8cb.r2.dev');
+    }
     return data.url || '/images/product-placeholder.jpg';
   } catch (error) {
     return '/images/product-placeholder.jpg';
