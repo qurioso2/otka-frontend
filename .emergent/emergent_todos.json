@@ -45,26 +45,26 @@
   },
   {
     "content": "SEO: Adăugare descriere în lista produse (landing page)",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "SEO: Adăugare descriere în pagina individuală produs",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "SEO: Open Graph tags pentru Facebook/WhatsApp",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "SEO: Twitter Cards pentru X",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "SEO: Schema.org Product markup (JSON-LD)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "SEO: Google AI Search optimization",
-    "status": "pending"
+    "status": "completed"
   }
 ]
