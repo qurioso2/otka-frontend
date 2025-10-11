@@ -37,15 +37,19 @@
   },
   {
     "content": "FAZA B.4: Creează API public pentru listare categorii",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "FAZA B.4: Modifică ProductsInfinite - adaugă filtre categorii",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA B.4: API list products - suport pentru filtrare după category",
-    "status": "pending"
+    "status": "completed"
+  },
+  {
+    "content": "Rulează SQL-urile necesare în Supabase",
+    "status": "in_progress"
   },
   {
     "content": "Test complet sistem categorii (CRUD + filtrare)",
