@@ -17,6 +17,7 @@ const tabs = [
   { id: 'users', name: 'Utilizatori & Parteneri', icon: '👥' },
   { id: 'resources', name: 'Resurse Parteneri', icon: '📚' },
   { id: 'public-assets', name: 'Imagini Publice', icon: '🖼️' },
+  { id: 'articles', name: 'Articole', icon: '📝' },
   { id: 'clients', name: 'Clienți & Comenzi', icon: '🛒' },
   { id: 'orders', name: 'Comenzi Parteneri', icon: '📋' },
   { id: 'commissions', name: 'Comisioane', icon: '💰' },
