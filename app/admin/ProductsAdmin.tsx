@@ -791,21 +791,18 @@ export default function ProductsAdmin() {
               </p>
             </div>
 
-            {/* Description Field */}
+            {/* Description Field - Rich Text Editor */}
             <div>
               <label className="block text-sm font-bold text-neutral-900 mb-2">
-                Descriere Produs
+                Descriere Completă (Rich Text)
               </label>
-              <textarea
+              <RichTextEditor
                 value={newProduct.description}
-                onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                className="w-full border-2 border-neutral-500 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Descriere detaliată a produsului, specificații tehnice, caracteristici..."
-                rows={4}
-                data-testid="field-description"
+                onChange={(html) => setNewProduct({...newProduct, description: html})}
+                placeholder="Descriere detaliată cu formatare: bold, italic, liste, headings..."
               />
               <p className="text-xs text-neutral-600 mt-1">
-                Descrierea va fi afișată pe pagina produsului și va ajuta la SEO
+                Folosește toolbar-ul pentru formatare. Descrierea va fi afișată pe pagina produsului.
               </p>
             </div>
 
