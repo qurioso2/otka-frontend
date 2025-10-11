@@ -15,6 +15,7 @@ import WorkflowExplainer from './WorkflowExplainer';
 const tabs = [
   { id: 'overview', name: 'Prezentare Generală', icon: '📊' },
   { id: 'products', name: 'Produse', icon: '📦' },
+  { id: 'import', name: 'Import Catalog', icon: '📥' },
   { id: 'users', name: 'Utilizatori & Parteneri', icon: '👥' },
   { id: 'resources', name: 'Resurse Parteneri', icon: '📚' },
   { id: 'public-assets', name: 'Imagini Publice', icon: '🖼️' },
