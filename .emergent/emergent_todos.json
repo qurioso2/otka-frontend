@@ -1,26 +1,26 @@
 [
   {
     "content": "Test and fix product addition in admin interface",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Test and fix product edit functionality",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Test and fix product delete functionality",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Create import API for price lists (CSV/Excel)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Create admin UI for importing price lists",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Test complete product CRUD workflow",
-    "status": "pending"
+    "status": "in_progress"
   }
 ]
