@@ -353,7 +353,7 @@ export default function ProductsAdmin() {
       sku: product.sku,
       name: product.name,
       price_public_ttc: product.price_public_ttc.toString(),
-      price_original: '',
+      price_original: (product as any).price_original?.toString() || '',
       price_partner_net: product.price_partner_net.toString(),
       stock_qty: product.stock_qty.toString(),
       description: product.description || '',
