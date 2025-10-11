@@ -134,8 +134,8 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
         </div>
       )}
 
-      {/* Control produse per pagină */}
-      <div className="mb-6 flex items-center justify-between">
+      {/* Control produse per pagină și sortare */}
+      <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <p className="text-sm text-neutral-600">
           Afișate <span className="font-semibold text-neutral-900">{rows.length}</span> produse
           {selectedCategory !== 'all' && (
@@ -144,19 +144,36 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
             </span>
           )}
         </p>
-        <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-neutral-700">Produse per pagină:</label>
-          <select
-            value={itemsPerPage}
-            onChange={(e) => setItemsPerPage(Number(e.target.value))}
-            className="px-3 py-1.5 border-2 border-neutral-300 rounded-lg text-sm font-medium focus:border-blue-500 focus:outline-none"
-          >
-            <option value={12}>12</option>
-            <option value={18}>18</option>
-            <option value={24}>24</option>
-            <option value={48}>48</option>
-            <option value={1000}>Toate</option>
-          </select>
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Sortare */}
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-neutral-700">Sortare:</label>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as any)}
+              className="px-3 py-1.5 border-2 border-neutral-300 rounded-lg text-sm font-medium focus:border-blue-500 focus:outline-none"
+            >
+              <option value="default">Implicit</option>
+              <option value="price_asc">Preț crescător</option>
+              <option value="price_desc">Preț descrescător</option>
+            </select>
+          </div>
+          
+          {/* Produse per pagină */}
+          <div className="flex items-center gap-2">
+            <label className="text-sm font-medium text-neutral-700">Per pagină:</label>
+            <select
+              value={itemsPerPage}
+              onChange={(e) => setItemsPerPage(Number(e.target.value))}
+              className="px-3 py-1.5 border-2 border-neutral-300 rounded-lg text-sm font-medium focus:border-blue-500 focus:outline-none"
+            >
+              <option value={12}>12</option>
+              <option value={18}>18</option>
+              <option value={24}>24</option>
+              <option value={48}>48</option>
+              <option value={1000}>Toate</option>
+            </select>
+          </div>
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
