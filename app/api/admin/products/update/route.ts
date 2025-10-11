@@ -64,8 +64,14 @@ export async function POST(request: NextRequest) {
     if (updateData.description !== undefined) {
       productToUpdate.description = updateData.description?.trim() || null;
     }
+    if (updateData.summary !== undefined) {
+      productToUpdate.summary = updateData.summary?.trim() || null;
+    }
     if (updateData.category !== undefined) {
       productToUpdate.category = updateData.category?.trim() || null;
+    }
+    if (updateData.brand_id !== undefined) {
+      productToUpdate.brand_id = updateData.brand_id ? (typeof updateData.brand_id === 'number' ? updateData.brand_id : parseInt(updateData.brand_id)) : null;
     }
 
     console.log('Updating product with data:', productToUpdate);
