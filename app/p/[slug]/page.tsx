@@ -1,5 +1,6 @@
 import { supabase } from "../../../lib/supabaseClient";
 import type { Database } from "../../../types/supabase";
+import type { Metadata } from 'next';
 import Link from "next/link";
 import AddToCartClient from './AddToCartClient';
 import ProductGallery from './ProductGallery';
@@ -9,6 +10,58 @@ export const revalidate = 60; // ISR
 type ProductRow = Database["public"]["Tables"]["products"]["Row"];
 
 type PageProps = { params: Promise<{ slug: string }> };
+
+// Generate metadata for SEO + Social Sharing
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const { data } = await supabase
+    .from("products")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (!data) {
+    return {
+      title: 'Produs negăsit | OTKA',
+    };
+  }
+
+  const p = data as ProductRow;
+  const galleryArr = Array.isArray(p.gallery) ? (p.gallery as unknown[]).filter((x): x is string => typeof x === 'string') : [];
+  const img = galleryArr?.[0] || '/images/product-placeholder.jpg';
+  const productUrl = `https://otka.ro/p/${p.slug}`;
+  const description = p.description || `${p.name} - Disponibil la OTKA. Preț: ${new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_public_ttc || 0)}`;
+
+  return {
+    title: `${p.name} | OTKA`,
+    description: description.substring(0, 160),
+    openGraph: {
+      title: p.name,
+      description: description.substring(0, 160),
+      url: productUrl,
+      siteName: 'OTKA',
+      images: [
+        {
+          url: img,
+          width: 1200,
+          height: 630,
+          alt: p.name,
+        },
+      ],
+      locale: 'ro_RO',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: p.name,
+      description: description.substring(0, 160),
+      images: [img],
+    },
+    alternates: {
+      canonical: productUrl,
+    },
+  };
+}
 
 export default async function ProductPage({ params }: PageProps) {
   const { slug } = await params;
@@ -31,6 +84,30 @@ export default async function ProductPage({ params }: PageProps) {
   const p = data as ProductRow;
   const galleryArr = Array.isArray(p.gallery) ? (p.gallery as unknown[]).filter((x): x is string => typeof x === 'string') : [];
   const img = galleryArr?.[0] || "/vercel.svg";
+  const productUrl = `https://otka.ro/p/${p.slug}`;
+  
+  // Schema.org Product markup for Google & search engines
+  const productSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: p.name,
+    description: p.description || `${p.name} disponibil la OTKA`,
+    image: galleryArr,
+    sku: p.sku,
+    offers: {
+      '@type': 'Offer',
+      url: productUrl,
+      priceCurrency: 'RON',
+      price: p.price_public_ttc || 0,
+      priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      itemCondition: p.condition === 'new' ? 'https://schema.org/NewCondition' : 'https://schema.org/UsedCondition',
+      availability: p.stock_qty > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      seller: {
+        '@type': 'Organization',
+        name: 'OTKA'
+      }
+    }
+  };
 
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 py-10">
