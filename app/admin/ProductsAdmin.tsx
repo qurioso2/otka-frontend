@@ -36,6 +36,7 @@ type Brand = {
 export default function ProductsAdmin() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeView, setActiveView] = useState<'list' | 'add' | 'import'>('list');
   const [newProduct, setNewProduct] = useState({
@@ -46,11 +47,15 @@ export default function ProductsAdmin() {
     price_partner_net: '',
     stock_qty: '',
     description: '',
+    summary: '',
     category: '',
+    brand_id: '',
     gallery: [] as string[]
   });
   const [showNewCategoryForm, setShowNewCategoryForm] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
+  const [showNewBrandForm, setShowNewBrandForm] = useState(false);
+  const [newBrandName, setNewBrandName] = useState('');
   // imageFiles removed - gallery managed by GalleryManager component
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
