@@ -13,7 +13,6 @@ interface ProductPublic {
   price_original?: number;
   stock_qty: number;
   gallery: unknown[] | null;
-  description?: string | null;
 }
 
 export default function ProductsInfinite({ initialRows }: { initialRows: ProductPublic[] }) {
