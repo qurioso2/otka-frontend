@@ -1,26 +1,22 @@
 [
   {
-    "content": "Test and fix product addition in admin interface",
+    "content": "Sync environment variables with Vercel naming",
+    "status": "in_progress"
+  },
+  {
+    "content": "Update .env.local with correct variable names",
     "status": "completed"
   },
   {
-    "content": "Test and fix product edit functionality",
-    "status": "completed"
+    "content": "Verify all code uses correct env variable names",
+    "status": "in_progress"
   },
   {
-    "content": "Test and fix product delete functionality",
-    "status": "completed"
+    "content": "Create Vercel deployment checklist",
+    "status": "pending"
   },
   {
-    "content": "Create import API for price lists (CSV/Excel)",
-    "status": "completed"
-  },
-  {
-    "content": "Create admin UI for importing price lists",
-    "status": "completed"
-  },
-  {
-    "content": "Test complete product CRUD workflow",
-    "status": "completed"
+    "content": "Test after Vercel deployment",
+    "status": "pending"
   }
 ]
