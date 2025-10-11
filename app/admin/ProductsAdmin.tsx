@@ -175,6 +175,7 @@ export default function ProductsAdmin() {
         stock_qty: stock_qty,
         gallery: galleryUrls,
         description: newProduct.description?.trim() || null,
+        category: newProduct.category?.trim() || null,
         // Adaugă price_original dacă este setat
         ...(newProduct.price_original && {
           price_original: parseFloat(newProduct.price_original)
