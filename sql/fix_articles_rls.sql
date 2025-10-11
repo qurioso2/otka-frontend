@@ -39,7 +39,7 @@ TO authenticated
 USING (
     EXISTS (
         SELECT 1 FROM public.users u 
-        WHERE u.id = auth.uid() 
+        WHERE u.email = auth.email() 
         AND u.role = 'admin'
     )
 );
@@ -52,7 +52,7 @@ TO authenticated
 WITH CHECK (
     EXISTS (
         SELECT 1 FROM public.users u 
-        WHERE u.id = auth.uid() 
+        WHERE u.email = auth.email() 
         AND u.role = 'admin'
     )
 );
@@ -65,14 +65,14 @@ TO authenticated
 USING (
     EXISTS (
         SELECT 1 FROM public.users u 
-        WHERE u.id = auth.uid() 
+        WHERE u.email = auth.email() 
         AND u.role = 'admin'
     )
 )
 WITH CHECK (
     EXISTS (
         SELECT 1 FROM public.users u 
-        WHERE u.id = auth.uid() 
+        WHERE u.email = auth.email() 
         AND u.role = 'admin'
     )
 );
@@ -85,7 +85,7 @@ TO authenticated
 USING (
     EXISTS (
         SELECT 1 FROM public.users u 
-        WHERE u.id = auth.uid() 
+        WHERE u.email = auth.email() 
         AND u.role = 'admin'
     )
 );
