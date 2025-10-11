@@ -1,22 +1,22 @@
 [
   {
-    "content": "Analyze current project structure and identify missing articles functionality",
-    "status": "completed"
+    "content": "Analyze ProductsAdmin component and identify bugs",
+    "status": "in_progress"
   },
   {
-    "content": "Create API endpoints for articles CRUD operations (list, create, update, delete)",
-    "status": "completed"
+    "content": "Fix product addition functionality",
+    "status": "pending"
   },
   {
-    "content": "Create ArticlesAdmin component for admin interface",
-    "status": "completed"
+    "content": "Fix product edit functionality",
+    "status": "pending"
   },
   {
-    "content": "Add Articles tab to AdminDashboard",
-    "status": "completed"
+    "content": "Fix product delete functionality",
+    "status": "pending"
   },
   {
-    "content": "Test article creation and deletion functionality",
-    "status": "completed"
+    "content": "Test all product CRUD operations",
+    "status": "pending"
   }
 ]
