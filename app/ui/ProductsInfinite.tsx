@@ -19,26 +19,33 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
   const [rows, setRows] = useState<ProductPublic[]>(initialRows);
   const [loading, setLoading] = useState(false);
   const [offset, setOffset] = useState(initialRows.length);
+  const [itemsPerPage, setItemsPerPage] = useState(18);
+  const [hasMore, setHasMore] = useState(true);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const io = new IntersectionObserver(async (entries) => {
-      if (entries[0].isIntersecting && !loading) {
+      if (entries[0].isIntersecting && !loading && hasMore) {
         setLoading(true);
         try {
-          const res = await fetch(`/api/public/products?offset=${offset}&limit=18`, { cache: 'no-store' });
+          const res = await fetch(`/api/public/products?offset=${offset}&limit=${itemsPerPage}`, { cache: 'no-store' });
           const data = await res.json();
           if (Array.isArray(data) && data.length) {
             setRows((prev) => [...prev, ...data]);
             setOffset((o) => o + data.length);
+            if (data.length < itemsPerPage) {
+              setHasMore(false);
+            }
+          } else {
+            setHasMore(false);
           }
         } catch {}
         finally { setLoading(false); }
       }
     }, { threshold: 0.2 });
-    if (sentinelRef.current) io.observe(sentinelRef.current);
+    if (sentinelRef.current && hasMore) io.observe(sentinelRef.current);
     return () => io.disconnect();
-  }, [offset, loading]);
+  }, [offset, loading, itemsPerPage, hasMore]);
 
   return (
     <section id="produse" className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
