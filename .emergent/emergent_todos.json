@@ -1,58 +1,54 @@
 [
   {
-    "content": "Fix SQL view products_public - elimină created_at care nu există",
-    "status": "completed"
+    "content": "Homepage: Adaugă sortare după preț (crescator/descrescător)",
+    "status": "pending"
   },
   {
-    "content": "Verifică schema products și adaugă coloana category dacă lipsește",
-    "status": "completed"
+    "content": "Creează tabel brands în DB (SQL)",
+    "status": "pending"
   },
   {
-    "content": "FAZA B.1: Marcare tabel categories ca COMPLETED (deja rulat)",
-    "status": "completed"
+    "content": "API CRUD pentru brands (admin)",
+    "status": "pending"
   },
   {
-    "content": "FAZA B.2: API create category endpoint",
-    "status": "completed"
+    "content": "Adaugă coloana brand_id în products",
+    "status": "pending"
   },
   {
-    "content": "FAZA B.2: API update category endpoint",
-    "status": "completed"
+    "content": "ProductsAdmin: Dropdown brands + adaugă inline",
+    "status": "pending"
   },
   {
-    "content": "FAZA B.2: API delete category endpoint",
-    "status": "completed"
+    "content": "FAZA C: Instală TipTap dependencies",
+    "status": "pending"
   },
   {
-    "content": "FAZA B.3: Modifică ProductsAdmin - adaugă câmp category în form",
-    "status": "completed"
+    "content": "FAZA C: Creează RichTextEditor component",
+    "status": "pending"
   },
   {
-    "content": "FAZA B.3: Adaugă dropdown categorii cu buton inline de adăugare",
-    "status": "completed"
+    "content": "FAZA C: Adaugă summary field în DB",
+    "status": "pending"
   },
   {
-    "content": "FAZA B.3: Update API products create/update pentru a salva category",
-    "status": "completed"
+    "content": "FAZA C: Integrează RichTextEditor în ProductsAdmin",
+    "status": "pending"
   },
   {
-    "content": "FAZA B.4: Creează API public pentru listare categorii",
-    "status": "completed"
+    "content": "FAZA C: Update Product Page - Summary box + Full description",
+    "status": "pending"
   },
   {
-    "content": "FAZA B.4: Modifică ProductsInfinite - adaugă filtre categorii",
-    "status": "completed"
+    "content": "FAZA D: Implementează LocalStorage recent viewed",
+    "status": "pending"
   },
   {
-    "content": "FAZA B.4: API list products - suport pentru filtrare după category",
-    "status": "completed"
+    "content": "FAZA D: Creează RecentViewedCarousel component",
+    "status": "pending"
   },
   {
-    "content": "Rulează SQL-urile necesare în Supabase",
-    "status": "completed"
-  },
-  {
-    "content": "Documentare completă sistem categorii",
-    "status": "completed"
+    "content": "FAZA D: Integrează carousel în Product Page",
+    "status": "pending"
   }
 ]
