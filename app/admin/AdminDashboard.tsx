@@ -9,6 +9,7 @@ import OrdersAdmin from './OrdersAdmin';
 import ResourcesAdmin from './ResourcesAdmin';
 import PublicAssetsAdmin from './PublicAssetsAdmin';
 import ArticlesAdmin from './ArticlesAdmin';
+import ImportCatalog from './ImportCatalog';
 import WorkflowExplainer from './WorkflowExplainer';
 
 const tabs = [
