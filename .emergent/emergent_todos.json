@@ -40,15 +40,31 @@
     "status": "completed"
   },
   {
-    "content": "FAZA 2: Creare schema DB pentru quotes, quote_items, quote_item_options",
+    "content": "Implementare Gallery Manager cu drag & drop pentru produse",
+    "status": "completed"
+  },
+  {
+    "content": "SEO: Adăugare descriere în lista produse (landing page)",
+    "status": "in_progress"
+  },
+  {
+    "content": "SEO: Adăugare descriere în pagina individuală produs",
     "status": "pending"
   },
   {
-    "content": "FAZA 2: API endpoints pentru CRUD quotes + add/update/remove items",
+    "content": "SEO: Open Graph tags pentru Facebook/WhatsApp",
     "status": "pending"
   },
   {
-    "content": "FAZA 2: QuoteDraft UI cu configurare produse (qty, finish, custom size)",
+    "content": "SEO: Twitter Cards pentru X",
+    "status": "pending"
+  },
+  {
+    "content": "SEO: Schema.org Product markup (JSON-LD)",
+    "status": "pending"
+  },
+  {
+    "content": "SEO: Google AI Search optimization",
     "status": "pending"
   }
 ]
