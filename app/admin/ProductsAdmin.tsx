@@ -292,6 +292,7 @@ export default function ProductsAdmin() {
       price_partner_net: product.price_partner_net.toString(),
       stock_qty: product.stock_qty.toString(),
       description: product.description || '',
+      category: product.category || '',
       gallery: product.gallery || []
     });
     setActiveView('add');
