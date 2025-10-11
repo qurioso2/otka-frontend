@@ -18,6 +18,8 @@ import WorkflowExplainer from './WorkflowExplainer';
 const tabs = [
   { id: 'overview', name: 'Prezentare Generală', icon: '📊' },
   { id: 'products', name: 'Produse', icon: '📦' },
+  { id: 'categories', name: 'Categorii', icon: '🏷️' },
+  { id: 'brands', name: 'Branduri', icon: '⭐' },
   { id: 'import', name: 'Import CSV/Excel', icon: '📥' },
   { id: 'import-pdf', name: 'Import PDF (AI)', icon: '✨' },
   { id: 'users', name: 'Utilizatori & Parteneri', icon: '👥' },
