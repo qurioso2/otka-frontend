@@ -122,17 +122,30 @@ export default async function ProductPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
 
+      {/* Track recent viewed */}
+      <TrackRecentViewed 
+        product={{
+          id: p.id as number,
+          slug: p.slug,
+          name: p.name,
+          price: p.price_public_ttc || 0,
+          image: img
+        }}
+      />
+
       <div className="mx-auto max-w-5xl px-4 sm:px-6 py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <ProductGallery images={galleryArr} productName={p.name} />
           <div>
             <h1 className="text-3xl font-semibold tracking-tight text-neutral-900">{p.name}</h1>
             
-            {/* Description */}
-            {p.description && (
-              <p className="mt-4 text-neutral-700 leading-relaxed">
-                {p.description}
-              </p>
+            {/* Summary Box */}
+            {summary && (
+              <div className="mt-4 p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
+                <p className="text-neutral-800 leading-relaxed font-medium">
+                  {summary}
+                </p>
+              </div>
             )}
 
             <div className="mt-4 text-neutral-600 text-sm">TVA inclus</div>
