@@ -1,22 +1,18 @@
 [
   {
-    "content": "Fix RichTextEditor - butoanele nu funcționează",
-    "status": "completed"
+    "content": "Adaugă search bar pe homepage cu căutare după nume",
+    "status": "in_progress"
   },
   {
-    "content": "Fix persistență Preț de Listă (price_original) la edit",
-    "status": "completed"
+    "content": "Adaugă dropdown filtrare după brand/producător",
+    "status": "pending"
   },
   {
-    "content": "Product Gallery - modal imagine mare la click",
-    "status": "completed"
+    "content": "Update API products pentru search și filter brand",
+    "status": "pending"
   },
   {
-    "content": "Homepage - optimizare automată imagini thumbnail",
-    "status": "completed"
-  },
-  {
-    "content": "Product Page - optimizare imagini + modal mare",
-    "status": "completed"
+    "content": "Integrează search cu filtre existente (categorii + sortare)",
+    "status": "pending"
   }
 ]
