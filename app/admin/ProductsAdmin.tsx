@@ -569,7 +569,7 @@ export default function ProductsAdmin() {
                     description: '', 
                     gallery: []
                   });
-                  setImageFiles(null);
+                  // imageFiles state removed
                 }}
                 className="px-4 py-2 border-2 border-neutral-500 rounded-lg text-neutral-900 hover:bg-neutral-50 font-bold"
                 disabled={loading}
