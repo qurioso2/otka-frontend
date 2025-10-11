@@ -356,7 +356,9 @@ export default function ProductsAdmin() {
       price_partner_net: product.price_partner_net.toString(),
       stock_qty: product.stock_qty.toString(),
       description: product.description || '',
+      summary: (product as any).summary || '',
       category: product.category || '',
+      brand_id: (product as any).brand_id?.toString() || '',
       gallery: product.gallery || []
     });
     setActiveView('add');
