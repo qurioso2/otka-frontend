@@ -19,12 +19,27 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
   }, [value]);
 
   const execCommand = (command: string, value?: string) => {
-    document.execCommand(command, false, value);
-    if (editorRef.current) {
-      editorRef.current.focus();
-      // Trigger change after command
-      setTimeout(() => updateContent(), 0);
+    if (!editorRef.current) return;
+    
+    editorRef.current.focus();
+    
+    // Execute command
+    if (command === 'formatBlock') {
+      // For block formatting, we need to handle it differently
+      const selection = window.getSelection();
+      if (selection && selection.rangeCount > 0) {
+        document.execCommand(command, false, value);
+      }
+    } else {
+      document.execCommand(command, false, value);
     }
+    
+    // Trigger change after command
+    setTimeout(() => {
+      if (editorRef.current) {
+        onChange(editorRef.current.innerHTML);
+      }
+    }, 10);
   };
 
   const updateContent = () => {
@@ -50,6 +65,60 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
       e.preventDefault();
       execCommand('italic');
     }
+    // Handle Ctrl/Cmd + U for underline
+    if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+      e.preventDefault();
+      execCommand('underline');
+    }
+  };
+
+  const applyHeading = (tag: 'h2' | 'h3' | 'p') => {
+    if (!editorRef.current) return;
+    
+    editorRef.current.focus();
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+    
+    try {
+      // Try to use formatBlock
+      document.execCommand('formatBlock', false, `<${tag}>`);
+    } catch (e) {
+      // Fallback: wrap selection in tag
+      const range = selection.getRangeAt(0);
+      const selectedText = range.toString();
+      const element = document.createElement(tag);
+      element.textContent = selectedText || 'Text';
+      range.deleteContents();
+      range.insertNode(element);
+    }
+    
+    setTimeout(() => updateContent(), 10);
+  };
+
+  const toggleList = (ordered: boolean) => {
+    if (!editorRef.current) return;
+    
+    editorRef.current.focus();
+    const command = ordered ? 'insertOrderedList' : 'insertUnorderedList';
+    document.execCommand(command, false);
+    
+    setTimeout(() => updateContent(), 10);
+  };
+
+  const clearFormatting = () => {
+    if (!editorRef.current) return;
+    
+    editorRef.current.focus();
+    const selection = window.getSelection();
+    
+    if (selection && selection.rangeCount > 0) {
+      // Remove all formatting
+      document.execCommand('removeFormat', false);
+      // Also remove block formatting
+      document.execCommand('formatBlock', false, '<p>');
+    }
+    
+    setTimeout(() => updateContent(), 10);
   };
 
   return (
@@ -59,7 +128,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
         <button
           type="button"
           onMouseDown={(e) => {
-            e.preventDefault(); // Prevent focus loss
+            e.preventDefault();
             execCommand('bold');
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 font-bold text-sm transition"
@@ -85,7 +154,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
             execCommand('underline');
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 underline text-sm transition"
-          title="Underline"
+          title="Underline (Ctrl+U)"
         >
           <u>U</u>
         </button>
@@ -96,7 +165,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            execCommand('formatBlock', '<h2>');
+            applyHeading('h2');
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 font-bold text-sm transition"
           title="Heading 2"
@@ -107,7 +176,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            execCommand('formatBlock', '<h3>');
+            applyHeading('h3');
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 font-bold text-sm transition"
           title="Heading 3"
@@ -118,7 +187,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            execCommand('formatBlock', '<p>');
+            applyHeading('p');
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm transition"
           title="Paragraph"
@@ -132,7 +201,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            execCommand('insertUnorderedList');
+            toggleList(false);
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm transition"
           title="Bullet List"
@@ -143,7 +212,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            execCommand('insertOrderedList');
+            toggleList(true);
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm transition"
           title="Numbered List"
@@ -157,7 +226,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            execCommand('removeFormat');
+            clearFormatting();
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm text-red-600 transition"
           title="Clear Formatting"
