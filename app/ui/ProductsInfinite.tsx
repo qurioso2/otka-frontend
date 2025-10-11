@@ -75,7 +75,7 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
           const galleryArr = Array.isArray(p.gallery) ? (p.gallery as unknown[]).filter((x): x is string => typeof x === 'string') : null;
           const img = galleryArr?.[0] || "/images/product-placeholder.jpg";
           return (
-            <div key={p.id} className="group rounded-2xl border border-neutral-200 overflow-hidden bg-white transition-all duration-300">
+            <div key={p.id} className="group rounded-2xl border border-neutral-200 bg-white transition-all duration-300 relative">
               <Link href={`/p/${p.slug}`}>
                 <div className="aspect-[4/3] bg-neutral-50 overflow-hidden">
                   <ProductImage src={img} alt={p.name} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" />
