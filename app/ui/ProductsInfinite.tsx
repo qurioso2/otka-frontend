@@ -77,7 +77,7 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
           return (
             <div key={p.id} className="group rounded-2xl border border-neutral-200 bg-white transition-all duration-300 relative">
               <Link href={`/p/${p.slug}`}>
-                <div className="aspect-[4/3] bg-neutral-50 overflow-hidden">
+                <div className="aspect-[4/3] bg-neutral-50 overflow-hidden rounded-t-2xl">
                   <ProductImage src={img} alt={p.name} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 </div>
               </Link>
