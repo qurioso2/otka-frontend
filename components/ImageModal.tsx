@@ -8,9 +8,10 @@ interface ImageModalProps {
   images: string[];
   currentIndex: number;
   productName: string;
+  onImageChange?: (index: number) => void;
 }
 
-export default function ImageModal({ isOpen, onClose, images, currentIndex, productName }: ImageModalProps) {
+export default function ImageModal({ isOpen, onClose, images, currentIndex, productName, onImageChange }: ImageModalProps) {
   const [activeIndex, setActiveIndex] = useState(currentIndex);
 
   useEffect(() => {
@@ -36,11 +37,20 @@ export default function ImageModal({ isOpen, onClose, images, currentIndex, prod
   if (!isOpen) return null;
 
   const handlePrevious = () => {
-    setActiveIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+    const newIndex = activeIndex > 0 ? activeIndex - 1 : images.length - 1;
+    setActiveIndex(newIndex);
+    onImageChange?.(newIndex);
   };
 
   const handleNext = () => {
-    setActiveIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+    const newIndex = activeIndex < images.length - 1 ? activeIndex + 1 : 0;
+    setActiveIndex(newIndex);
+    onImageChange?.(newIndex);
+  };
+
+  const handleThumbnailClick = (index: number) => {
+    setActiveIndex(index);
+    onImageChange?.(index);
   };
 
   return (
@@ -116,7 +126,7 @@ export default function ImageModal({ isOpen, onClose, images, currentIndex, prod
               key={idx}
               onClick={(e) => {
                 e.stopPropagation();
-                setActiveIndex(idx);
+                handleThumbnailClick(idx);
               }}
               className={`flex-shrink-0 w-16 h-16 rounded overflow-hidden border-2 transition ${
                 idx === activeIndex ? 'border-white' : 'border-transparent opacity-60 hover:opacity-100'

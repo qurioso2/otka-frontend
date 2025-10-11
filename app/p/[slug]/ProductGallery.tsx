@@ -20,6 +20,10 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
     );
   }
 
+  const handleImageChange = (index: number) => {
+    setSelectedImage(index);
+  };
+
   return (
     <>
       <div className="space-y-4">
@@ -72,6 +76,7 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
         images={images}
         currentIndex={selectedImage}
         productName={productName}
+        onImageChange={handleImageChange}
       />
     </>
   );
