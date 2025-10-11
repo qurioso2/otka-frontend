@@ -117,9 +117,54 @@ export default function ProductsAdmin() {
     }
   };
 
+  const loadBrands = async () => {
+    try {
+      const res = await fetch('/api/admin/brands/list', { cache: 'no-store' });
+      if (!res.ok) throw new Error('Failed to load brands');
+      const data = await res.json();
+      setBrands(Array.isArray(data) ? data : []);
+    } catch (error: any) {
+      console.error('Error loading brands:', error);
+    }
+  };
+
+  const handleAddBrand = async () => {
+    if (!newBrandName.trim()) {
+      toast.error('Introduceți un nume pentru brand');
+      return;
+    }
+    
+    try {
+      const res = await fetch('/api/admin/brands/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: newBrandName.trim() })
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to create brand');
+      }
+
+      const data = await res.json();
+      toast.success('Brand adăugat cu succes!');
+      setNewBrandName('');
+      setShowNewBrandForm(false);
+      await loadBrands();
+      
+      // Set the newly created brand as selected
+      if (data.brand) {
+        setNewProduct({...newProduct, brand_id: data.brand.id.toString()});
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     loadProducts();
     loadCategories();
+    loadBrands();
   }, []);
 
   const uploadImages = async (files: FileList): Promise<string[]> => {
