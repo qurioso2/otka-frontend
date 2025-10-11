@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import GalleryManager from '@/components/GalleryManager';
+import RichTextEditor from '@/components/RichTextEditor';
 
 type Product = {
   id: number;
