@@ -273,13 +273,17 @@ export default function ProductsAdmin() {
         price_partner_net: '',
         stock_qty: '', 
         description: '',
+        summary: '',
         category: '',
+        brand_id: '',
         gallery: []
       });
       // imageFiles state removed
       setEditingProduct(null);
       setShowNewCategoryForm(false);
       setNewCategoryName('');
+      setShowNewBrandForm(false);
+      setNewBrandName('');
       
       await loadProducts();
       setActiveView('list');
