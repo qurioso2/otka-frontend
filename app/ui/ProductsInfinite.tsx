@@ -99,11 +99,47 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
   }, [offset, loading, itemsPerPage, hasMore, selectedCategory]);
 
   return (
-    <section className="mx-auto max-w-7xl px-4 sm:px-6 py-6">
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 py-6" id="produse">
+      {/* Category Filters */}
+      {categories.length > 0 && (
+        <div className="mb-6">
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
+                selectedCategory === 'all'
+                  ? 'bg-blue-600 text-white shadow-md'
+                  : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+              }`}
+            >
+              Toate
+            </button>
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.name)}
+                className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${
+                  selectedCategory === cat.name
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
+                }`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Control produse per pagină */}
       <div className="mb-6 flex items-center justify-between">
         <p className="text-sm text-neutral-600">
           Afișate <span className="font-semibold text-neutral-900">{rows.length}</span> produse
+          {selectedCategory !== 'all' && (
+            <span className="ml-2 text-blue-600">
+              din categoria <strong>{selectedCategory}</strong>
+            </span>
+          )}
         </p>
         <div className="flex items-center gap-2">
           <label className="text-sm font-medium text-neutral-700">Produse per pagină:</label>
