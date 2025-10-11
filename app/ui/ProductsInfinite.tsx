@@ -69,7 +69,6 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
           </select>
         </div>
       </div>
-    <section id="produse" className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {rows.map((p) => {
           const galleryArr = Array.isArray(p.gallery) ? (p.gallery as unknown[]).filter((x): x is string => typeof x === 'string') : null;
