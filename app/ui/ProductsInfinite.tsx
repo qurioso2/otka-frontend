@@ -14,10 +14,20 @@ interface ProductPublic {
   price_original?: number;
   stock_qty: number;
   gallery: unknown[] | null;
+  category?: string;
+}
+
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  sort_order: number;
 }
 
 export default function ProductsInfinite({ initialRows }: { initialRows: ProductPublic[] }) {
   const [rows, setRows] = useState<ProductPublic[]>(initialRows);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [loading, setLoading] = useState(false);
   const [offset, setOffset] = useState(initialRows.length);
   const [itemsPerPage, setItemsPerPage] = useState(18);
