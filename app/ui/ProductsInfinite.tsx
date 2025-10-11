@@ -34,12 +34,52 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
   const [hasMore, setHasMore] = useState(true);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
+  // Load categories on mount
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const res = await fetch('/api/public/categories', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          setCategories(Array.isArray(data) ? data : []);
+        }
+      } catch (error) {
+        console.error('Error loading categories:', error);
+      }
+    };
+    loadCategories();
+  }, []);
+
+  // Reload products when category changes
+  useEffect(() => {
+    const loadProducts = async () => {
+      setLoading(true);
+      try {
+        const categoryParam = selectedCategory !== 'all' ? `&category=${encodeURIComponent(selectedCategory)}` : '';
+        const res = await fetch(`/api/public/products?offset=0&limit=${itemsPerPage}${categoryParam}`, { cache: 'no-store' });
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setRows(data);
+          setOffset(data.length);
+          setHasMore(data.length >= itemsPerPage);
+        }
+      } catch (error) {
+        console.error('Error loading products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadProducts();
+  }, [selectedCategory, itemsPerPage]);
+
+  // Infinite scroll
   useEffect(() => {
     const io = new IntersectionObserver(async (entries) => {
       if (entries[0].isIntersecting && !loading && hasMore) {
         setLoading(true);
         try {
-          const res = await fetch(`/api/public/products?offset=${offset}&limit=${itemsPerPage}`, { cache: 'no-store' });
+          const categoryParam = selectedCategory !== 'all' ? `&category=${encodeURIComponent(selectedCategory)}` : '';
+          const res = await fetch(`/api/public/products?offset=${offset}&limit=${itemsPerPage}${categoryParam}`, { cache: 'no-store' });
           const data = await res.json();
           if (Array.isArray(data) && data.length) {
             setRows((prev) => [...prev, ...data]);
@@ -56,7 +96,7 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
     }, { threshold: 0.2 });
     if (sentinelRef.current && hasMore) io.observe(sentinelRef.current);
     return () => io.disconnect();
-  }, [offset, loading, itemsPerPage, hasMore]);
+  }, [offset, loading, itemsPerPage, hasMore, selectedCategory]);
 
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6 py-6">
