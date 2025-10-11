@@ -81,7 +81,8 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
         setLoading(true);
         try {
           const categoryParam = selectedCategory !== 'all' ? `&category=${encodeURIComponent(selectedCategory)}` : '';
-          const res = await fetch(`/api/public/products?offset=${offset}&limit=${itemsPerPage}${categoryParam}`, { cache: 'no-store' });
+          const sortParam = sortBy !== 'default' ? `&sort=${sortBy}` : '';
+          const res = await fetch(`/api/public/products?offset=${offset}&limit=${itemsPerPage}${categoryParam}${sortParam}`, { cache: 'no-store' });
           const data = await res.json();
           if (Array.isArray(data) && data.length) {
             setRows((prev) => [...prev, ...data]);
@@ -98,7 +99,7 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
     }, { threshold: 0.2 });
     if (sentinelRef.current && hasMore) io.observe(sentinelRef.current);
     return () => io.disconnect();
-  }, [offset, loading, itemsPerPage, hasMore, selectedCategory]);
+  }, [offset, loading, itemsPerPage, hasMore, selectedCategory, sortBy]);
 
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6 py-6" id="produse">
