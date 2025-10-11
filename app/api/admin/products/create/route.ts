@@ -35,7 +35,9 @@ export async function POST(request: NextRequest) {
       stock_qty,
       gallery,
       description,
-      category
+      summary,
+      category,
+      brand_id
     } = body;
 
     // Validation
