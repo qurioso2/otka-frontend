@@ -60,8 +60,53 @@ export default function ProductsAdmin() {
     }
   };
 
+  const loadCategories = async () => {
+    try {
+      const res = await fetch('/api/admin/categories/list', { cache: 'no-store' });
+      if (!res.ok) throw new Error('Failed to load categories');
+      const data = await res.json();
+      setCategories(Array.isArray(data) ? data : []);
+    } catch (error: any) {
+      console.error('Error loading categories:', error);
+    }
+  };
+
+  const handleAddCategory = async () => {
+    if (!newCategoryName.trim()) {
+      toast.error('Introduceți un nume pentru categorie');
+      return;
+    }
+    
+    try {
+      const res = await fetch('/api/admin/categories/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: newCategoryName.trim() })
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to create category');
+      }
+
+      const data = await res.json();
+      toast.success('Categorie adăugată cu succes!');
+      setNewCategoryName('');
+      setShowNewCategoryForm(false);
+      await loadCategories();
+      
+      // Set the newly created category as selected
+      if (data.category) {
+        setNewProduct({...newProduct, category: data.category.name});
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     loadProducts();
+    loadCategories();
   }, []);
 
   const uploadImages = async (files: FileList): Promise<string[]> => {
