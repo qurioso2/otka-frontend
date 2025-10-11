@@ -25,6 +25,14 @@ type Category = {
   sort_order: number;
 };
 
+type Brand = {
+  id: number;
+  name: string;
+  slug: string;
+  active: boolean;
+  sort_order: number;
+};
+
 export default function ProductsAdmin() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
