@@ -48,6 +48,27 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
   }, [offset, loading, itemsPerPage, hasMore]);
 
   return (
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 py-6">
+      {/* Control produse per pagină */}
+      <div className="mb-6 flex items-center justify-between">
+        <p className="text-sm text-neutral-600">
+          Afișate <span className="font-semibold text-neutral-900">{rows.length}</span> produse
+        </p>
+        <div className="flex items-center gap-2">
+          <label className="text-sm font-medium text-neutral-700">Produse per pagină:</label>
+          <select
+            value={itemsPerPage}
+            onChange={(e) => setItemsPerPage(Number(e.target.value))}
+            className="px-3 py-1.5 border-2 border-neutral-300 rounded-lg text-sm font-medium focus:border-blue-500 focus:outline-none"
+          >
+            <option value={12}>12</option>
+            <option value={18}>18</option>
+            <option value={24}>24</option>
+            <option value={48}>48</option>
+            <option value={1000}>Toate</option>
+          </select>
+        </div>
+      </div>
     <section id="produse" className="mx-auto max-w-6xl px-4 sm:px-6 py-12">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {rows.map((p) => {
