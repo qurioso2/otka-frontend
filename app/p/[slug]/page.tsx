@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import Link from "next/link";
 import AddToCartClient from './AddToCartClient';
 import ProductGallery from './ProductGallery';
+import ShareButtons from '@/components/ShareButtons';
 
 export const revalidate = 60; // ISR
 
@@ -155,6 +156,16 @@ export default async function ProductPage({ params }: PageProps) {
 
             <div className="mt-6">
               <AddToCartClient item={{ id: p.id as number, sku: p.sku, name: p.name, price: p.price_public_ttc || 0, image: img }} />
+            </div>
+
+            {/* Share Buttons */}
+            <div className="mt-6 pt-6 border-t border-neutral-200">
+              <ShareButtons 
+                url={productUrl}
+                title={p.name}
+                description={p.description || undefined}
+                compact={false}
+              />
             </div>
 
             <div className="mt-6">
