@@ -838,11 +838,15 @@ export default function ProductsAdmin() {
                     price_partner_net: '',
                     stock_qty: '', 
                     description: '',
+                    summary: '',
                     category: '',
+                    brand_id: '',
                     gallery: []
                   });
                   setShowNewCategoryForm(false);
                   setNewCategoryName('');
+                  setShowNewBrandForm(false);
+                  setNewBrandName('');
                   // imageFiles state removed
                 }}
                 className="px-4 py-2 border-2 border-neutral-500 rounded-lg text-neutral-900 hover:bg-neutral-50 font-bold"
