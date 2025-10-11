@@ -1,7 +1,7 @@
 [
   {
     "content": "Sync environment variables with Vercel naming",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Update .env.local with correct variable names",
@@ -9,11 +9,11 @@
   },
   {
     "content": "Verify all code uses correct env variable names",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Create Vercel deployment checklist",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Test after Vercel deployment",
