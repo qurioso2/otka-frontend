@@ -10,5 +10,25 @@
   {
     "content": "FAZA A.3: Fix clipire 'Se încarcă...'",
     "status": "completed"
+  },
+  {
+    "content": "Social Share: Butoane Facebook/WhatsApp/X/Instagram",
+    "status": "completed"
+  },
+  {
+    "content": "FAZA B.1: Creare tabel categories + SQL setup",
+    "status": "in_progress"
+  },
+  {
+    "content": "FAZA B.2: API endpoints pentru categorii CRUD",
+    "status": "pending"
+  },
+  {
+    "content": "FAZA B.3: UI Admin - Dropdown categorii + Adăugare inline",
+    "status": "pending"
+  },
+  {
+    "content": "FAZA B.4: Filtrare produse pe homepage după categorie",
+    "status": "pending"
   }
 ]
