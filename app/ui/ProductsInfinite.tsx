@@ -28,6 +28,7 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
   const [rows, setRows] = useState<ProductPublic[]>(initialRows);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<'default' | 'price_asc' | 'price_desc'>('default');
   const [loading, setLoading] = useState(false);
   const [offset, setOffset] = useState(initialRows.length);
   const [itemsPerPage, setItemsPerPage] = useState(18);
