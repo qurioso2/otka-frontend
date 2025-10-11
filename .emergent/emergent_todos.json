@@ -1,18 +1,22 @@
 [
   {
-    "content": "Adaugă search bar pe homepage cu căutare după nume",
-    "status": "completed"
+    "content": "Fix RichTextEditor - H2, H3, P, Lists, Clear nu funcționează",
+    "status": "in_progress"
   },
   {
-    "content": "Adaugă dropdown filtrare după brand/producător",
-    "status": "completed"
+    "content": "Creează Management UI pentru Categorii (lista, edit, delete, toggle active)",
+    "status": "pending"
   },
   {
-    "content": "Update API products pentru search și filter brand",
-    "status": "completed"
+    "content": "Creează Management UI pentru Branduri (lista, edit, delete, toggle active)",
+    "status": "pending"
   },
   {
-    "content": "Integrează search cu filtre existente (categorii + sortare)",
-    "status": "completed"
+    "content": "Adaugă tab-uri în Admin Dashboard pentru Categories și Brands",
+    "status": "pending"
+  },
+  {
+    "content": "Verifică că API-urile public afișează doar active=true",
+    "status": "pending"
   }
 ]
