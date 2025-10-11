@@ -1,7 +1,7 @@
 [
   {
     "content": "Fix SQL view products_public - elimină created_at care nu există",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Verifică schema products și adaugă coloana category dacă lipsește",
@@ -9,7 +9,7 @@
   },
   {
     "content": "FAZA B.1: Marcare tabel categories ca COMPLETED (deja rulat)",
-    "status": "in_progress"
+    "status": "pending"
   },
   {
     "content": "FAZA B.2: API create category endpoint",
