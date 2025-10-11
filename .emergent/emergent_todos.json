@@ -66,5 +66,17 @@
   {
     "content": "SEO: Google AI Search optimization",
     "status": "completed"
+  },
+  {
+    "content": "FAZA A.1: Afișare preț listă tăiat + badge discount homepage",
+    "status": "in_progress"
+  },
+  {
+    "content": "FAZA A.2: Control produse per pagină (12/24/48/Toate)",
+    "status": "pending"
+  },
+  {
+    "content": "FAZA A.3: Fix clipire 'Se încarcă...'",
+    "status": "pending"
   }
 ]
