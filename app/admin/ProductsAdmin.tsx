@@ -233,7 +233,9 @@ export default function ProductsAdmin() {
         stock_qty: stock_qty,
         gallery: galleryUrls,
         description: newProduct.description?.trim() || null,
+        summary: newProduct.summary?.trim() || null,
         category: newProduct.category?.trim() || null,
+        brand_id: newProduct.brand_id ? parseInt(newProduct.brand_id) : null,
         // Adaugă price_original dacă este setat
         ...(newProduct.price_original && {
           price_original: parseFloat(newProduct.price_original)
