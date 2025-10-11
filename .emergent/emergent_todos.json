@@ -1,82 +1,14 @@
 [
   {
-    "content": "Login ca admin și testare interfață LIVE",
-    "status": "completed"
-  },
-  {
-    "content": "Test adăugare articol - identificare eroare",
-    "status": "completed"
-  },
-  {
-    "content": "Identificat: Tabelul articles nu există în Supabase",
-    "status": "completed"
-  },
-  {
-    "content": "Rulare SQL pentru creare tabel articles în Supabase",
-    "status": "completed"
-  },
-  {
-    "content": "Test CRUD Articles cu Supabase MCP - verificare funcționalitate",
-    "status": "completed"
-  },
-  {
-    "content": "Test CRUD Products cu Supabase MCP - verificare funcționalitate",
-    "status": "completed"
-  },
-  {
-    "content": "Implementare Import PDF cu GPT-4o Vision - extracție cataloage",
-    "status": "completed"
-  },
-  {
-    "content": "FAZA 1: Extend /api/search/ai pentru suport imagine (GPT-4o Vision descriptors)",
-    "status": "completed"
-  },
-  {
-    "content": "FAZA 1: Creare componente UI - AISearch cu text + image upload",
-    "status": "completed"
-  },
-  {
-    "content": "FAZA 1: AIResultsGrid cu acțiune Adăugă în ofertă",
-    "status": "completed"
-  },
-  {
-    "content": "Implementare Gallery Manager cu drag & drop pentru produse",
-    "status": "completed"
-  },
-  {
-    "content": "SEO: Adăugare descriere în lista produse (landing page)",
-    "status": "completed"
-  },
-  {
-    "content": "SEO: Adăugare descriere în pagina individuală produs",
-    "status": "completed"
-  },
-  {
-    "content": "SEO: Open Graph tags pentru Facebook/WhatsApp",
-    "status": "completed"
-  },
-  {
-    "content": "SEO: Twitter Cards pentru X",
-    "status": "completed"
-  },
-  {
-    "content": "SEO: Schema.org Product markup (JSON-LD)",
-    "status": "completed"
-  },
-  {
-    "content": "SEO: Google AI Search optimization",
-    "status": "completed"
-  },
-  {
     "content": "FAZA A.1: Afișare preț listă tăiat + badge discount homepage",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "FAZA A.2: Control produse per pagină (12/24/48/Toate)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA A.3: Fix clipire 'Se încarcă...'",
-    "status": "pending"
+    "status": "completed"
   }
 ]
