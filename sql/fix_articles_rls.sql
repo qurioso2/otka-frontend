@@ -113,10 +113,13 @@ END $$;
 -- INSERT INTO public.articles (slug, title, body, published) 
 -- VALUES ('test-rls-fix', 'Test RLS Fix', 'Testing after RLS fix', false);
 
-RAISE NOTICE '====================================';
-RAISE NOTICE 'RLS FIX COMPLETE!';
-RAISE NOTICE 'Next steps:';
-RAISE NOTICE '1. Ensure admin@otka.ro exists in users table with role=admin';
-RAISE NOTICE '2. Test CRUD from application';
-RAISE NOTICE '3. Check logs for any auth issues';
-RAISE NOTICE '====================================';
+DO $$
+BEGIN
+    RAISE NOTICE '====================================';
+    RAISE NOTICE 'RLS FIX COMPLETE!';
+    RAISE NOTICE 'Next steps:';
+    RAISE NOTICE '1. Ensure admin@otka.ro exists in users table with role=admin';
+    RAISE NOTICE '2. Test CRUD from application';
+    RAISE NOTICE '3. Check logs for any auth issues';
+    RAISE NOTICE '====================================';
+END $$;
