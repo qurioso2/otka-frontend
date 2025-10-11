@@ -51,13 +51,14 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
     loadCategories();
   }, []);
 
-  // Reload products when category changes
+  // Reload products when category or sort changes
   useEffect(() => {
     const loadProducts = async () => {
       setLoading(true);
       try {
         const categoryParam = selectedCategory !== 'all' ? `&category=${encodeURIComponent(selectedCategory)}` : '';
-        const res = await fetch(`/api/public/products?offset=0&limit=${itemsPerPage}${categoryParam}`, { cache: 'no-store' });
+        const sortParam = sortBy !== 'default' ? `&sort=${sortBy}` : '';
+        const res = await fetch(`/api/public/products?offset=0&limit=${itemsPerPage}${categoryParam}${sortParam}`, { cache: 'no-store' });
         const data = await res.json();
         if (Array.isArray(data)) {
           setRows(data);
@@ -71,7 +72,7 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
       }
     };
     loadProducts();
-  }, [selectedCategory, itemsPerPage]);
+  }, [selectedCategory, sortBy, itemsPerPage]);
 
   // Infinite scroll
   useEffect(() => {
