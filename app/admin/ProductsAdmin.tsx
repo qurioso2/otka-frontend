@@ -223,11 +223,41 @@ export default function ProductsAdmin() {
   };
 
   const handleEditProduct = (product: Product) => {
-    toast.info('Funcția de editare va fi disponibilă în curând');
+    setEditingProduct(product);
+    setNewProduct({
+      sku: product.sku,
+      name: product.name,
+      price_public_ttc: product.price_public_ttc.toString(),
+      price_original: '',
+      price_partner_net: product.price_partner_net.toString(),
+      stock_qty: product.stock_qty.toString(),
+      description: product.description || '',
+      gallery: product.gallery || []
+    });
+    setActiveView('add');
   };
 
   const handleDeleteProduct = async (productId: number) => {
-    toast.info('Funcția de ștergere va fi disponibilă în curând');
+    if (!confirm('Sigur doriți să ștergeți acest produs?')) return;
+    
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/products/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: productId })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to delete product');
+
+      toast.success('Produs șters cu succes!');
+      await loadProducts();
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
