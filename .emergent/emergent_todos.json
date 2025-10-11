@@ -1,31 +1,31 @@
 [
   {
     "content": "Fix SQL view products_public - elimină created_at care nu există",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Verifică schema products și adaugă coloana category dacă lipsește",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA B.1: Marcare tabel categories ca COMPLETED (deja rulat)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA B.2: API create category endpoint",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA B.2: API update category endpoint",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA B.2: API delete category endpoint",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA B.3: Modifică ProductsAdmin - adaugă câmp category în form",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "FAZA B.3: Adaugă dropdown categorii cu buton inline de adăugare",
