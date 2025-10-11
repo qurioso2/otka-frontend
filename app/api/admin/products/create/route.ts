@@ -34,7 +34,8 @@ export async function POST(request: NextRequest) {
       price_partner_net,
       stock_qty,
       gallery,
-      description
+      description,
+      category
     } = body;
 
     // Validation
