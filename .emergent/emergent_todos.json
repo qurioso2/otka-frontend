@@ -33,11 +33,11 @@
   },
   {
     "content": "FAZA 1: Creare componente UI - AISearch cu text + image upload",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "FAZA 1: AIResultsGrid cu acțiune Adăugă în ofertă",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA 2: Creare schema DB pentru quotes, quote_items, quote_item_options",
