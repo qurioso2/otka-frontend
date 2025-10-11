@@ -88,6 +88,8 @@ export default async function ProductPage({ params }: PageProps) {
   const galleryArr = Array.isArray(p.gallery) ? (p.gallery as unknown[]).filter((x): x is string => typeof x === 'string') : [];
   const img = galleryArr?.[0] || "/vercel.svg";
   const productUrl = `https://otka.ro/p/${p.slug}`;
+  const summary = (p as any).summary || null;
+  const description = p.description || null;
   
   // Schema.org Product markup for Google & search engines
   const productSchema = {
