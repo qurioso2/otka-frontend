@@ -11,6 +11,8 @@ import PublicAssetsAdmin from './PublicAssetsAdmin';
 import ArticlesAdmin from './ArticlesAdmin';
 import ImportCatalog from './ImportCatalog';
 import ImportPDF from './ImportPDF';
+import CategoriesManager from './CategoriesManager';
+import BrandsManager from './BrandsManager';
 import WorkflowExplainer from './WorkflowExplainer';
 
 const tabs = [
