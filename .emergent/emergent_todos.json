@@ -5,15 +5,15 @@
   },
   {
     "content": "Create API endpoint for AI search with OpenAI embeddings",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Create script for generating embeddings for existing products",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Implement import functionality for price lists (CSV/Excel/PDF)",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Create AI Search UI component with natural language input",
