@@ -421,8 +421,12 @@ export default function ProductsAdmin() {
       {activeView === 'add' && (
         <div className="bg-white rounded-xl border-2 border-neutral-400 p-6" data-testid="add-product-card">
           <div className="mb-6">
-            <h3 className="text-lg font-extrabold text-neutral-950">Adaugă Produs Nou</h3>
-            <p className="text-sm text-neutral-800 font-semibold">Completează informațiile pentru un produs nou</p>
+            <h3 className="text-lg font-extrabold text-neutral-950">
+              {editingProduct ? 'Editează Produs' : 'Adaugă Produs Nou'}
+            </h3>
+            <p className="text-sm text-neutral-800 font-semibold">
+              {editingProduct ? 'Modifică informațiile produsului' : 'Completează informațiile pentru un produs nou'}
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6" data-testid="add-product-form">
