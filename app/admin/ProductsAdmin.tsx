@@ -27,6 +27,7 @@ type Category = {
 
 export default function ProductsAdmin() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeView, setActiveView] = useState<'list' | 'add' | 'import'>('list');
   const [newProduct, setNewProduct] = useState({
@@ -37,8 +38,11 @@ export default function ProductsAdmin() {
     price_partner_net: '',
     stock_qty: '',
     description: '',
+    category: '',
     gallery: [] as string[]
   });
+  const [showNewCategoryForm, setShowNewCategoryForm] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState('');
   // imageFiles removed - gallery managed by GalleryManager component
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
