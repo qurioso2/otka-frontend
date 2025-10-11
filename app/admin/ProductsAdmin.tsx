@@ -702,6 +702,86 @@ export default function ProductsAdmin() {
               )}
             </div>
 
+            {/* Brand Field */}
+            <div>
+              <label className="block text-sm font-bold text-neutral-900 mb-2">
+                Brand / Producător
+              </label>
+              <div className="flex gap-2">
+                <select
+                  value={newProduct.brand_id}
+                  onChange={(e) => setNewProduct({...newProduct, brand_id: e.target.value})}
+                  className="flex-1 border-2 border-neutral-500 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  data-testid="field-brand"
+                >
+                  <option value="">-- Fără brand --</option>
+                  {brands.map((brand) => (
+                    <option key={brand.id} value={brand.id}>
+                      {brand.name}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={() => setShowNewBrandForm(!showNewBrandForm)}
+                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-bold whitespace-nowrap"
+                  data-testid="toggle-new-brand"
+                >
+                  {showNewBrandForm ? 'Anulează' : '+ Nou'}
+                </button>
+              </div>
+              
+              {showNewBrandForm && (
+                <div className="mt-3 p-4 bg-purple-50 border-2 border-purple-200 rounded-lg">
+                  <label className="block text-sm font-bold text-neutral-900 mb-2">
+                    Nume brand nou
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={newBrandName}
+                      onChange={(e) => setNewBrandName(e.target.value)}
+                      className="flex-1 border-2 border-neutral-500 rounded-lg px-3 py-2 focus:ring-purple-500 focus:border-purple-500"
+                      placeholder="ex: Pianca, Lago, etc."
+                      data-testid="field-new-brand-name"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAddBrand();
+                        }
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddBrand}
+                      className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-bold"
+                      data-testid="submit-new-brand"
+                    >
+                      Adaugă
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Summary Field */}
+            <div>
+              <label className="block text-sm font-bold text-neutral-900 mb-2">
+                Rezumat Scurt (Summary)
+              </label>
+              <textarea
+                value={newProduct.summary}
+                onChange={(e) => setNewProduct({...newProduct, summary: e.target.value})}
+                className="w-full border-2 border-neutral-500 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Scurt rezumat afișat în cardul produsului (2-3 propoziții)"
+                rows={2}
+                data-testid="field-summary"
+              />
+              <p className="text-xs text-neutral-600 mt-1">
+                Rezumatul va fi afișat în preview-ul produsului
+              </p>
+            </div>
+
             {/* Description Field */}
             <div>
               <label className="block text-sm font-bold text-neutral-900 mb-2">
