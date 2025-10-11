@@ -577,6 +577,68 @@ export default function ProductsAdmin() {
 
             </div>
 
+            {/* Category Field */}
+            <div>
+              <label className="block text-sm font-bold text-neutral-900 mb-2">
+                Categorie
+              </label>
+              <div className="flex gap-2">
+                <select
+                  value={newProduct.category}
+                  onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
+                  className="flex-1 border-2 border-neutral-500 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                  data-testid="field-category"
+                >
+                  <option value="">-- Fără categorie --</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.name}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={() => setShowNewCategoryForm(!showNewCategoryForm)}
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-bold whitespace-nowrap"
+                  data-testid="toggle-new-category"
+                >
+                  {showNewCategoryForm ? 'Anulează' : '+ Nouă'}
+                </button>
+              </div>
+              
+              {showNewCategoryForm && (
+                <div className="mt-3 p-4 bg-green-50 border-2 border-green-200 rounded-lg">
+                  <label className="block text-sm font-bold text-neutral-900 mb-2">
+                    Nume categorie nouă
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={newCategoryName}
+                      onChange={(e) => setNewCategoryName(e.target.value)}
+                      className="flex-1 border-2 border-neutral-500 rounded-lg px-3 py-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="ex: Canapele, Mese, etc."
+                      data-testid="field-new-category-name"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAddCategory();
+                        }
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddCategory}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-bold"
+                      data-testid="submit-new-category"
+                    >
+                      Adaugă
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Description Field */}
             <div>
               <label className="block text-sm font-bold text-neutral-900 mb-2">
