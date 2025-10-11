@@ -55,14 +55,9 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
                 </div>
               </Link>
               <div className="p-5">
-                <div className="flex items-start justify-between gap-3 mb-2">
+                <div className="flex items-start justify-between gap-3 mb-3">
                   <Link href={`/p/${p.slug}`} className="font-semibold text-neutral-900 group-hover:text-neutral-700 transition-colors line-clamp-2">{p.name}</Link>
                 </div>
-                {p.description && (
-                  <p className="text-sm text-neutral-600 line-clamp-2 mb-3">
-                    {p.description}
-                  </p>
-                )}
                 <div className="mb-3">
                   <div className="text-neutral-600 text-sm mb-1">TVA inclus</div>
                   <div className="flex items-center gap-2">
