@@ -25,7 +25,7 @@
   },
   {
     "content": "FAZA C: Creează RichTextEditor component (fără TipTap)",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "FAZA C: Adaugă summary field în DB",
@@ -33,22 +33,22 @@
   },
   {
     "content": "FAZA C: Integrează RichTextEditor în ProductsAdmin",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA C: Update Product Page - Summary box + Full description",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA D: Implementează LocalStorage recent viewed",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA D: Creează RecentViewedCarousel component",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA D: Integrează carousel în Product Page",
-    "status": "pending"
+    "status": "completed"
   }
 ]
