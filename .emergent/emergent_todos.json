@@ -1,35 +1,35 @@
 [
   {
     "content": "Homepage: Adaugă sortare după preț (crescator/descrescător)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Creează tabel brands în DB (SQL)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "API CRUD pentru brands (admin)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Adaugă coloana brand_id în products",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "ProductsAdmin: Dropdown brands + adaugă inline",
-    "status": "pending"
+    "status": "completed"
   },
   {
-    "content": "FAZA C: Instală TipTap dependencies",
-    "status": "pending"
+    "content": "Update API products create/update pentru brand_id și summary",
+    "status": "completed"
   },
   {
-    "content": "FAZA C: Creează RichTextEditor component",
-    "status": "pending"
+    "content": "FAZA C: Creează RichTextEditor component (fără TipTap)",
+    "status": "in_progress"
   },
   {
     "content": "FAZA C: Adaugă summary field în DB",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA C: Integrează RichTextEditor în ProductsAdmin",
