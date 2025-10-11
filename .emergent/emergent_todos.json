@@ -1,34 +1,50 @@
 [
   {
-    "content": "FAZA A.1: Afișare preț listă tăiat + badge discount homepage",
-    "status": "completed"
+    "content": "Fix SQL view products_public - elimină created_at care nu există",
+    "status": "pending"
   },
   {
-    "content": "FAZA A.2: Control produse per pagină (12/24/48/Toate)",
-    "status": "completed"
+    "content": "Verifică schema products și adaugă coloana category dacă lipsește",
+    "status": "pending"
   },
   {
-    "content": "FAZA A.3: Fix clipire 'Se încarcă...'",
-    "status": "completed"
-  },
-  {
-    "content": "Social Share: Butoane Facebook/WhatsApp/X/Instagram",
-    "status": "completed"
-  },
-  {
-    "content": "FAZA B.1: Creare tabel categories + SQL setup",
+    "content": "FAZA B.1: Marcare tabel categories ca COMPLETED (deja rulat)",
     "status": "in_progress"
   },
   {
-    "content": "FAZA B.2: API endpoints pentru categorii CRUD",
+    "content": "FAZA B.2: API create category endpoint",
     "status": "pending"
   },
   {
-    "content": "FAZA B.3: UI Admin - Dropdown categorii + Adăugare inline",
+    "content": "FAZA B.2: API update category endpoint",
     "status": "pending"
   },
   {
-    "content": "FAZA B.4: Filtrare produse pe homepage după categorie",
+    "content": "FAZA B.2: API delete category endpoint",
+    "status": "pending"
+  },
+  {
+    "content": "FAZA B.3: Modifică ProductsAdmin - adaugă câmp category în form",
+    "status": "pending"
+  },
+  {
+    "content": "FAZA B.3: Adaugă dropdown categorii cu buton inline de adăugare",
+    "status": "pending"
+  },
+  {
+    "content": "FAZA B.3: Update API products create/update pentru a salva category",
+    "status": "pending"
+  },
+  {
+    "content": "FAZA B.4: Modifică ProductsInfinite - adaugă filtre categorii",
+    "status": "pending"
+  },
+  {
+    "content": "FAZA B.4: API list products - suport pentru filtrare după category",
+    "status": "pending"
+  },
+  {
+    "content": "Test complet sistem categorii (CRUD + filtrare)",
     "status": "pending"
   }
 ]
