@@ -39,6 +39,8 @@ export default function AdminDashboard() {
         return <ResourcesAdmin />;
       case 'public-assets':
         return <PublicAssetsAdmin />;
+      case 'articles':
+        return <ArticlesAdmin />;
       case 'clients':
         return <ClientsAdmin />;
       case 'orders':
