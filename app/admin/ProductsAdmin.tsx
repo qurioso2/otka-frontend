@@ -212,11 +212,14 @@ export default function ProductsAdmin() {
         price_original: '', 
         price_partner_net: '',
         stock_qty: '', 
-        description: '', 
+        description: '',
+        category: '',
         gallery: []
       });
       // imageFiles state removed
       setEditingProduct(null);
+      setShowNewCategoryForm(false);
+      setNewCategoryName('');
       
       await loadProducts();
       setActiveView('list');
