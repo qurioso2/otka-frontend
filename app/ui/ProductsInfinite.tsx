@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from "next/link";
 import AddToCartButton from "./AddToCartButton";
 import ProductImage from "./ProductImage";
+import ShareButtons from "@/components/ShareButtons";
 
 interface ProductPublic {
   id: number;
@@ -102,7 +103,16 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
                     )}
                   </div>
                 </div>
-                <AddToCartButton item={{ id: p.id as number, sku: p.sku, name: p.name, price: p.price_public_ttc || 0, image: img }} />
+                <div className="flex items-center gap-2">
+                  <div className="flex-1">
+                    <AddToCartButton item={{ id: p.id as number, sku: p.sku, name: p.name, price: p.price_public_ttc || 0, image: img }} />
+                  </div>
+                  <ShareButtons 
+                    url={`/p/${p.slug}`}
+                    title={p.name}
+                    compact={true}
+                  />
+                </div>
               </div>
             </div>
           );
