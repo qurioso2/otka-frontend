@@ -1,0 +1,22 @@
+[
+  {
+    "content": "Analyze current project structure and identify missing articles functionality",
+    "status": "completed"
+  },
+  {
+    "content": "Create API endpoints for articles CRUD operations (list, create, update, delete)",
+    "status": "in_progress"
+  },
+  {
+    "content": "Create ArticlesAdmin component for admin interface",
+    "status": "pending"
+  },
+  {
+    "content": "Add Articles tab to AdminDashboard",
+    "status": "pending"
+  },
+  {
+    "content": "Test article creation and deletion functionality",
+    "status": "pending"
+  }
+]
