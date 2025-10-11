@@ -1,22 +1,30 @@
 [
   {
-    "content": "Analyze ProductsAdmin component and identify bugs",
-    "status": "completed"
+    "content": "Setup database schema with pgvector extension and embeddings",
+    "status": "in_progress"
   },
   {
-    "content": "Fix product addition functionality",
-    "status": "completed"
+    "content": "Create API endpoint for AI search with OpenAI embeddings",
+    "status": "pending"
   },
   {
-    "content": "Fix product edit functionality",
-    "status": "completed"
+    "content": "Create script for generating embeddings for existing products",
+    "status": "pending"
   },
   {
-    "content": "Fix product delete functionality",
-    "status": "completed"
+    "content": "Implement import functionality for price lists (CSV/Excel/PDF)",
+    "status": "pending"
   },
   {
-    "content": "Test all product CRUD operations",
-    "status": "completed"
+    "content": "Create AI Search UI component with natural language input",
+    "status": "pending"
+  },
+  {
+    "content": "Create ProductCard and Results components with similar products",
+    "status": "pending"
+  },
+  {
+    "content": "Test AI search functionality end-to-end",
+    "status": "pending"
   }
 ]
