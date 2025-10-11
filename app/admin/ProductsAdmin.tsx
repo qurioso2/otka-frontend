@@ -14,6 +14,15 @@ type Product = {
   stock_qty: number;
   gallery: string[];
   description?: string;
+  category?: string;
+};
+
+type Category = {
+  id: number;
+  name: string;
+  slug: string;
+  active: boolean;
+  sort_order: number;
 };
 
 export default function ProductsAdmin() {
