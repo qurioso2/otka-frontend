@@ -1,22 +1,26 @@
 [
   {
     "content": "Login ca admin și testare interfață LIVE",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Test adăugare articol - identificare eroare",
+    "status": "completed"
+  },
+  {
+    "content": "Identificat: Tabelul articles nu există în Supabase",
+    "status": "completed"
+  },
+  {
+    "content": "Rulare SQL pentru creare tabel articles în Supabase",
+    "status": "in_progress"
+  },
+  {
+    "content": "Test complet CRUD articole după fix",
     "status": "pending"
   },
   {
-    "content": "Test editare articol - identificare eroare",
-    "status": "pending"
-  },
-  {
-    "content": "Test ștergere articol - identificare eroare",
-    "status": "pending"
-  },
-  {
-    "content": "Fix toate problemele CRUD articole",
+    "content": "Test CRUD produse (același scenariu)",
     "status": "pending"
   },
   {
