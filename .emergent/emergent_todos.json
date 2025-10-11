@@ -9,11 +9,11 @@
   },
   {
     "content": "Create ArticlesAdmin component for admin interface",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Add Articles tab to AdminDashboard",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Test article creation and deletion functionality",
