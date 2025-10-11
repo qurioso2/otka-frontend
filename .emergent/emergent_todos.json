@@ -1,26 +1,30 @@
 [
   {
-    "content": "Sync environment variables with Vercel naming",
-    "status": "completed"
+    "content": "DEBUG și FIX CRUD produse - adăugare nu funcționează",
+    "status": "in_progress"
   },
   {
-    "content": "Update .env.local with correct variable names",
-    "status": "completed"
+    "content": "DEBUG și FIX CRUD produse - editare nu funcționează",
+    "status": "pending"
   },
   {
-    "content": "Verify all code uses correct env variable names",
-    "status": "completed"
+    "content": "DEBUG și FIX CRUD produse - ștergere nu funcționează",
+    "status": "pending"
   },
   {
-    "content": "Create Vercel deployment checklist",
-    "status": "completed"
+    "content": "Implementare import PDF cu AI extraction (OpenAI GPT-4 Vision)",
+    "status": "pending"
   },
   {
-    "content": "Fix lucide-react dependency for Vercel build",
-    "status": "completed"
+    "content": "Îmbunătățire căutare AI cu context din imagini",
+    "status": "pending"
   },
   {
-    "content": "Test after Vercel deployment",
-    "status": "completed"
+    "content": "Integrare quick-add în formular comandă",
+    "status": "pending"
+  },
+  {
+    "content": "Testare completă workflow",
+    "status": "pending"
   }
 ]
