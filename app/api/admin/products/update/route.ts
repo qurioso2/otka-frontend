@@ -64,6 +64,9 @@ export async function POST(request: NextRequest) {
     if (updateData.description !== undefined) {
       productToUpdate.description = updateData.description?.trim() || null;
     }
+    if (updateData.category !== undefined) {
+      productToUpdate.category = updateData.category?.trim() || null;
+    }
 
     console.log('Updating product with data:', productToUpdate);
 
