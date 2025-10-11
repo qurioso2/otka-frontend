@@ -8,6 +8,7 @@ import CommissionSummary from './CommissionSummary';
 import OrdersAdmin from './OrdersAdmin';
 import ResourcesAdmin from './ResourcesAdmin';
 import PublicAssetsAdmin from './PublicAssetsAdmin';
+import ArticlesAdmin from './ArticlesAdmin';
 import WorkflowExplainer from './WorkflowExplainer';
 
 const tabs = [
