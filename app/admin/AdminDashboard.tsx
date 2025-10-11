@@ -35,6 +35,8 @@ export default function AdminDashboard() {
         return <OverviewTab setActiveTab={setActiveTab} />;
       case 'products':
         return <ProductsAdmin />;
+      case 'import':
+        return <ImportCatalog />;
       case 'users':
         return <UsersAdmin />;
       case 'resources':
