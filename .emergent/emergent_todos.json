@@ -1,11 +1,11 @@
 [
   {
     "content": "Setup database schema with pgvector extension and embeddings",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Create API endpoint for AI search with OpenAI embeddings",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Create script for generating embeddings for existing products",
