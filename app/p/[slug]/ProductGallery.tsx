@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ProductImage from '@/app/ui/ProductImage';
 import ImageModal from '@/components/ImageModal';
 
@@ -11,6 +11,14 @@ interface ProductGalleryProps {
 export default function ProductGallery({ images, productName }: ProductGalleryProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentImage, setCurrentImage] = useState(images[0] || '');
+
+  // Update current image when selectedImage changes
+  useEffect(() => {
+    if (images[selectedImage]) {
+      setCurrentImage(images[selectedImage]);
+    }
+  }, [selectedImage, images]);
 
   if (!images || images.length === 0) {
     return (
@@ -20,7 +28,11 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
     );
   }
 
-  const handleImageChange = (index: number) => {
+  const handleThumbnailClick = (index: number) => {
+    setSelectedImage(index);
+  };
+
+  const handleImageChangeFromModal = (index: number) => {
     setSelectedImage(index);
   };
 
@@ -33,7 +45,8 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
           onClick={() => setIsModalOpen(true)}
         >
           <ProductImage
-            src={images[selectedImage]}
+            key={currentImage}
+            src={currentImage}
             alt={productName}
             className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
           />
@@ -51,7 +64,7 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
             {images.map((img, idx) => (
               <button
                 key={idx}
-                onClick={() => setSelectedImage(idx)}
+                onClick={() => handleThumbnailClick(idx)}
                 className={`aspect-square bg-neutral-100 rounded-lg overflow-hidden border-2 transition ${
                   idx === selectedImage
                     ? 'border-blue-600 ring-2 ring-blue-200'
@@ -76,7 +89,7 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
         images={images}
         currentIndex={selectedImage}
         productName={productName}
-        onImageChange={handleImageChange}
+        onImageChange={handleImageChangeFromModal}
       />
     </>
   );

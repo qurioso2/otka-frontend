@@ -24,156 +24,96 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
     }
   };
 
-  const execBasicCommand = (command: string) => {
-    if (!editorRef.current) return;
-    editorRef.current.focus();
-    document.execCommand(command, false);
-    setTimeout(() => updateContent(), 10);
-  };
-
-  const applyHeading = (tag: 'h2' | 'h3') => {
+  const wrapSelectedText = (tag: string) => {
     if (!editorRef.current) return;
     
-    editorRef.current.focus();
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
-    
-    const range = selection.getRangeAt(0);
-    
-    // Get the text
-    let selectedText = range.toString();
-    
-    // If no selection, select the entire line
-    if (!selectedText) {
-      const node = selection.anchorNode;
-      if (node) {
-        if (node.nodeType === Node.TEXT_NODE && node.parentNode) {
-          // Select parent element
-          range.selectNode(node.parentNode);
-          selectedText = range.toString();
-        }
-      }
-    }
-    
-    // Create new heading element
-    const heading = document.createElement(tag);
-    heading.textContent = selectedText || 'Heading';
-    
-    // Delete current content and insert heading
-    range.deleteContents();
-    range.insertNode(heading);
-    
-    // Move cursor after heading
-    range.setStartAfter(heading);
-    range.setEndAfter(heading);
-    selection.removeAllRanges();
-    selection.addRange(range);
-    
-    setTimeout(() => updateContent(), 10);
-  };
-
-  const applyParagraph = () => {
-    if (!editorRef.current) return;
-    
-    editorRef.current.focus();
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
-    
-    const range = selection.getRangeAt(0);
-    let selectedText = range.toString();
-    
-    if (!selectedText) {
-      const node = selection.anchorNode;
-      if (node) {
-        if (node.nodeType === Node.TEXT_NODE && node.parentNode) {
-          range.selectNode(node.parentNode);
-          selectedText = range.toString();
-        }
-      }
-    }
-    
-    const paragraph = document.createElement('p');
-    paragraph.textContent = selectedText || 'Paragraph';
-    
-    range.deleteContents();
-    range.insertNode(paragraph);
-    
-    range.setStartAfter(paragraph);
-    range.setEndAfter(paragraph);
-    selection.removeAllRanges();
-    selection.addRange(range);
-    
-    setTimeout(() => updateContent(), 10);
-  };
-
-  const toggleList = (ordered: boolean) => {
-    if (!editorRef.current) return;
-    
-    editorRef.current.focus();
     const selection = window.getSelection();
     if (!selection || selection.rangeCount === 0) return;
     
     const range = selection.getRangeAt(0);
     const selectedText = range.toString();
     
-    // Create list
-    const listTag = ordered ? 'ol' : 'ul';
-    const list = document.createElement(listTag);
+    if (!selectedText) {
+      // No selection, insert placeholder
+      const element = document.createElement(tag);
+      element.innerHTML = tag === 'ul' || tag === 'ol' ? '<li>Text</li>' : 'Text';
+      range.insertNode(element);
+    } else {
+      // Has selection
+      const fragment = range.extractContents();
+      const element = document.createElement(tag);
+      
+      if (tag === 'ul' || tag === 'ol') {
+        // For lists, wrap in li
+        const li = document.createElement('li');
+        li.appendChild(fragment);
+        element.appendChild(li);
+      } else {
+        element.appendChild(fragment);
+      }
+      
+      range.insertNode(element);
+    }
     
-    // Split by newlines if multi-line
-    const lines = selectedText ? selectedText.split('\n').filter(l => l.trim()) : ['Item'];
-    
-    lines.forEach(line => {
-      const li = document.createElement('li');
-      li.textContent = line.trim();
-      list.appendChild(li);
-    });
-    
-    range.deleteContents();
-    range.insertNode(list);
-    
-    // Move cursor after list
-    range.setStartAfter(list);
-    range.setEndAfter(list);
+    // Clear selection
     selection.removeAllRanges();
-    selection.addRange(range);
     
     setTimeout(() => updateContent(), 10);
   };
 
-  const clearFormatting = () => {
+  const handleHeading2 = () => {
+    if (!editorRef.current) return;
+    editorRef.current.focus();
+    wrapSelectedText('h2');
+  };
+
+  const handleHeading3 = () => {
+    if (!editorRef.current) return;
+    editorRef.current.focus();
+    wrapSelectedText('h3');
+  };
+
+  const handleParagraph = () => {
+    if (!editorRef.current) return;
+    editorRef.current.focus();
+    wrapSelectedText('p');
+  };
+
+  const handleBulletList = () => {
+    if (!editorRef.current) return;
+    editorRef.current.focus();
+    wrapSelectedText('ul');
+  };
+
+  const handleNumberedList = () => {
+    if (!editorRef.current) return;
+    editorRef.current.focus();
+    wrapSelectedText('ol');
+  };
+
+  const handleClearFormatting = () => {
     if (!editorRef.current) return;
     
-    editorRef.current.focus();
     const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
     
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const selectedText = range.toString();
-      
-      if (selectedText) {
-        // Create plain text node
-        const textNode = document.createTextNode(selectedText);
-        range.deleteContents();
-        range.insertNode(textNode);
-        
-        // Move cursor after text
-        range.setStartAfter(textNode);
-        range.setEndAfter(textNode);
-        selection.removeAllRanges();
-        selection.addRange(range);
-      } else {
-        // Clear formatting of parent element
-        const node = selection.anchorNode;
-        if (node && node.parentNode && node.parentNode !== editorRef.current) {
-          const parent = node.parentNode as HTMLElement;
-          const text = parent.textContent || '';
-          const textNode = document.createTextNode(text);
-          parent.parentNode?.replaceChild(textNode, parent);
-        }
-      }
+    const range = selection.getRangeAt(0);
+    const selectedText = range.toString();
+    
+    if (selectedText) {
+      // Replace with plain text
+      const textNode = document.createTextNode(selectedText);
+      range.deleteContents();
+      range.insertNode(textNode);
     }
     
+    setTimeout(() => updateContent(), 10);
+  };
+
+  const execCommand = (command: string) => {
+    if (!editorRef.current) return;
+    editorRef.current.focus();
+    document.execCommand(command, false);
     setTimeout(() => updateContent(), 10);
   };
 
@@ -186,15 +126,15 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
       e.preventDefault();
-      execBasicCommand('bold');
+      execCommand('bold');
     }
     if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
       e.preventDefault();
-      execBasicCommand('italic');
+      execCommand('italic');
     }
     if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
       e.preventDefault();
-      execBasicCommand('underline');
+      execCommand('underline');
     }
   };
 
@@ -206,7 +146,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            execBasicCommand('bold');
+            execCommand('bold');
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 font-bold text-sm transition"
           title="Bold (Ctrl+B)"
@@ -217,7 +157,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            execBasicCommand('italic');
+            execCommand('italic');
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 italic text-sm transition"
           title="Italic (Ctrl+I)"
@@ -228,7 +168,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            execBasicCommand('underline');
+            execCommand('underline');
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 underline text-sm transition"
           title="Underline (Ctrl+U)"
@@ -242,7 +182,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            applyHeading('h2');
+            handleHeading2();
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 font-bold text-sm transition"
           title="Heading 2"
@@ -253,7 +193,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            applyHeading('h3');
+            handleHeading3();
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 font-bold text-sm transition"
           title="Heading 3"
@@ -264,7 +204,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            applyParagraph();
+            handleParagraph();
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm transition"
           title="Paragraph"
@@ -278,7 +218,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            toggleList(false);
+            handleBulletList();
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm transition"
           title="Bullet List"
@@ -289,7 +229,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            toggleList(true);
+            handleNumberedList();
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm transition"
           title="Numbered List"
@@ -303,7 +243,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            clearFormatting();
+            handleClearFormatting();
           }}
           className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm text-red-600 transition"
           title="Clear Formatting"
@@ -341,22 +281,27 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           font-size: 1.5rem;
           font-weight: 700;
           margin: 1rem 0;
+          display: block;
         }
         [contenteditable] h3 {
           font-size: 1.25rem;
           font-weight: 600;
           margin: 0.75rem 0;
+          display: block;
         }
         [contenteditable] p {
           margin: 0.5rem 0;
+          display: block;
         }
         [contenteditable] ul,
         [contenteditable] ol {
           margin: 0.5rem 0;
           padding-left: 2rem;
+          display: block;
         }
         [contenteditable] li {
           margin: 0.25rem 0;
+          display: list-item;
         }
       `}</style>
     </div>
