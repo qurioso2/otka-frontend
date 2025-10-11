@@ -29,11 +29,11 @@
   },
   {
     "content": "FAZA 1: Extend /api/search/ai pentru suport imagine (GPT-4o Vision descriptors)",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "FAZA 1: Creare componente UI - AISearch cu text + image upload",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "FAZA 1: AIResultsGrid cu acțiune Adăugă în ofertă",
