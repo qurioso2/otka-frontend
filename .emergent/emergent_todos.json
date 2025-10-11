@@ -28,7 +28,27 @@
     "status": "completed"
   },
   {
-    "content": "Design și implementare Quote Management System (AI Search complet)",
+    "content": "FAZA 1: Extend /api/search/ai pentru suport imagine (GPT-4o Vision descriptors)",
     "status": "in_progress"
+  },
+  {
+    "content": "FAZA 1: Creare componente UI - AISearch cu text + image upload",
+    "status": "pending"
+  },
+  {
+    "content": "FAZA 1: AIResultsGrid cu acțiune Adăugă în ofertă",
+    "status": "pending"
+  },
+  {
+    "content": "FAZA 2: Creare schema DB pentru quotes, quote_items, quote_item_options",
+    "status": "pending"
+  },
+  {
+    "content": "FAZA 2: API endpoints pentru CRUD quotes + add/update/remove items",
+    "status": "pending"
+  },
+  {
+    "content": "FAZA 2: QuoteDraft UI cu configurare produse (qty, finish, custom size)",
+    "status": "pending"
   }
 ]
