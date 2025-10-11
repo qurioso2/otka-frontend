@@ -88,17 +88,8 @@ export default function ProductsAdmin() {
           .replace(/-+/g, '-'); // elimină - multiple
       };
 
-      // 2. Upload imaginile mai întâi (dacă există)
-      let galleryUrls: string[] = [...newProduct.gallery];
-      if (imageFiles && imageFiles.length > 0) {
-        try {
-          const uploadedUrls = await uploadImages(imageFiles);
-          galleryUrls = [...galleryUrls, ...uploadedUrls];
-        } catch (uploadError) {
-          console.error('Eroare upload imagini:', uploadError);
-          toast.error('Eroare la upload imagini, produsul va fi salvat fără imagini');
-        }
-      }
+      // Gallery is already managed by GalleryManager - uploaded URLs are in newProduct.gallery
+      const galleryUrls: string[] = [...newProduct.gallery];
 
       // 3. Validare și conversie tipuri de date
       const price_public_ttc = parseFloat(newProduct.price_public_ttc);
