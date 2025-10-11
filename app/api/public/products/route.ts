@@ -6,23 +6,32 @@ export async function GET(request: Request) {
   const offset = parseInt(searchParams.get('offset') || '0');
   const limit = Math.min(parseInt(searchParams.get('limit') || '18'), 60);
   const category = searchParams.get('category'); // Filter by category
+  const sort = searchParams.get('sort') || 'default'; // Sort by price
 
   const supabase = await getServerSupabase();
   
   // Build query
   let query = supabase
     .from('products_public')
-    .select('id,sku,name,slug,price_public_ttc,price_original,stock_qty,gallery,description,category');
+    .select('id,sku,name,slug,price_public_ttc,price_original,stock_qty,gallery,description,category,brand_name');
 
   // Apply category filter if provided
   if (category && category !== 'all') {
     query = query.eq('category', category);
   }
 
-  // Apply ordering and pagination
-  query = query
-    .order('id', { ascending: false })
-    .range(offset, offset + limit - 1);
+  // Apply sorting
+  if (sort === 'price_asc') {
+    query = query.order('price_public_ttc', { ascending: true });
+  } else if (sort === 'price_desc') {
+    query = query.order('price_public_ttc', { ascending: false });
+  } else {
+    // Default: newest first
+    query = query.order('id', { ascending: false });
+  }
+
+  // Apply pagination
+  query = query.range(offset, offset + limit - 1);
 
   const { data, error } = await query;
 
