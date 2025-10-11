@@ -1,18 +1,18 @@
 [
   {
     "content": "Adaugă search bar pe homepage cu căutare după nume",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Adaugă dropdown filtrare după brand/producător",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Update API products pentru search și filter brand",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Integrează search cu filtre existente (categorii + sortare)",
-    "status": "pending"
+    "status": "completed"
   }
 ]
