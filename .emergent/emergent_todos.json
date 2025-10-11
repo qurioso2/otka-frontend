@@ -1,22 +1,22 @@
 [
   {
     "content": "Fix RichTextEditor - H2, H3, P, Lists, Clear nu funcționează",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Creează Management UI pentru Categorii (lista, edit, delete, toggle active)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Creează Management UI pentru Branduri (lista, edit, delete, toggle active)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Adaugă tab-uri în Admin Dashboard pentru Categories și Brands",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Verifică că API-urile public afișează doar active=true",
-    "status": "pending"
+    "status": "completed"
   }
 ]
