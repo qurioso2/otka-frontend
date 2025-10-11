@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import GalleryManager from '@/components/GalleryManager';
 
 type Product = {
   id: number;
@@ -525,37 +526,41 @@ export default function ProductsAdmin() {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-bold text-neutral-900 mb-2">
-                  Imagini Produs
-                </label>
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={(e) => setImageFiles(e.target.files)}
-                  className="w-full border-2 border-neutral-500 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-                  data-testid="field-images"
-                />
-                <p className="text-xs text-neutral-600 mt-1">
-                  Selectează una sau mai multe imagini. Prima imagine va fi imaginea principală.
-                </p>
-                {imageFiles && imageFiles.length > 0 && (
-                  <div className="mt-2">
-                    <p className="text-sm font-medium text-green-700">
-                      {imageFiles.length} imagine(i) selectate:
-                    </p>
-                    <ul className="text-xs text-neutral-600 mt-1">
-                      {Array.from(imageFiles).map((file, i) => (
-                        <li key={i}>• {file.name}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
             </div>
 
-            {/* Descrierea va fi adăugată când schema BD va fi actualizată */}
+            {/* Description Field */}
+            <div>
+              <label className="block text-sm font-bold text-neutral-900 mb-2">
+                Descriere Produs
+              </label>
+              <textarea
+                value={newProduct.description}
+                onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
+                className="w-full border-2 border-neutral-500 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Descriere detaliată a produsului, specificații tehnice, caracteristici..."
+                rows={4}
+                data-testid="field-description"
+              />
+              <p className="text-xs text-neutral-600 mt-1">
+                Descrierea va fi afișată pe pagina produsului și va ajuta la SEO
+              </p>
+            </div>
+
+            {/* Gallery Manager */}
+            <div>
+              <label className="block text-sm font-bold text-neutral-900 mb-2">
+                Galerie Imagini
+              </label>
+              <GalleryManager
+                images={newProduct.gallery}
+                onChange={(gallery) => setNewProduct({...newProduct, gallery})}
+                onUpload={async (files) => {
+                  const uploadedUrls = await uploadImages(files);
+                  return uploadedUrls;
+                }}
+                maxImages={10}
+              />
+            </div>
 
             <div className="flex justify-end space-x-3">
               <button
