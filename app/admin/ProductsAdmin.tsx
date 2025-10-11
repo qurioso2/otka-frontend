@@ -133,20 +133,25 @@ export default function ProductsAdmin() {
 
       console.log('Trimitere date produs:', productData); // Pentru debug
 
-      const res = await fetch('/api/admin/products/create', {
+      // Determine if we're editing or creating
+      const isEditing = editingProduct !== null;
+      const apiEndpoint = isEditing ? '/api/admin/products/update' : '/api/admin/products/create';
+      const requestData = isEditing ? { id: editingProduct.id, ...productData } : productData;
+
+      const res = await fetch(apiEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(productData)
+        body: JSON.stringify(requestData)
       });
 
       const data = await res.json();
       
       if (!res.ok) {
         console.error('Eroare API:', data);
-        throw new Error(data.error || `Eroare ${res.status}: ${data.message || 'Failed to create product'}`);
+        throw new Error(data.error || `Eroare ${res.status}: ${data.message || 'Failed to save product'}`);
       }
 
-      toast.success('Produs adăugat cu succes!');
+      toast.success(isEditing ? 'Produs actualizat cu succes!' : 'Produs adăugat cu succes!');
       
       // Reset form
       setNewProduct({
@@ -160,13 +165,14 @@ export default function ProductsAdmin() {
         gallery: []
       });
       setImageFiles(null);
+      setEditingProduct(null);
       
       await loadProducts();
       setActiveView('list');
       
     } catch (error: any) {
-      console.error('Eroare adăugare produs:', error);
-      toast.error(error.message || 'Eroare necunoscută la adăugarea produsului');
+      console.error('Eroare salvare produs:', error);
+      toast.error(error.message || 'Eroare necunoscută la salvarea produsului');
     } finally {
       setLoading(false);
     }
