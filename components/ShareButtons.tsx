@@ -63,7 +63,7 @@ export default function ShareButtons({ url, title, description, compact = false 
             />
             
             {/* Share menu */}
-            <div className="fixed right-4 mt-2 bg-white border-2 border-neutral-200 rounded-xl shadow-2xl z-[100] p-2 min-w-[200px]" style={{ top: 'auto' }}>
+            <div className="absolute right-0 top-full mt-2 bg-white border-2 border-neutral-200 rounded-xl shadow-2xl p-2 min-w-[200px]" style={{ zIndex: 9999 }}>
               <div className="text-xs font-bold text-neutral-700 mb-2 px-2">
                 Share pe:
               </div>
