@@ -31,7 +31,7 @@ export default async function Home() {
   const heroUrl = await getHeroUrl();
   const { data: products, error } = await supabase
     .from("products_public")
-    .select("id,sku,name,slug,price_public_ttc,stock_qty,gallery")
+    .select("id,sku,name,slug,price_public_ttc,price_original,stock_qty,gallery")
     .order("id", { ascending: false })
     .range(0, 17);
 
