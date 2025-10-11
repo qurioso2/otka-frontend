@@ -1,22 +1,22 @@
 [
   {
     "content": "Fix RichTextEditor - butoanele nu funcționează",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Fix persistență Preț de Listă (price_original) la edit",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Product Gallery - modal imagine mare la click",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Homepage - optimizare automată imagini thumbnail",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Product Page - optimizare imagini + modal mare",
-    "status": "pending"
+    "status": "completed"
   }
 ]
