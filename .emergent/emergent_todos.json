@@ -13,10 +13,10 @@
   },
   {
     "content": "Add Articles tab to AdminDashboard",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Test article creation and deletion functionality",
-    "status": "pending"
+    "status": "in_progress"
   }
 ]
