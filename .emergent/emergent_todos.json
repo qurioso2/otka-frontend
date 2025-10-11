@@ -17,15 +17,15 @@
   },
   {
     "content": "Test CRUD Articles cu Supabase MCP - verificare funcționalitate",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Test CRUD Products cu Supabase MCP - verificare funcționalitate",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Implementare Import PDF cu GPT-4o Vision - extracție cataloage",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Design și implementare Quote Management System (AI Search complet)",
