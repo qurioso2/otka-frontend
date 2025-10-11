@@ -25,15 +25,19 @@
   },
   {
     "content": "FAZA B.3: Modifică ProductsAdmin - adaugă câmp category în form",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "FAZA B.3: Adaugă dropdown categorii cu buton inline de adăugare",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "FAZA B.3: Update API products create/update pentru a salva category",
-    "status": "pending"
+    "status": "completed"
+  },
+  {
+    "content": "FAZA B.4: Creează API public pentru listare categorii",
+    "status": "in_progress"
   },
   {
     "content": "FAZA B.4: Modifică ProductsInfinite - adaugă filtre categorii",
