@@ -97,7 +97,7 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
                       {new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON' }).format(p.price_public_ttc || 0)}
                     </div>
                     {p.price_original && p.price_original > p.price_public_ttc && (
-                      <div className="text-xs text-green-600 font-semibold bg-green-100 px-2 py-1 rounded">
+                      <div className="text-xs text-white font-bold bg-red-600 px-2.5 py-1 rounded-full shadow-sm">
                         -{Math.round(((p.price_original - p.price_public_ttc) / p.price_original) * 100)}%
                       </div>
                     )}
