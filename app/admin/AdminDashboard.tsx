@@ -10,12 +10,14 @@ import ResourcesAdmin from './ResourcesAdmin';
 import PublicAssetsAdmin from './PublicAssetsAdmin';
 import ArticlesAdmin from './ArticlesAdmin';
 import ImportCatalog from './ImportCatalog';
+import ImportPDF from './ImportPDF';
 import WorkflowExplainer from './WorkflowExplainer';
 
 const tabs = [
   { id: 'overview', name: 'Prezentare Generală', icon: '📊' },
   { id: 'products', name: 'Produse', icon: '📦' },
-  { id: 'import', name: 'Import Catalog', icon: '📥' },
+  { id: 'import', name: 'Import CSV/Excel', icon: '📥' },
+  { id: 'import-pdf', name: 'Import PDF (AI)', icon: '✨' },
   { id: 'users', name: 'Utilizatori & Parteneri', icon: '👥' },
   { id: 'resources', name: 'Resurse Parteneri', icon: '📚' },
   { id: 'public-assets', name: 'Imagini Publice', icon: '🖼️' },
@@ -37,6 +39,8 @@ export default function AdminDashboard() {
         return <ProductsAdmin />;
       case 'import':
         return <ImportCatalog />;
+      case 'import-pdf':
+        return <ImportPDF />;
       case 'users':
         return <UsersAdmin />;
       case 'resources':
