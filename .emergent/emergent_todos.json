@@ -5,11 +5,11 @@
   },
   {
     "content": "Create API endpoints for articles CRUD operations (list, create, update, delete)",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Create ArticlesAdmin component for admin interface",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Add Articles tab to AdminDashboard",
