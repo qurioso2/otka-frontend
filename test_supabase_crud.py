@@ -13,7 +13,7 @@ SUPABASE_URL = "https://kzwzqtghjnkrdjfosbdz.supabase.co"
 SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt6d3pxdGdoam5rcmRqZm9zYmR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg2NTMwMDEsImV4cCI6MjA3NDIyOTAwMX0.h5EUWHDpcGNnf8N8iz8GLZcr03_QR6tmJCb2I7jPbuY"
 
 # Creare client Supabase
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 def test_articles_crud():
     """Test complet CRUD pentru Articles"""
