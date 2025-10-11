@@ -13,18 +13,22 @@
   },
   {
     "content": "Rulare SQL pentru creare tabel articles în Supabase",
+    "status": "completed"
+  },
+  {
+    "content": "Test CRUD Articles cu Supabase MCP - verificare funcționalitate",
     "status": "in_progress"
   },
   {
-    "content": "Test complet CRUD articole după fix",
+    "content": "Test CRUD Products cu Supabase MCP - verificare funcționalitate",
     "status": "pending"
   },
   {
-    "content": "Test CRUD produse (același scenariu)",
+    "content": "Implementare Import PDF cu GPT-4o Vision - extracție cataloage",
     "status": "pending"
   },
   {
-    "content": "Implementare import PDF cu AI",
+    "content": "Design și implementare Quote Management System (AI Search complet)",
     "status": "pending"
   }
 ]
