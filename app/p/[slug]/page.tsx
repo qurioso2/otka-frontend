@@ -191,15 +191,19 @@ export default async function ProductPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Additional product details for SEO */}
-        {p.description && (
+        {/* Full Description - Rich Text */}
+        {description && (
           <div className="mt-12 border-t border-neutral-200 pt-8">
-            <h2 className="text-xl font-semibold text-neutral-900 mb-4">Detalii Produs</h2>
-            <div className="prose prose-neutral max-w-none text-neutral-700">
-              <p>{p.description}</p>
-            </div>
+            <h2 className="text-2xl font-bold text-neutral-900 mb-6">Detalii Complete</h2>
+            <div 
+              className="prose prose-neutral max-w-none text-neutral-700"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
           </div>
         )}
+
+        {/* Recent Viewed Carousel */}
+        <RecentViewedCarousel currentProductId={p.id as number} />
       </div>
     </>
   );
