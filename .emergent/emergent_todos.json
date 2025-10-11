@@ -1,54 +1,22 @@
 [
   {
-    "content": "Homepage: Adaugă sortare după preț (crescator/descrescător)",
-    "status": "completed"
+    "content": "Fix RichTextEditor - butoanele nu funcționează",
+    "status": "in_progress"
   },
   {
-    "content": "Creează tabel brands în DB (SQL)",
-    "status": "completed"
+    "content": "Fix persistență Preț de Listă (price_original) la edit",
+    "status": "pending"
   },
   {
-    "content": "API CRUD pentru brands (admin)",
-    "status": "completed"
+    "content": "Product Gallery - modal imagine mare la click",
+    "status": "pending"
   },
   {
-    "content": "Adaugă coloana brand_id în products",
-    "status": "completed"
+    "content": "Homepage - optimizare automată imagini thumbnail",
+    "status": "pending"
   },
   {
-    "content": "ProductsAdmin: Dropdown brands + adaugă inline",
-    "status": "completed"
-  },
-  {
-    "content": "Update API products create/update pentru brand_id și summary",
-    "status": "completed"
-  },
-  {
-    "content": "FAZA C: Creează RichTextEditor component (fără TipTap)",
-    "status": "completed"
-  },
-  {
-    "content": "FAZA C: Adaugă summary field în DB",
-    "status": "completed"
-  },
-  {
-    "content": "FAZA C: Integrează RichTextEditor în ProductsAdmin",
-    "status": "completed"
-  },
-  {
-    "content": "FAZA C: Update Product Page - Summary box + Full description",
-    "status": "completed"
-  },
-  {
-    "content": "FAZA D: Implementează LocalStorage recent viewed",
-    "status": "completed"
-  },
-  {
-    "content": "FAZA D: Creează RecentViewedCarousel component",
-    "status": "completed"
-  },
-  {
-    "content": "FAZA D: Integrează carousel în Product Page",
-    "status": "completed"
+    "content": "Product Page - optimizare imagini + modal mare",
+    "status": "pending"
   }
 ]
