@@ -30,7 +30,7 @@ export default function ProductsAdmin() {
     description: '',
     gallery: [] as string[]
   });
-  const [imageFiles, setImageFiles] = useState<FileList | null>(null);
+  // imageFiles removed - gallery managed by GalleryManager component
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   const loadProducts = async () => {
