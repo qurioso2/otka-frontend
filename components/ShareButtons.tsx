@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Share2, Facebook, Twitter, Linkedin, MessageCircle, Link2, Check } from 'lucide-react';
+import { Share2, Facebook, Twitter, Instagram, MessageCircle, Link2, Check } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface ShareButtonsProps {
@@ -31,8 +31,8 @@ export default function ShareButtons({ url, title, description, compact = false 
 
   const shareLinks = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullUrl)}`,
-    twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(title)}`,
-    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(fullUrl)}`,
+    x: `https://twitter.com/intent/tweet?url=${encodeURIComponent(fullUrl)}&text=${encodeURIComponent(title)}`,
+    instagram: `https://www.instagram.com/`, // Instagram nu permite share direct cu URL, doar prin app
     whatsapp: `https://wa.me/?text=${encodeURIComponent(`${title} - ${fullUrl}`)}`,
   };
 
@@ -82,18 +82,18 @@ export default function ShareButtons({ url, title, description, compact = false 
                 WhatsApp
               </button>
               <button
-                onClick={() => handleShare('twitter')}
-                className="w-full flex items-center gap-3 px-3 py-2 text-sm text-neutral-700 hover:bg-sky-50 rounded-lg transition"
+                onClick={() => handleShare('x')}
+                className="w-full flex items-center gap-3 px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-100 rounded-lg transition"
               >
-                <Twitter size={16} className="text-sky-600" />
-                Twitter / X
+                <Twitter size={16} className="text-neutral-900" />
+                X
               </button>
               <button
-                onClick={() => handleShare('linkedin')}
-                className="w-full flex items-center gap-3 px-3 py-2 text-sm text-neutral-700 hover:bg-blue-50 rounded-lg transition"
+                onClick={() => handleShare('instagram')}
+                className="w-full flex items-center gap-3 px-3 py-2 text-sm text-neutral-700 hover:bg-pink-50 rounded-lg transition"
               >
-                <Linkedin size={16} className="text-blue-700" />
-                LinkedIn
+                <Instagram size={16} className="text-pink-600" />
+                Instagram
               </button>
               <div className="border-t border-neutral-200 my-2" />
               <button
@@ -143,21 +143,21 @@ export default function ShareButtons({ url, title, description, compact = false 
         </button>
 
         <button
-          onClick={() => handleShare('twitter')}
-          className="flex items-center gap-2 px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition font-medium text-sm"
-          title="Share pe Twitter/X"
+          onClick={() => handleShare('x')}
+          className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg hover:bg-neutral-800 transition font-medium text-sm"
+          title="Share pe X"
         >
           <Twitter size={16} />
-          Twitter
+          X
         </button>
 
         <button
-          onClick={() => handleShare('linkedin')}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition font-medium text-sm"
-          title="Share pe LinkedIn"
+          onClick={handleCopyLink}
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 text-white rounded-lg hover:from-purple-700 hover:via-pink-700 hover:to-orange-700 transition font-medium text-sm"
+          title="Share pe Instagram"
         >
-          <Linkedin size={16} />
-          LinkedIn
+          <Instagram size={16} />
+          Instagram Story
         </button>
 
         <button
