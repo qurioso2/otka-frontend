@@ -5,6 +5,8 @@ import Link from "next/link";
 import AddToCartClient from './AddToCartClient';
 import ProductGallery from './ProductGallery';
 import ShareButtons from '@/components/ShareButtons';
+import RecentViewedCarousel from '@/components/RecentViewedCarousel';
+import TrackRecentViewed from './TrackRecentViewed';
 
 export const revalidate = 60; // ISR
 
