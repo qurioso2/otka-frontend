@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 interface RichTextEditorProps {
   value: string;
@@ -11,10 +11,20 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
   const editorRef = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
 
+  // Initialize editor content
+  useEffect(() => {
+    if (editorRef.current && editorRef.current.innerHTML !== value) {
+      editorRef.current.innerHTML = value || '';
+    }
+  }, [value]);
+
   const execCommand = (command: string, value?: string) => {
     document.execCommand(command, false, value);
-    editorRef.current?.focus();
-    updateContent();
+    if (editorRef.current) {
+      editorRef.current.focus();
+      // Trigger change after command
+      setTimeout(() => updateContent(), 0);
+    }
   };
 
   const updateContent = () => {
@@ -29,57 +39,88 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
     document.execCommand('insertText', false, text);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Handle Ctrl/Cmd + B for bold
+    if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+      e.preventDefault();
+      execCommand('bold');
+    }
+    // Handle Ctrl/Cmd + I for italic
+    if ((e.ctrlKey || e.metaKey) && e.key === 'i') {
+      e.preventDefault();
+      execCommand('italic');
+    }
+  };
+
   return (
     <div className="border-2 border-neutral-300 rounded-lg overflow-hidden">
       {/* Toolbar */}
       <div className="bg-neutral-100 border-b-2 border-neutral-300 p-2 flex flex-wrap gap-1">
         <button
           type="button"
-          onClick={() => execCommand('bold')}
-          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 font-bold text-sm"
-          title="Bold"
+          onMouseDown={(e) => {
+            e.preventDefault(); // Prevent focus loss
+            execCommand('bold');
+          }}
+          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 font-bold text-sm transition"
+          title="Bold (Ctrl+B)"
         >
-          B
+          <strong>B</strong>
         </button>
         <button
           type="button"
-          onClick={() => execCommand('italic')}
-          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 italic text-sm"
-          title="Italic"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            execCommand('italic');
+          }}
+          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 italic text-sm transition"
+          title="Italic (Ctrl+I)"
         >
-          I
+          <em>I</em>
         </button>
         <button
           type="button"
-          onClick={() => execCommand('underline')}
-          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 underline text-sm"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            execCommand('underline');
+          }}
+          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 underline text-sm transition"
           title="Underline"
         >
-          U
+          <u>U</u>
         </button>
         
         <div className="w-px bg-neutral-300 mx-1" />
         
         <button
           type="button"
-          onClick={() => execCommand('formatBlock', '<h2>')}
-          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 font-bold text-sm"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            execCommand('formatBlock', '<h2>');
+          }}
+          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 font-bold text-sm transition"
           title="Heading 2"
         >
           H2
         </button>
         <button
           type="button"
-          onClick={() => execCommand('formatBlock', '<h3>')}
-          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 font-bold text-sm"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            execCommand('formatBlock', '<h3>');
+          }}
+          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 font-bold text-sm transition"
           title="Heading 3"
         >
           H3
         </button>
         <button
           type="button"
-          onClick={() => execCommand('formatBlock', '<p>')}
-          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            execCommand('formatBlock', '<p>');
+          }}
+          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm transition"
           title="Paragraph"
         >
           P
@@ -89,16 +130,22 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
         
         <button
           type="button"
-          onClick={() => execCommand('insertUnorderedList')}
-          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            execCommand('insertUnorderedList');
+          }}
+          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm transition"
           title="Bullet List"
         >
           • List
         </button>
         <button
           type="button"
-          onClick={() => execCommand('insertOrderedList')}
-          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            execCommand('insertOrderedList');
+          }}
+          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm transition"
           title="Numbered List"
         >
           1. List
@@ -108,8 +155,11 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
         
         <button
           type="button"
-          onClick={() => execCommand('removeFormat')}
-          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm text-red-600"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            execCommand('removeFormat');
+          }}
+          className="px-3 py-1.5 bg-white border border-neutral-300 rounded hover:bg-neutral-50 text-sm text-red-600 transition"
           title="Clear Formatting"
         >
           ✕ Clear
@@ -124,7 +174,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         onPaste={handlePaste}
-        dangerouslySetInnerHTML={{ __html: value }}
+        onKeyDown={handleKeyDown}
         className={`min-h-[200px] p-4 focus:outline-none ${
           isFocused ? 'ring-2 ring-blue-500' : ''
         }`}
