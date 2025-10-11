@@ -49,10 +49,10 @@
   },
   {
     "content": "Rulează SQL-urile necesare în Supabase",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
-    "content": "Test complet sistem categorii (CRUD + filtrare)",
-    "status": "pending"
+    "content": "Documentare completă sistem categorii",
+    "status": "completed"
   }
 ]
