@@ -156,7 +156,7 @@ export default function ProductsAdmin() {
         description: '', 
         gallery: []
       });
-      setImageFiles(null);
+      // imageFiles state removed
       setEditingProduct(null);
       
       await loadProducts();
