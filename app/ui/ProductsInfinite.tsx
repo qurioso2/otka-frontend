@@ -109,7 +109,20 @@ export default function ProductsInfinite({ initialRows }: { initialRows: Product
           );
         })}
       </div>
-      <div ref={sentinelRef} className="h-12 flex items-center justify-center text-neutral-500">{loading ? 'Se încarcă...' : ' '}</div>
+      {hasMore && <div ref={sentinelRef} className="h-1" />}
+      {loading && (
+        <div className="py-8 text-center">
+          <div className="inline-flex items-center gap-2 text-sm font-medium text-neutral-600">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-neutral-600"></div>
+            Se încarcă produse...
+          </div>
+        </div>
+      )}
+      {!hasMore && rows.length > initialRows.length && (
+        <div className="py-8 text-center text-sm text-neutral-500">
+          Toate produsele au fost încărcate
+        </div>
+      )}
     </section>
   );
 }
