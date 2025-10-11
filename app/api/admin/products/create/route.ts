@@ -65,7 +65,8 @@ export async function POST(request: NextRequest) {
       stock_qty: typeof stock_qty === 'number' ? stock_qty : (parseInt(stock_qty) || 0),
       gallery: Array.isArray(gallery) ? gallery : [],
       ...(price_original && { price_original: typeof price_original === 'number' ? price_original : parseFloat(price_original) }),
-      ...(description && { description: description.trim() })
+      ...(description && { description: description.trim() }),
+      ...(category && { category: category.trim() })
     };
 
     console.log('Inserting product:', productToInsert);
