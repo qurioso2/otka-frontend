@@ -86,17 +86,29 @@ export async function generateProformaPDF(
     color: rgb(0.8, 0, 0),
   });
 
-  page.drawText(`Nr: ${removeDiacritics(proforma.full_number)}`, {
+  page.drawText(removeDiacritics(proforma.full_number), {
     x: width - 180,
     y: height - 75,
-    size: 12,
+    size: 14,
+    font: boldFont,
+  });
+
+  // Calculate VAT rate from data
+  const calculatedVatRate = proforma.subtotal_no_vat > 0 
+    ? Math.round((proforma.total_vat / proforma.subtotal_no_vat) * 100)
+    : 19;
+
+  page.drawText(`Cota TVA: ${calculatedVatRate}%`, {
+    x: width - 180,
+    y: height - 92,
+    size: 10,
     font: regularFont,
   });
 
-  page.drawText(`Data: ${new Date(proforma.issue_date).toLocaleDateString('ro-RO')}`, {
+  page.drawText(`Data emiterii: ${new Date(proforma.issue_date).toLocaleDateString('ro-RO')}`, {
     x: width - 180,
-    y: height - 90,
-    size: 10,
+    y: height - 107,
+    size: 9,
     font: regularFont,
   });
 
@@ -112,12 +124,10 @@ export async function generateProformaPDF(
   const supplierInfo = [
     removeDiacritics(companySettings.company_name || 'MERCURY VC S.R.L.'),
     `CIF: ${removeDiacritics(companySettings.cui || 'RO48801623')}`,
-    `Reg. Com: ${removeDiacritics(companySettings.reg_com || 'J2023003937126')}`,
-    `Adresa: ${removeDiacritics(companySettings.address || 'Bld. Eroilor, Nr.42, Et.I, Ap.9')}`,
-    `${removeDiacritics(companySettings.city || 'Cluj-Napoca')}, Jud.: ${removeDiacritics(companySettings.county || 'Cluj')}`,
+    `Reg. com.: ${removeDiacritics(companySettings.reg_com || 'J2023003937126')}`,
+    `Adresa: ${removeDiacritics(companySettings.address || 'Bld. Eroilor, Nr.42, Et.I, Ap.9, Cluj-Napoca, Jud.: Cluj')}`,
+    `IBAN(RON) ${companySettings.iban_ron || 'RO87BTRLRONCRT0CX2815301'}`,
     `Banca: ${removeDiacritics(companySettings.bank_name || 'BANCA TRANSILVANIA')}`,
-    `IBAN (EUR): ${companySettings.iban_eur || 'RO34BTRLEURCRT0CX2815301'}`,
-    `IBAN (RON): ${companySettings.iban_ron || 'RO87BTRLRONCRT0CX2815301'}`,
   ];
 
   supplierInfo.forEach((line) => {
@@ -143,12 +153,9 @@ export async function generateProformaPDF(
 
   const clientInfo = [
     removeDiacritics(proforma.client_name),
-    proforma.client_cui ? `CIF: ${removeDiacritics(proforma.client_cui)}` : '',
-    proforma.client_reg_com ? `Reg. Com: ${removeDiacritics(proforma.client_reg_com)}` : '',
-    proforma.client_address ? removeDiacritics(proforma.client_address) : '',
-    proforma.client_city && proforma.client_county ? `${removeDiacritics(proforma.client_city)}, Jud.: ${removeDiacritics(proforma.client_county)}` : '',
-    proforma.client_email || '',
-  ].filter(Boolean);
+    `CIF: ${proforma.client_cui ? removeDiacritics(proforma.client_cui) : ''}`,
+    proforma.client_address ? `Adresa: ${removeDiacritics(proforma.client_address)}${proforma.client_city ? ', ' + removeDiacritics(proforma.client_city) : ''}${proforma.client_county ? ', Judet: ' + removeDiacritics(proforma.client_county) : ''}` : '',
+  ].filter(line => line && line !== 'CIF: ');
 
   clientInfo.forEach((line) => {
     page.drawText(line, {
@@ -184,13 +191,13 @@ export async function generateProformaPDF(
   });
 
   const headers = [
-    { text: 'Nr.', x: colX.nr },
-    { text: 'SKU', x: colX.sku },
-    { text: 'Denumirea produselor', x: colX.description },
+    { text: 'Nr. crt', x: colX.nr },
+    { text: '', x: colX.sku },
+    { text: 'Denumirea produselor sau a serviciilor', x: colX.description },
     { text: 'U.M.', x: colX.um },
     { text: 'Cant.', x: colX.qty },
-    { text: 'Pret/u (LEI)', x: colX.price },
-    { text: 'Valoare (LEI)', x: colX.value },
+    { text: 'Pret unitar (fara TVA) -Lei-', x: colX.price },
+    { text: 'Valoarea -Lei-', x: colX.value },
   ];
 
   headers.forEach((header) => {
@@ -299,75 +306,97 @@ export async function generateProformaPDF(
 
   y -= 30;
 
-  // Totals section
-  const vatRate = 19; // Fixed VAT rate as default
-  
-  // Total without VAT
-  page.drawText('Total fara TVA:', {
-    x: 350,
-    y,
-    size: 10,
-    font: boldFont,
-  });
-  page.drawText(`${proforma.subtotal_no_vat.toFixed(2)} LEI`, {
-    x: 470,
-    y,
-    size: 10,
-    font: regularFont,
-  });
-  y -= 15;
-
-  // VAT
-  page.drawText(`TVA (${vatRate}%):`, {
-    x: 350,
-    y,
-    size: 10,
-    font: boldFont,
-  });
-  page.drawText(`${proforma.total_vat.toFixed(2)} LEI`, {
-    x: 470,
-    y,
-    size: 10,
-    font: regularFont,
-  });
-  y -= 20;
-
-  // Total with VAT
+  // Totals section - draw subtotal row with gray background
   page.drawRectangle({
-    x: 345,
+    x: 45,
     y: y - 5,
-    width: 200,
-    height: 25,
-    color: rgb(0.95, 0.95, 0.95),
+    width: width - 90,
+    height: 20,
+    color: rgb(0.93, 0.93, 0.93),
   });
 
-  page.drawText('TOTAL PLATA:', {
-    x: 350,
+  page.drawText('Total', {
+    x: 50,
     y: y + 5,
-    size: 12,
+    size: 10,
     font: boldFont,
   });
-  page.drawText(`${proforma.total_with_vat.toFixed(2)} LEI`, {
+
+  page.drawText(`${proforma.subtotal_no_vat.toFixed(2)}`, {
     x: 470,
     y: y + 5,
-    size: 12,
-    font: boldFont,
-    color: rgb(0.8, 0, 0),
+    size: 10,
+    font: regularFont,
   });
+
+  page.drawText(`${proforma.total_vat.toFixed(2)}`, {
+    x: width - 70,
+    y: y + 5,
+    size: 10,
+    font: regularFont,
+  });
+
   y -= 30;
 
-  // Remove RON equivalent (we're already in RON/LEI)
+  // Purple banner for TOTAL PLATA
+  page.drawRectangle({
+    x: 0,
+    y: y - 5,
+    width: width,
+    height: 30,
+    color: rgb(0.45, 0.33, 0.68), // Purple color
+  });
+
+  page.drawText('TOTAL PLATA', {
+    x: 50,
+    y: y + 8,
+    size: 14,
+    font: boldFont,
+    color: rgb(1, 1, 1),
+  });
+
+  page.drawText(`${proforma.total_with_vat.toFixed(2)} Lei`, {
+    x: width - 150,
+    y: y + 8,
+    size: 14,
+    font: boldFont,
+    color: rgb(1, 1, 1),
+  });
+
+  y -= 50;
 
   // Footer
   y = 80;
-  page.drawText('Intocmit de: Vasile Marian HOTCA', {
+  
+  // Left footer - company info
+  page.drawText(removeDiacritics(companySettings.company_name || 'MERCURY VC S.R.L.'), {
+    x: 50,
+    y: y + 10,
+    size: 8,
+    font: regularFont,
+  });
+  
+  page.drawText('Capital social: 200 Lei', {
     x: 50,
     y,
     size: 8,
     font: regularFont,
   });
+  
+  page.drawText(`IBAN(EUR) ${companySettings.iban_eur || 'RO34BTRLEURCRT0CX2815301'} ; Banca: ${removeDiacritics(companySettings.bank_name || 'BANCA TRANSILVANIA')}`, {
+    x: 50,
+    y: y - 10,
+    size: 7,
+    font: regularFont,
+  });
 
-  // Removed SmartBill text as requested
+  // Right footer - SmartBill reference
+  page.drawText('Facturez cu SmartBill.ro, standardul facturarii electronice', {
+    x: width - 300,
+    y,
+    size: 7,
+    font: regularFont,
+  });
 
   // Serialize the PDF
   const pdfBytes = await pdfDoc.save();
