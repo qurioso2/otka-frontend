@@ -25,11 +25,11 @@
   },
   {
     "content": "Implementează PDF generator pentru proforme cu pdf-lib",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Adaugă selector cotă TVA în ProductsAdmin.tsx (la adăugare/editare produs)",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Afișează cotă TVA lângă Preț de Vânzare în form produse",
@@ -49,7 +49,7 @@
   },
   {
     "content": "Implementează email service pentru trimitere proforme cu PDF atașat",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Testează flow complet: creează proformă → generează PDF → trimite email",
