@@ -1,14 +1,22 @@
 [
   {
-    "content": "Fix Company Settings - nu se încarcă/salvează datele",
-    "status": "completed"
+    "content": "Remove FAQ section from Contact Page (lines 127-138)",
+    "status": "in_progress"
   },
   {
-    "content": "Fix Proforme - produsele nu se încarcă la creare proformă",
-    "status": "completed"
+    "content": "Remove EUR_TO_RON constant from proformaPDFGenerator.ts",
+    "status": "pending"
   },
   {
-    "content": "Testează flow complet după fix-uri",
+    "content": "Update PDF structure to match uploaded model exactly",
+    "status": "pending"
+  },
+  {
+    "content": "Test contact page display",
+    "status": "pending"
+  },
+  {
+    "content": "Test PDF generation with new structure",
     "status": "pending"
   }
 ]
