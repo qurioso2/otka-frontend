@@ -173,12 +173,12 @@ export async function generateProformaPDF(
   const tableTop = y;
   const colX = {
     nr: 50,
-    sku: 70,
-    description: 130,
-    um: 320,
-    qty: 360,
-    price: 410,
-    value: 480,
+    description: 90,
+    um: 300,
+    qty: 340,
+    price: 390,
+    value: 460,
+    vat: 510,
   };
 
   // Draw table header background
