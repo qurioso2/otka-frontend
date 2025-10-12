@@ -69,23 +69,22 @@ export async function POST(request: NextRequest) {
     // Generate proforma number
     const proformaNumber = `PF-${Date.now()}`;
 
-    // Insert proforma
+    // Insert proforma - using correct column names from schema
     const { data: proforma, error: proformaError } = await supabase
       .from('proforme')
       .insert({
-        proforma_number: proformaNumber,
-        customer_name: finalCustomerName,
-        customer_email: finalCustomerEmail,
-        customer_company: finalCustomerCompany,
-        customer_cui: finalCustomerCui,
-        customer_address: finalCustomerAddress,
+        series: 'OTK',
+        client_type: 'PF', // Default to person
+        client_name: finalCustomerName,
+        client_email: finalCustomerEmail,
+        client_address: finalCustomerAddress,
+        client_cui: finalCustomerCui,
+        currency: currency || 'RON',
         notes: finalNotes,
-        subtotal,
-        vat_rate,
-        vat_amount,
-        total,
-        status: 'draft',
-        created_at: new Date().toISOString(),
+        subtotal_no_vat: subtotal,
+        total_vat: vat_amount,
+        total_with_vat: total,
+        status: 'pending',
       })
       .select()
       .single();
