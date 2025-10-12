@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await getServerSupabase();
     const body = await request.json();
     console.log('Creating proforma with data:', body);
 
@@ -74,38 +75,45 @@ export async function POST(request: NextRequest) {
     }
 
     // Insert proforma items
-    const itemsWithProformaId = items.map((item: any) => ({
-      proforma_id: proforma.id,
-      product_id: item.product_id,
-      product_name: item.product_name,
-      product_sku: item.product_sku,
-      quantity: item.quantity,
-      unit_price: item.unit_price,
-      total_price: item.unit_price * item.quantity,
-    }));
+    if (proforma) {
+      const itemsWithProformaId = items.map((item: any) => ({
+        proforma_id: proforma.id,
+        product_id: item.product_id,
+        product_name: item.product_name,
+        product_sku: item.product_sku,
+        quantity: item.quantity,
+        unit_price: item.unit_price,
+        total_price: item.unit_price * item.quantity,
+      }));
 
-    const { data: insertedItems, error: itemsError } = await supabase
-      .from('proforme_items')
-      .insert(itemsWithProformaId)
-      .select();
+      const { data: insertedItems, error: itemsError } = await supabase
+        .from('proforme_items')
+        .insert(itemsWithProformaId)
+        .select();
 
-    if (itemsError) {
-      console.error('Error creating proforma items:', itemsError);
-      // Rollback proforma creation
-      await supabase.from('proforme').delete().eq('id', proforma.id);
-      return NextResponse.json(
-        { success: false, error: itemsError.message },
-        { status: 500 }
-      );
+      if (itemsError) {
+        console.error('Error creating proforma items:', itemsError);
+        // Rollback proforma creation
+        await supabase.from('proforme').delete().eq('id', proforma.id);
+        return NextResponse.json(
+          { success: false, error: itemsError.message },
+          { status: 500 }
+        );
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: {
+          proforma,
+          items: insertedItems,
+        },
+      });
     }
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        proforma,
-        items: insertedItems,
-      },
-    });
+    return NextResponse.json(
+      { success: false, error: 'Failed to create proforma' },
+      { status: 500 }
+    );
   } catch (error: any) {
     console.error('Error in proforme/create:', error);
     return NextResponse.json(

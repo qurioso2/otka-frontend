@@ -1,22 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabaseAdmin (service_role key - bypasses RLS)
-
-    // Parse request body
+    const supabase = await getServerSupabase();
     const body = await request.json();
-    console.log('Received update data:', body);
-    
+    console.log('Product update request:', body);
     const { id, ...updateData } = body;
 
-    // Validation
     if (!id) {
       return NextResponse.json({ error: 'Product ID is required' }, { status: 400 });
     }
 
-    // Process update data
+    // Prepare update object
     const productToUpdate: any = {};
     
     if (updateData.sku) productToUpdate.sku = updateData.sku.trim();
@@ -47,7 +43,7 @@ export async function POST(request: NextRequest) {
         : parseInt(updateData.brand_id);
     }
 
-    console.log('Updating product:', { id, ...productToUpdate });
+    console.log('Updating product with ID:', id, 'Data:', productToUpdate);
 
     const { data: product, error } = await supabase
       .from('products')
@@ -63,6 +59,13 @@ export async function POST(request: NextRequest) {
         details: error.message,
         code: error.code 
       }, { status: 500 });
+    }
+
+    if (!product) {
+      return NextResponse.json({ 
+        error: 'Product not found after update',
+        productId: id
+      }, { status: 404 });
     }
 
     return NextResponse.json({ product, message: 'Product updated successfully' });

@@ -1,20 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabaseAdmin (service_role key - bypasses RLS)
-
-    // Parse request body
+    const supabase = await getServerSupabase();
     const body = await request.json();
     const { name, description, logo_url, website, sort_order, active } = body;
 
-    // Validation
     if (!name || !name.trim()) {
       return NextResponse.json({ error: 'Brand name is required' }, { status: 400 });
     }
 
-    // Generate slug from name
     const slug = name
       .toLowerCase()
       .normalize('NFD')
@@ -29,7 +25,6 @@ export async function POST(request: NextRequest) {
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-');
 
-    // Create brand
     const { data: brand, error } = await supabase
       .from('brands')
       .insert([{

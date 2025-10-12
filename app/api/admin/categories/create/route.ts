@@ -1,24 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabaseAdmin (service_role key - bypasses RLS)
-
-    // Parse request body
+    const supabase = await getServerSupabase();
     const body = await request.json();
     const { name, description, icon, sort_order, active } = body;
 
-    // Validation
     if (!name || !name.trim()) {
       return NextResponse.json({ error: 'Category name is required' }, { status: 400 });
     }
 
-    // Generate slug from name
     const slug = name
       .toLowerCase()
       .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+      .replace(/[\u0300-\u036f]/g, '')
       .replace(/ă/g, 'a')
       .replace(/â/g, 'a')
       .replace(/î/g, 'i')
@@ -29,7 +25,6 @@ export async function POST(request: NextRequest) {
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-');
 
-    // Create category
     const { data: category, error } = await supabase
       .from('categories')
       .insert([{
@@ -45,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error('Database error:', error);
-      if (error.code === '23505') { // Unique constraint violation
+      if (error.code === '23505') {
         return NextResponse.json({ 
           error: 'O categorie cu acest nume sau slug există deja' 
         }, { status: 409 });
