@@ -260,7 +260,7 @@ export async function generateProformaPDF(
   y -= 30;
 
   // Totals section
-  const vatRate = proforma.vat_rate || 19;
+  const vatRate = 19; // Fixed VAT rate as default
   
   // Total without VAT
   page.drawText('Total fara TVA:', {
