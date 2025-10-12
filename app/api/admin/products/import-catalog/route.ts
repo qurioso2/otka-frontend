@@ -155,5 +155,7 @@ function normalizeProduct(rawData: any): any {
   const galleryStr = rawData['Imagini'] || rawData['Images'] || rawData['gallery'] || rawData['Gallery'] || '';
   if (galleryStr && typeof galleryStr === 'string') {
     normalized.gallery = galleryStr.split(',').map((url: string) => url.trim()).filter(Boolean);
+  }
 
   return normalized;
+}
