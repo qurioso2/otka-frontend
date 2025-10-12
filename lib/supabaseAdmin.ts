@@ -20,3 +20,19 @@ export function getSupabaseAdmin() {
     },
   });
 }
+
+// For backward compatibility - create getter-based object
+export const supabaseAdmin = {
+  get from() {
+    return getSupabaseAdmin().from.bind(getSupabaseAdmin());
+  },
+  get auth() {
+    return getSupabaseAdmin().auth;
+  },
+  get storage() {
+    return getSupabaseAdmin().storage;
+  },
+  get rpc() {
+    return getSupabaseAdmin().rpc.bind(getSupabaseAdmin());
+  }
+};
