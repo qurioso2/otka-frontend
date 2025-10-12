@@ -3,11 +3,13 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('Products API called');
-    console.log('Environment check:', {
-      NEXT_PUBLIC_SUPABASE_URL: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-      SUPABASE_SERVICE_ROLE_KEY: !!process.env.SUPABASE_SERVICE_ROLE_KEY
-    });
+    console.log('=== Products API Debug ===');
+    console.log('NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'SET' : 'NOT SET');
+    console.log('SUPABASE_SERVICE_ROLE_KEY:', process.env.SUPABASE_SERVICE_ROLE_KEY ? 'SET' : 'NOT SET');
+    console.log('Environment:', process.env.NODE_ENV);
+
+    // Test supabase connection
+    console.log('Testing Supabase connection...');
 
     // Fetch products
     const { data: products, error } = await supabase
@@ -15,20 +17,30 @@ export async function GET(request: NextRequest) {
       .select('*')
       .order('id', { ascending: false });
 
-    console.log('Query result:', { 
-      productsCount: products?.length || 0, 
-      hasError: !!error,
-      errorMessage: error?.message 
-    });
+    console.log('Supabase Query Result:');
+    console.log('- Products count:', products?.length || 0);
+    console.log('- Error:', error?.message || 'none');
+    console.log('- Error code:', error?.code || 'none');
 
     if (error) {
-      console.error('Error fetching products:', error);
-      return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
+      console.error('Detailed Error:', error);
+      return NextResponse.json({ 
+        error: 'Failed to fetch products', 
+        details: error.message,
+        code: error.code 
+      }, { status: 500 });
     }
 
     return NextResponse.json({ products: products || [] });
-  } catch (error) {
-    console.error('API Error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  } catch (error: any) {
+    console.error('=== API Exception ===');
+    console.error('Error type:', typeof error);
+    console.error('Error message:', error?.message);
+    console.error('Error stack:', error?.stack);
+    return NextResponse.json({ 
+      error: 'Internal server error', 
+      details: error?.message,
+      type: typeof error
+    }, { status: 500 });
   }
 }
