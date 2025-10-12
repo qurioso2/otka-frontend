@@ -14,8 +14,3 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
   },
 });
-
-// Export factory function for API routes that need fresh client instances
-export function createClient() {
-  return supabase;
-}
