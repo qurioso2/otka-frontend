@@ -58,12 +58,22 @@ export default function CompanySettingsManager() {
   const loadSettings = async () => {
     setLoadingData(true);
     try {
+      console.log('=== Company Settings Manager Debug ===');
       const res = await fetch('/api/admin/company-settings/get', { cache: 'no-store' });
+      console.log('Settings API Response status:', res.status);
+      
       const data = await res.json();
+      console.log('Settings API Response data:', data);
+      
       if (data.success && data.data) {
+        console.log('Loading settings from API:', data.data);
         setSettings(data.data);
+      } else {
+        console.log('No settings found or API error:', data);
+        showNotification('error', data.error || 'Nu s-au găsit setări');
       }
     } catch (error: any) {
+      console.error('Settings loading error:', error);
       showNotification('error', 'Eroare la încărcarea setărilor');
     } finally {
       setLoadingData(false);
