@@ -154,6 +154,7 @@ Analizează catalogul și returnează JSON-ul cu toate produsele găsite.`;
         extractedProducts = JSON.parse(jsonMatch[0]);
       } else {
         extractedProducts = JSON.parse(responseText);
+      }
     } catch (parseError) {
       console.error('❌ JSON parse error:', parseError);
       console.log('Raw response:', responseText.substring(0, 500));
@@ -162,6 +163,7 @@ Analizează catalogul și returnează JSON-ul cu toate produsele găsite.`;
         details: 'GPT-4o response was not valid JSON',
         raw_response: responseText.substring(0, 1000)
       }, { status: 500 });
+    }
 
     console.log(`✅ Extracted ${extractedProducts.length} products from PDF`);
 
