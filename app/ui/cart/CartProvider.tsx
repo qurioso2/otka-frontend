@@ -73,7 +73,16 @@ export default function CartProvider({ children }: { children: React.ReactNode }
   };
 
   const remove = (sku: string) => setItems((prev) => prev.filter((p) => p.sku !== sku));
-  const update = (sku: string, qty: number) => setItems((prev) => prev.map((p) => (p.sku === sku ? { ...p, qty } : p)).filter((p) => p.qty > 0));
+  
+  const update = (sku: string, qty: number) => setItems((prev) => {
+    const item = prev.find((p) => p.sku === sku);
+    if (item && item.stock_qty && qty > item.stock_qty) {
+      alert(`Stoc insuficient. Disponibil: ${item.stock_qty} bucăți`);
+      return prev;
+    }
+    return prev.map((p) => (p.sku === sku ? { ...p, qty } : p)).filter((p) => p.qty > 0);
+  });
+  
   const clear = () => setItems([]);
 
   const count = useMemo(() => items.reduce((a, b) => a + b.qty, 0), [items]);
