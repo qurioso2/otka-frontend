@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function GET(request: NextRequest) {
-    const supabase = await getServerSupabase();
   try {
+    const supabase = await getServerSupabase();
     console.log('=== Tax Rates API Debug ===');
-    console.log('Using supabaseClient (same as homepage)');
+    console.log('Using getServerSupabase (server-side)');
     
     // Get all tax rates
     const { data: taxRates, error } = await supabase

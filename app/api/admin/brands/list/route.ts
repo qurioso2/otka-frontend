@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function GET() {
-    const supabase = await getServerSupabase();
   try {
+    const supabase = await getServerSupabase();
     console.log('=== Brands API Debug ===');
-    console.log('Using supabaseClient (same as homepage)');
+    console.log('Using getServerSupabase (server-side)');
 
     // Get all brands
     const { data, error } = await supabase
