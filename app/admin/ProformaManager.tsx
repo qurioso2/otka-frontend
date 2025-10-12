@@ -167,6 +167,24 @@ export default function ProformaManager() {
     }
   };
 
+  const loadClients = async () => {
+    try {
+      const res = await fetch('/api/admin/clients/list', { cache: 'no-store' });
+      const data = await res.json();
+      console.log('Clients API response:', data);
+      if (data.clients && Array.isArray(data.clients)) {
+        setClients(data.clients.map((c: any) => ({
+          id: c.id,
+          name: c.name || '',
+          email: c.email || '',
+          company: c.company || ''
+        })));
+      }
+    } catch (error) {
+      console.error('Error loading clients:', error);
+    }
+  };
+
   const showNotification = (type: 'success' | 'error' | 'warning', message: string) => {
     setNotification({ type, message });
     setTimeout(() => setNotification(null), 3000);
