@@ -69,11 +69,12 @@ export async function POST(request: NextRequest) {
     
     const total = subtotal + vat_amount;
 
-    // Generate simple proforma number (avoid trigger issues)
-    const timestamp = Date.now();
-    const simpleNumber = Math.floor(timestamp / 1000); // Unix timestamp for uniqueness
+    // Generate unique proforma number (avoid timestamp collisions)
+    const randomComponent = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    const timeComponent = Date.now().toString().slice(-6); // Last 6 digits
+    const uniqueNumber = parseInt(timeComponent + randomComponent);
 
-    console.log('Calculated totals:', { subtotal, vat_amount, total });
+    console.log('Generated unique number:', uniqueNumber);
 
     // Insert proforma - using correct column names from schema
     const { data: proforma, error: proformaError } = await supabase
