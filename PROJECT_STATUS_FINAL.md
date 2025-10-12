@@ -42,9 +42,10 @@
 **Gallery Features**:
 - ✅ Imagine principală clickable → Modal fullscreen
 - ✅ Thumbnails grid (4 coloane)
+- ✅ Thumbnail selection actualizează imaginea principală instant
 - ✅ Modal cu navigare Previous/Next
 - ✅ Thumbnails în modal pentru acces rapid
-- ⚠️ **KNOWN ISSUE**: Thumbnail selectat nu actualizează imaginea principală (fix parțial)
+- ✅ Sincronizare completă între modal și preview
 
 ---
 
