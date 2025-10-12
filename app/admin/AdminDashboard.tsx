@@ -232,7 +232,9 @@ function OverviewTab({ setActiveTab }: { setActiveTab: (tab: string) => void }) 
           </div>
           <div className="ml-4">
             <p className="text-sm text-neutral-800 font-semibold">Comenzi Astăzi</p>
-            <p className="text-2xl font-extrabold text-neutral-950" data-testid="orders-today">-</p>
+            <p className="text-2xl font-extrabold text-neutral-950" data-testid="orders-today">
+              {stats.loading ? '...' : stats.ordersToday.toLocaleString()}
+            </p>
           </div>
         </div>
       </div>
