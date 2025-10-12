@@ -16,6 +16,15 @@ type Product = {
   gallery: string[];
   description?: string;
   category?: string;
+  tax_rate_id?: number;
+};
+
+type TaxRate = {
+  id: number;
+  name: string;
+  rate: number;
+  active: boolean;
+  is_default: boolean;
 };
 
 type Category = {
@@ -38,6 +47,7 @@ export default function ProductsAdmin() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
+  const [taxRates, setTaxRates] = useState<TaxRate[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeView, setActiveView] = useState<'list' | 'add' | 'import'>('list');
   const [newProduct, setNewProduct] = useState({
@@ -51,6 +61,7 @@ export default function ProductsAdmin() {
     summary: '',
     category: '',
     brand_id: '',
+    tax_rate_id: '',
     gallery: [] as string[]
   });
   const [showNewCategoryForm, setShowNewCategoryForm] = useState(false);
@@ -82,6 +93,19 @@ export default function ProductsAdmin() {
       setCategories(Array.isArray(data) ? data : []);
     } catch (error: any) {
       console.error('Error loading categories:', error);
+    }
+  };
+
+  const loadTaxRates = async () => {
+    try {
+      const res = await fetch('/api/admin/tax-rates/list', { cache: 'no-store' });
+      if (!res.ok) throw new Error('Failed to load tax rates');
+      const data = await res.json();
+      if (data.success && Array.isArray(data.data)) {
+        setTaxRates(data.data);
+      }
+    } catch (error: any) {
+      console.error('Error loading tax rates:', error);
     }
   };
 
@@ -166,6 +190,7 @@ export default function ProductsAdmin() {
     loadProducts();
     loadCategories();
     loadBrands();
+    loadTaxRates();
   }, []);
 
   const uploadImages = async (files: FileList): Promise<string[]> => {
@@ -237,6 +262,7 @@ export default function ProductsAdmin() {
         summary: newProduct.summary?.trim() || null,
         category: newProduct.category?.trim() || null,
         brand_id: newProduct.brand_id ? parseInt(newProduct.brand_id) : null,
+        tax_rate_id: newProduct.tax_rate_id ? parseInt(newProduct.tax_rate_id) : null,
         // Adaugă price_original dacă este setat
         ...(newProduct.price_original && {
           price_original: parseFloat(newProduct.price_original)
@@ -277,6 +303,7 @@ export default function ProductsAdmin() {
         summary: '',
         category: '',
         brand_id: '',
+        tax_rate_id: '',
         gallery: []
       });
       // imageFiles state removed
@@ -360,6 +387,7 @@ export default function ProductsAdmin() {
       summary: (product as any).summary || '',
       category: product.category || '',
       brand_id: (product as any).brand_id?.toString() || '',
+      tax_rate_id: (product as any).tax_rate_id?.toString() || '',
       gallery: product.gallery || []
     });
     setActiveView('add');
