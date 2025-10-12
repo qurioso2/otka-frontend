@@ -172,7 +172,7 @@ export default async function ProductPage({ params }: PageProps) {
             </div>
 
             <div className="mt-6">
-              <AddToCartClient item={{ id: p.id as number, sku: p.sku, name: p.name, price: p.price_public_ttc || 0, image: img }} />
+              <AddToCartClient item={{ id: p.id as number, sku: p.sku, name: p.name, price: p.price_public_ttc || 0, image: img, stock_qty: p.stock_qty }} />
             </div>
 
             {/* Share Buttons */}
