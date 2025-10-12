@@ -16,6 +16,44 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get proforma items to decrease stock
+    const { data: items, error: itemsError } = await supabase
+      .from('proforma_items')
+      .select('product_id, quantity')
+      .eq('proforma_id', id);
+
+    if (itemsError) {
+      console.error('Error fetching proforma items:', itemsError);
+      return NextResponse.json(
+        { success: false, error: itemsError.message },
+        { status: 500 }
+      );
+    }
+
+    // Decrease stock for each product
+    if (items && items.length > 0) {
+      for (const item of items) {
+        if (item.product_id) {
+          // Get current stock
+          const { data: product, error: productError } = await supabase
+            .from('products')
+            .select('stock_qty')
+            .eq('id', item.product_id)
+            .single();
+
+          if (!productError && product) {
+            const newStock = Math.max(0, (product.stock_qty || 0) - item.quantity);
+            
+            // Update stock
+            await supabase
+              .from('products')
+              .update({ stock_qty: newStock })
+              .eq('id', item.product_id);
+          }
+        }
+      }
+    }
+
     // Update status to paid and set confirmed_at
     const { data, error } = await supabase
       .from('proforme')
@@ -38,7 +76,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       data,
-      message: 'Proforma confirmed and marked as paid',
+      message: 'Proforma confirmed and marked as paid. Stock updated.',
     });
   } catch (error: any) {
     console.error('Error in proforme/confirm:', error);
