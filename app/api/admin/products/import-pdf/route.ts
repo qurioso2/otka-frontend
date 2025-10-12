@@ -109,6 +109,7 @@ Format răspuns (array de produse):
     "length": 45,
     "height": 75,
     "weight": 25.5
+  }
 ]
 
 Brand/Producător: ${brandName}
