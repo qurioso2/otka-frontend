@@ -15,7 +15,9 @@ export async function GET(request: Request) {
   // Build query
   let query = supabase
     .from('products_public')
-    .select('id,sku,name,slug,price_public_ttc,price_original,stock_qty,gallery,description,category,brand_name,brand_id');
+    .select('id,sku,name,slug,price_public_ttc,price_original,stock_qty,gallery,description,category,brand_name,brand_id')
+    .gt('stock_qty', 0)  // Only show products with stock > 0
+    .not('stock_qty', 'is', null);  // Exclude products with null stock
 
   // Apply search filter
   if (search && search.trim()) {
