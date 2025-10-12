@@ -30,3 +30,36 @@ export function getMailer() {
 
   return { send };
 }
+
+// Backward compatibility function for legacy code
+export async function sendZohoMail(options: {
+  to: string;
+  subject: string;
+  html: string;
+  attachments?: { filename: string; content: Buffer }[];
+}) {
+  const host = process.env.ZOHO_SMTP_HOST;
+  const port = Number(process.env.ZOHO_SMTP_PORT || 465);
+  const user = process.env.ZOHO_SMTP_USER;
+  const pass = process.env.ZOHO_SMTP_PASS;
+  const from = process.env.ZOHO_FROM_EMAIL || user;
+
+  if (!host || !user || !pass) {
+    throw new Error('ZOHO email configuration missing');
+  }
+
+  const transporter = nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465,
+    auth: { user, pass },
+  });
+
+  await transporter.sendMail({
+    from,
+    to: options.to,
+    subject: options.subject,
+    html: options.html,
+    attachments: options.attachments,
+  });
+}
