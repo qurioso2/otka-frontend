@@ -4,7 +4,6 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 export async function GET() {
   try {
     // Using supabaseAdmin (service_role key - bypasses RLS)
-    
 
     // Get all brands
     const { data, error } = await supabase
