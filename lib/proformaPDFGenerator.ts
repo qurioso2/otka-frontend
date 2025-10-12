@@ -14,7 +14,6 @@ type ProformaData = {
   subtotal_no_vat: number;
   total_vat: number;
   total_with_vat: number;
-  vat_rate?: number;
 };
 
 type ProformaItem = {
