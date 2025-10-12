@@ -20,9 +20,11 @@ export async function GET(request: NextRequest) {
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
-    if (status) {
+    if (status && status !== 'all') {
       query = query.eq('status', status);
     }
+
+    console.log('Proforme query params:', { page, limit, offset, status });
 
     const { data, error, count } = await query;
 
@@ -30,7 +32,8 @@ export async function GET(request: NextRequest) {
       proformeCount: data?.length || 0, 
       totalCount: count || 0,
       hasError: !!error,
-      errorMessage: error?.message 
+      errorMessage: error?.message,
+      firstProforma: data?.[0] 
     });
 
     if (error) {
