@@ -311,7 +311,7 @@ export async function generateProformaPDF(
     size: 10,
     font: boldFont,
   });
-  page.drawText(`${proforma.subtotal_no_vat.toFixed(2)} EUR`, {
+  page.drawText(`${proforma.subtotal_no_vat.toFixed(2)} LEI`, {
     x: 470,
     y,
     size: 10,
@@ -326,7 +326,7 @@ export async function generateProformaPDF(
     size: 10,
     font: boldFont,
   });
-  page.drawText(`${proforma.total_vat.toFixed(2)} EUR`, {
+  page.drawText(`${proforma.total_vat.toFixed(2)} LEI`, {
     x: 470,
     y,
     size: 10,
@@ -349,7 +349,7 @@ export async function generateProformaPDF(
     size: 12,
     font: boldFont,
   });
-  page.drawText(`${proforma.total_with_vat.toFixed(2)} EUR`, {
+  page.drawText(`${proforma.total_with_vat.toFixed(2)} LEI`, {
     x: 470,
     y: y + 5,
     size: 12,
@@ -358,22 +358,7 @@ export async function generateProformaPDF(
   });
   y -= 30;
 
-  // RON equivalent
-  const totalRON = proforma.total_with_vat * EUR_TO_RON;
-  page.drawText(`Echivalent: ${totalRON.toFixed(2)} RON`, {
-    x: 470,
-    y,
-    size: 9,
-    font: regularFont,
-    color: rgb(0.4, 0.4, 0.4),
-  });
-  page.drawText(`(Curs: 1 EUR = ${EUR_TO_RON} Lei)`, {
-    x: 470,
-    y: y - 12,
-    size: 8,
-    font: regularFont,
-    color: rgb(0.5, 0.5, 0.5),
-  });
+  // Remove RON equivalent (we're already in RON/LEI)
 
   // Footer
   y = 80;
