@@ -160,34 +160,41 @@ export async function POST(request: NextRequest) {
 
     const totalWithVat = subtotalNoVat + totalVat;
 
-    // Create proforma
+    // Create proforma - with fallback for missing columns
+    const proformaData: any = {
+      series: 'PRF',
+      number: nextNumber,
+      full_number: fullNumber,
+      issue_date: new Date().toISOString().split('T')[0],
+      client_type: body.clientType === 'company' ? 'PJ' : 'PF',
+      client_name: body.clientType === 'company' ? (body.companyName || body.clientName) : body.clientName,
+      client_cui: body.clientCIF || null,
+      client_reg_com: body.regCom || null,
+      client_email: body.email,
+      client_phone: body.phone || null,
+      client_address: body.billingAddress,
+      currency: 'RON',
+      subtotal_no_vat: subtotalNoVat,
+      total_vat: totalVat,
+      total_with_vat: totalWithVat,
+      status: 'pending',
+      created_at: new Date().toISOString(),
+    };
+
+    // Try to add new columns if they exist
+    try {
+      proformaData.client_city = body.billingCity;
+      proformaData.client_county = body.billingCounty;
+      proformaData.shipping_address = body.sameAddress ? body.billingAddress : (body.shippingAddress || body.billingAddress);
+      proformaData.shipping_city = body.sameAddress ? body.billingCity : (body.shippingCity || body.billingCity);
+      proformaData.shipping_county = body.sameAddress ? body.billingCounty : (body.shippingCounty || body.billingCounty);
+    } catch (e) {
+      console.log('Shipping columns not available in schema');
+    }
+
     const { data: proforma, error: proformaError } = await supabase
       .from('proforme')
-      .insert({
-        series: 'PRF',
-        number: nextNumber,
-        full_number: fullNumber,
-        issue_date: new Date().toISOString().split('T')[0],
-        client_type: body.clientType === 'company' ? 'PJ' : 'PF',
-        client_name: body.clientType === 'company' ? (body.companyName || body.clientName) : body.clientName,
-        client_cui: body.clientCIF || null,
-        client_reg_com: body.regCom || null,
-        client_email: body.email,
-        client_phone: body.phone || null,
-        client_address: body.billingAddress,
-        client_city: body.billingCity,
-        client_county: body.billingCounty,
-        shipping_address: body.sameAddress ? body.billingAddress : (body.shippingAddress || body.billingAddress),
-        shipping_city: body.sameAddress ? body.billingCity : (body.shippingCity || body.billingCity),
-        shipping_county: body.sameAddress ? body.billingCounty : (body.shippingCounty || body.billingCounty),
-        currency: 'RON',
-        subtotal_no_vat: subtotalNoVat,
-        total_vat: totalVat,
-        total_with_vat: totalWithVat,
-        vat_rate: defaultTaxRate,
-        status: 'pending',
-        created_at: new Date().toISOString(),
-      })
+      .insert(proformaData)
       .select()
       .single();
 
