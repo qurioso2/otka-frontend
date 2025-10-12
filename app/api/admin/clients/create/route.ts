@@ -1,17 +1,31 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
-export async function POST(request: Request) {
-  // Using supabaseAdmin (service_role key - bypasses RLS)
-  const { name, email, phone, company, partner_email } = body;
-  if (!name || !email) return NextResponse.json({ error: 'Name and email required' }, { status: 400 });
-  if (!partner_email) return NextResponse.json({ error: 'partner_email required' }, { status: 400 });
+export async function POST(request: NextRequest) {
+  try {
+    // Using supabaseAdmin (service_role key - bypasses RLS)
+    const body = await request.json();
+    const { name, email, company, partner_email } = body;
 
-  // Validate partner exists and is partner role
-  const { data: partner } = await supabase.from('users').select('email, role').eq('email', partner_email).maybeSingle();
-  if (!partner || partner.role !== 'partner') return NextResponse.json({ error: 'partner_email must belong to a partner user' }, { status: 400 });
+    // Validation
+    if (!name || !email) {
+      return NextResponse.json({ error: 'Name and email are required' }, { status: 400 });
+    }
 
-  const { data, error } = await supabase.from('clients').insert({ name, email, phone, company, partner_email }).select().single();
-  if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+    const { data: client, error } = await supabase
+      .from('clients')
+      .insert([{ name, email, company, partner_email }])
+      .select()
+      .single();
 
-  return NextResponse.json({ client: data });
+    if (error) {
+      console.error('Database error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ client, message: 'Client created successfully' });
+  } catch (error: any) {
+    console.error('API Error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
