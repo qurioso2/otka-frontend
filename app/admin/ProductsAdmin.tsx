@@ -631,17 +631,37 @@ export default function ProductsAdmin() {
                 <label className="block text-sm font-bold text-neutral-900 mb-2">
                   Preț de Vânzare (cu TVA) *
                 </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={newProduct.price_public_ttc}
-                  onChange={(e) => setNewProduct({...newProduct, price_public_ttc: e.target.value})}
-                  className="w-full border-2 border-neutral-500 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="0.00"
-                  required
-                  data-testid="field-price-public"
-                />
-                <p className="text-xs text-neutral-600 mt-1">Prețul final de vânzare care va fi afișat pe site</p>
+                <div className="flex gap-3">
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={newProduct.price_public_ttc}
+                    onChange={(e) => setNewProduct({...newProduct, price_public_ttc: e.target.value})}
+                    className="flex-1 border-2 border-neutral-500 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="0.00"
+                    required
+                    data-testid="field-price-public"
+                  />
+                  <div className="w-32">
+                    <select
+                      value={newProduct.tax_rate_id}
+                      onChange={(e) => setNewProduct({...newProduct, tax_rate_id: e.target.value})}
+                      className="w-full border-2 border-blue-500 rounded-lg px-2 py-2 text-sm font-bold focus:ring-blue-500 focus:border-blue-600 bg-blue-50"
+                      data-testid="field-tax-rate"
+                    >
+                      <option value="">TVA</option>
+                      {taxRates.filter(tr => tr.active).map(rate => (
+                        <option key={rate.id} value={rate.id}>
+                          {rate.rate}% {rate.is_default ? '✓' : ''}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <p className="text-xs text-neutral-600 mt-1">
+                  Prețul final de vânzare • {newProduct.tax_rate_id && taxRates.find(r => r.id === parseInt(newProduct.tax_rate_id))?.rate}% TVA inclus
+                  {!newProduct.tax_rate_id && ' • Selectează cota TVA'}
+                </p>
               </div>
 
               <div>
