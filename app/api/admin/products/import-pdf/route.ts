@@ -173,6 +173,7 @@ Analizează catalogul și returnează JSON-ul cu toate produsele găsite.`;
         message: 'GPT-4o could not extract any products from the catalog',
         suggestion: 'Please check if the PDF contains product information in a readable format'
       }, { status: 400 });
+    }
 
     // Prepare products for database insertion
     const productsToInsert = extractedProducts.map((product, index) => {
