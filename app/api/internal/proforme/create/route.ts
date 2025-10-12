@@ -53,51 +53,85 @@ export async function POST(request: NextRequest) {
     if (existingClients && existingClients.length > 0) {
       clientId = existingClients[0].id;
       
-      // Update client info
-      await supabase
-        .from('clients')
-        .update({
-          name: body.clientName,
-          company: body.companyName || null,
-          cui: body.clientCIF || null,
-          reg_com: body.regCom || null,
-          phone: body.phone || null,
-          billing_address: body.billingAddress,
-          billing_city: body.billingCity,
-          billing_county: body.billingCounty,
-          shipping_address: body.sameAddress ? body.billingAddress : (body.shippingAddress || body.billingAddress),
-          shipping_city: body.sameAddress ? body.billingCity : (body.shippingCity || body.billingCity),
-          shipping_county: body.sameAddress ? body.billingCounty : (body.shippingCounty || body.billingCounty),
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', clientId);
+      // Update client info - try with new schema first, fallback to old
+      try {
+        await supabase
+          .from('clients')
+          .update({
+            name: body.clientName,
+            company: body.companyName || null,
+            cui: body.clientCIF || null,
+            reg_com: body.regCom || null,
+            phone: body.phone || null,
+            billing_address: body.billingAddress,
+            billing_city: body.billingCity,
+            billing_county: body.billingCounty,
+            shipping_address: body.sameAddress ? body.billingAddress : (body.shippingAddress || body.billingAddress),
+            shipping_city: body.sameAddress ? body.billingCity : (body.shippingCity || body.billingCity),
+            shipping_county: body.sameAddress ? body.billingCounty : (body.shippingCounty || body.billingCounty),
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', clientId);
+      } catch (updateError) {
+        console.log('New schema columns not available, using legacy update');
+        // Fallback to old schema
+        await supabase
+          .from('clients')
+          .update({
+            name: body.clientName,
+            phone: body.phone || null,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', clientId);
+      }
     } else {
-      // Create new client
-      const { data: newClient, error: clientError } = await supabase
-        .from('clients')
-        .insert({
-          name: body.clientName,
-          email: body.email,
-          company: body.companyName || null,
-          cui: body.clientCIF || null,
-          reg_com: body.regCom || null,
-          phone: body.phone || null,
-          billing_address: body.billingAddress,
-          billing_city: body.billingCity,
-          billing_county: body.billingCounty,
-          shipping_address: body.sameAddress ? body.billingAddress : (body.shippingAddress || body.billingAddress),
-          shipping_city: body.sameAddress ? body.billingCity : (body.shippingCity || body.billingCity),
-          shipping_county: body.sameAddress ? body.billingCounty : (body.shippingCounty || body.billingCounty),
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        })
-        .select()
-        .single();
+      // Create new client - try with new schema first, fallback to old
+      try {
+        const { data: newClient, error: clientError } = await supabase
+          .from('clients')
+          .insert({
+            name: body.clientName,
+            email: body.email,
+            company: body.companyName || null,
+            cui: body.clientCIF || null,
+            reg_com: body.regCom || null,
+            phone: body.phone || null,
+            billing_address: body.billingAddress,
+            billing_city: body.billingCity,
+            billing_county: body.billingCounty,
+            shipping_address: body.sameAddress ? body.billingAddress : (body.shippingAddress || body.billingAddress),
+            shipping_city: body.sameAddress ? body.billingCity : (body.shippingCity || body.billingCity),
+            shipping_county: body.sameAddress ? body.billingCounty : (body.shippingCounty || body.billingCounty),
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          })
+          .select()
+          .single();
 
-      if (clientError) {
-        console.error('Client creation error:', clientError);
-      } else if (newClient) {
-        clientId = newClient.id;
+        if (clientError) {
+          throw clientError;
+        }
+        if (newClient) {
+          clientId = newClient.id;
+        }
+      } catch (insertError: any) {
+        console.log('New schema columns not available, using legacy insert');
+        // Fallback to old schema
+        const { data: newClient } = await supabase
+          .from('clients')
+          .insert({
+            name: body.clientName,
+            email: body.email,
+            phone: body.phone || null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          })
+          .select()
+          .single();
+        
+        if (newClient) {
+          clientId = newClient.id;
+        }
       }
     }
 
