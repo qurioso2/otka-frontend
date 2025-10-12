@@ -59,7 +59,7 @@ export default function ProformaManager() {
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [notification, setNotification] = useState<{type: 'success' | 'error', message: string} | null>(null);
+  const [notification, setNotification] = useState<{type: 'success' | 'error' | 'warning', message: string} | null>(null);
   
   // Create proforma state
   const [clientType, setClientType] = useState<'PF' | 'PJ'>('PF');
