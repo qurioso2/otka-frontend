@@ -123,19 +123,6 @@ export default function ContactPage() {
                 </div>
               </div>
             </div>
-
-            {/* FAQ Section */}
-            <div className="bg-neutral-50 rounded-2xl border border-neutral-200 p-6">
-              <h3 className="text-lg font-semibold text-neutral-900 mb-4">
-                Intrebari Frecvente
-              </h3>
-              <ul className="space-y-2 text-sm text-neutral-600">
-                <li>• Livrare in 2-5 zile lucratoare</li>
-                <li>• Garantie produse conform specificatiilor</li>
-                <li>• Retur produse nedesigilate in 14 zile</li>
-                <li>• Plata prin transfer bancar sau card</li>
-              </ul>
-            </div>
           </div>
 
           {/* Contact Form */}
