@@ -1,11 +1,11 @@
 [
   {
     "content": "Explorare: Găsire API validare plată factură",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Implementare: Scădere stoc automat la marcare achitată",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Implementare: Creștere stoc la marcare neachitată",
