@@ -1,36 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
-export const dynamic = 'force-dynamic';
-
 export async function GET(request: NextRequest) {
   try {
-    // Using supabase from import
-    const { searchParams } = new URL(request.url);
-
-    // Filters
-    const status = searchParams.get('status'); // pending, paid, cancelled, or null for all
-    const search = searchParams.get('search'); // Search in client_name, client_email, full_number
-    const limit = parseInt(searchParams.get('limit') || '50');
-    const offset = parseInt(searchParams.get('offset') || '0');
+    const url = new URL(request.url);
+    const page = parseInt(url.searchParams.get('page') || '1');
+    const limit = parseInt(url.searchParams.get('limit') || '10');
+    const status = url.searchParams.get('status');
+    const offset = (page - 1) * limit;
 
     let query = supabase
       .from('proforme')
-      .select('*', { count: 'exact' });
-
-    // Apply filters
-    if (status && status !== 'all') {
-      query = query.eq('status', status);
-
-    if (search && search.trim()) {
-      query = query.or(
-        `client_name.ilike.%${search}%,client_email.ilike.%${search}%,full_number.ilike.%${search}%`
-      );
-
-    // Sorting and pagination
-    query = query
-      .order('issue_date', { ascending: false })
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
+
+    if (status) {
+      query = query.eq('status', status);
+    }
 
     const { data, error, count } = await query;
 
@@ -40,6 +27,7 @@ export async function GET(request: NextRequest) {
         { success: false, error: error.message },
         { status: 500 }
       );
+    }
 
     return NextResponse.json({
       success: true,
@@ -52,3 +40,5 @@ export async function GET(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
+  }
+}

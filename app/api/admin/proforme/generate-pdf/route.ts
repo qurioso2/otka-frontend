@@ -4,9 +4,7 @@ import { generateProformaPDF } from '@/lib/proformaPDF';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabase from import
     const body = await request.json();
-
     const { id } = body;
 
     if (!id) {
@@ -14,6 +12,7 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'ID is required' },
         { status: 400 }
       );
+    }
 
     // Get proforma with items
     const { data: proforma, error: proformaError } = await supabase
@@ -27,54 +26,46 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'Proforma not found' },
         { status: 404 }
       );
+    }
 
     const { data: items, error: itemsError } = await supabase
-      .from('proforma_items')
+      .from('proforme_items')
       .select('*')
-      .eq('proforma_id', id)
-      .order('sort_order', { ascending: true });
+      .eq('proforma_id', id);
 
     if (itemsError) {
       return NextResponse.json(
         { success: false, error: itemsError.message },
         { status: 500 }
       );
-
-    // Get company settings
-    const { data: settings, error: settingsError } = await supabase
-      .from('company_settings')
-      .select('*')
-      .limit(1)
-      .single();
-
-    if (settingsError && settingsError.code !== 'PGRST116') {
-      return NextResponse.json(
-        { success: false, error: settingsError.message },
-        { status: 500 }
-      );
+    }
 
     // Generate PDF
-    const pdfBytes = await generateProformaPDF(
-      {
+    try {
+      const pdfBuffer = await generateProformaPDF({
         ...proforma,
-        items: items || [],
-      },
-      settings || {}
-    );
+        items: items || []
+      });
 
-    // TODO: Upload PDF to Supabase Storage or R2 and save URL
-    // For now, return PDF directly
-
-    return new NextResponse(pdfBytes, {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="Proforma-${proforma.full_number}.pdf"`,
-      },
-    });
+      return new NextResponse(pdfBuffer, {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': `attachment; filename="Proforma-${proforma.full_number}.pdf"`,
+        },
+      });
+    } catch (pdfError: any) {
+      console.error('PDF generation error:', pdfError);
+      return NextResponse.json(
+        { success: false, error: 'Failed to generate PDF' },
+        { status: 500 }
+      );
+    }
   } catch (error: any) {
     console.error('Error generating PDF:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
+  }
+}

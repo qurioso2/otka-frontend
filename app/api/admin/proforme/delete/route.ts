@@ -3,9 +3,7 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabase from import
     const body = await request.json();
-
     const { id } = body;
 
     if (!id) {
@@ -13,8 +11,12 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'ID is required' },
         { status: 400 }
       );
+    }
 
-    // Delete proforma (cascade will delete items)
+    // Delete proforma items first (foreign key constraint)
+    await supabase.from('proforme_items').delete().eq('proforma_id', id);
+
+    // Delete proforma
     const { error } = await supabase
       .from('proforme')
       .delete()
@@ -26,6 +28,7 @@ export async function POST(request: NextRequest) {
         { success: false, error: error.message },
         { status: 500 }
       );
+    }
 
     return NextResponse.json({
       success: true,
@@ -37,3 +40,5 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
+  }
+}

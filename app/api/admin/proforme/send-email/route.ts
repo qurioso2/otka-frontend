@@ -1,27 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
-import { generateProformaPDF } from '@/lib/proformaPDF';
-import { getMailer } from '@/lib/mailer';
+import { sendProformaEmail } from '@/lib/proformaEmail';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabase from import
     const body = await request.json();
+    const { id, email, subject, message } = body;
 
-    const { id, to_email } = body;
-
-    if (!id || !to_email) {
+    if (!id || !email) {
       return NextResponse.json(
-        { success: false, error: 'id and to_email are required' },
+        { success: false, error: 'ID and email are required' },
         { status: 400 }
       );
-
-    const mailer = getMailer();
-    if (!mailer) {
-      return NextResponse.json(
-        { success: false, error: 'Email configuration not available' },
-        { status: 500 }
-      );
+    }
 
     // Get proforma with items
     const { data: proforma, error: proformaError } = await supabase
@@ -35,90 +26,57 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'Proforma not found' },
         { status: 404 }
       );
+    }
 
-    const { data: items } = await supabase
-      .from('proforma_items')
+    const { data: items, error: itemsError } = await supabase
+      .from('proforme_items')
       .select('*')
-      .eq('proforma_id', id)
-      .order('sort_order', { ascending: true });
+      .eq('proforma_id', id);
 
-    // Get company settings
-    const { data: settings } = await supabase
-      .from('company_settings')
-      .select('*')
-      .limit(1)
-      .single();
+    if (itemsError) {
+      return NextResponse.json(
+        { success: false, error: itemsError.message },
+        { status: 500 }
+      );
+    }
 
-    const companyName = settings?.company_name || 'OTKA';
-
-    // Generate PDF
-    const pdfBytes = await generateProformaPDF(
-      {
-        ...proforma,
-        items: items || [],
-      },
-      settings || {}
-    );
-
-    // Build email subject and body
-    const subject = (settings?.email_subject_template || 'Proforma #{number} - {company_name}')
-      .replace('{number}', proforma.full_number)
-      .replace('{company_name}', companyName);
-
-    const bodyHtml = (settings?.email_body_template ||
-      'Bună ziua,<br/><br/>Vă transmitem în atașament factura proformă #{number}.<br/><br/>Vă mulțumim,<br/>{company_name}')
-      .replace('{number}', proforma.full_number)
-      .replace('{company_name}', companyName)
-      .replace(/\n/g, '<br/>');
-
-    // Send email with attachment
-    // Note: nodemailer's sendMail accepts attachments array
-    // We need to modify the mailer.send to support attachments
-    // For now, we'll call sendMail directly
-
-    const nodemailer = require('nodemailer');
-    const transporter = nodemailer.createTransport({
-      host: process.env.ZOHO_SMTP_HOST,
-      port: Number(process.env.ZOHO_SMTP_PORT || 465),
-      secure: Number(process.env.ZOHO_SMTP_PORT || 465) === 465,
-      auth: {
-        user: process.env.ZOHO_SMTP_USER,
-        pass: process.env.ZOHO_SMTP_PASS,
-      },
-    });
-
-    const mailOptions = {
-      from: process.env.ZOHO_FROM_EMAIL || process.env.ZOHO_SMTP_USER,
-      to: to_email,
-      subject,
-      html: bodyHtml,
-      attachments: [
-        {
-          filename: `Proforma-${proforma.full_number}.pdf`,
-          content: Buffer.from(pdfBytes),
-          contentType: 'application/pdf',
+    // Send email
+    try {
+      await sendProformaEmail({
+        proforma: {
+          ...proforma,
+          items: items || []
         },
-      ],
-    };
+        to: email,
+        subject: subject || `Proforma ${proforma.proforma_number}`,
+        message: message || 'Va atasam proforma solicitata.'
+      });
 
-    await transporter.sendMail(mailOptions);
+      // Update proforma to mark as sent
+      await supabase
+        .from('proforme')
+        .update({
+          email_sent_at: new Date().toISOString(),
+          email_sent_to: email
+        })
+        .eq('id', id);
 
-    // Update proforma
-    await supabase
-      .from('proforme')
-      .update({
-        email_sent_at: new Date().toISOString(),
-        email_sent_to: to_email,
-      })
-      .eq('id', id);
-
-    return NextResponse.json({
-      success: true,
-      message: 'Email sent successfully',
-    });
+      return NextResponse.json({
+        success: true,
+        message: 'Email sent successfully',
+      });
+    } catch (emailError: any) {
+      console.error('Email sending error:', emailError);
+      return NextResponse.json(
+        { success: false, error: 'Failed to send email' },
+        { status: 500 }
+      );
+    }
   } catch (error: any) {
     console.error('Error sending proforma email:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
+  }
+}

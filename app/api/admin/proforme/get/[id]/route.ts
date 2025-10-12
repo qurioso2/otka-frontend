@@ -1,48 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
-export const dynamic = 'force-dynamic';
-
-type RouteParams = {
-  params: {
-    id: string;
-  };
-};
-
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    // Using supabase from import
-    const { id } = params;
+    const id = params.id;
 
     if (!id) {
       return NextResponse.json(
         { success: false, error: 'ID is required' },
         { status: 400 }
       );
+    }
 
     // Get proforma
-    const { data: proforma, error } = await supabase
+    const { data: proforma, error: proformaError } = await supabase
       .from('proforme')
       .select('*')
       .eq('id', id)
       .single();
 
-    if (error) {
-      console.error('Error fetching proforma:', error);
+    if (proformaError) {
+      console.error('Error fetching proforma:', proformaError);
       return NextResponse.json(
-        { success: false, error: error.message },
+        { success: false, error: proformaError.message },
+        { status: 500 }
+      );
+    }
+
+    if (!proforma) {
+      return NextResponse.json(
+        { success: false, error: 'Proforma not found' },
         { status: 404 }
       );
+    }
 
-    // Get proforma items with tax rate details
+    // Get proforma items
     const { data: items, error: itemsError } = await supabase
-      .from('proforma_items')
-      .select(`
-        *,
-        tax_rates (id, name, rate)
-      `)
-      .eq('proforma_id', id)
-      .order('sort_order', { ascending: true });
+      .from('proforme_items')
+      .select('*')
+      .eq('proforma_id', id);
 
     if (itemsError) {
       console.error('Error fetching proforma items:', itemsError);
@@ -50,11 +49,12 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         { success: false, error: itemsError.message },
         { status: 500 }
       );
+    }
 
     return NextResponse.json({
       success: true,
       data: {
-        ...proforma,
+        proforma,
         items: items || [],
       },
     });
@@ -64,3 +64,5 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
+  }
+}
