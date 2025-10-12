@@ -217,15 +217,40 @@ export async function generateProformaPDF(
       font: regularFont,
     });
 
-    // Product name with wrapping and diacritics removed
-    const productName = removeDiacritics(item.name);
-    const displayName = productName.length > 30 ? productName.substring(0, 30) + '...' : productName;
-    page.drawText(displayName, {
-      x: colX.description,
+    // SKU column
+    const sku = removeDiacritics((item as any).sku || 'N/A');
+    page.drawText(sku.substring(0, 10), {
+      x: colX.sku,
       y,
-      size: 8,
+      size: 7,
       font: regularFont,
     });
+
+    // Product name with wrapping (2 lines) and diacritics removed
+    const productName = removeDiacritics(item.name);
+    if (productName.length > 30) {
+      const line1 = productName.substring(0, 30);
+      const line2 = productName.substring(30, 60);
+      page.drawText(line1, {
+        x: colX.description,
+        y,
+        size: 7,
+        font: regularFont,
+      });
+      page.drawText(line2, {
+        x: colX.description,
+        y: y - 8,
+        size: 7,
+        font: regularFont,
+      });
+    } else {
+      page.drawText(productName, {
+        x: colX.description,
+        y,
+        size: 8,
+        font: regularFont,
+      });
+    }
 
     page.drawText('buc', {
       x: colX.um,
@@ -255,7 +280,7 @@ export async function generateProformaPDF(
       font: regularFont,
     });
 
-    y -= 15;
+    y -= productName.length > 30 ? 20 : 15;
 
     // Add new page if needed
     if (y < 150) {
