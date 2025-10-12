@@ -132,7 +132,10 @@ Analizează catalogul și returnează JSON-ul cu toate produsele găsite.`;
               image_url: {
                 url: `data:application/pdf;base64,${base64Pdf}`,
                 detail: 'high' // High detail for better extraction
+              }
+            }
           ]
+        }
       ],
       max_tokens: 4096,
       temperature: 0.1, // Low temperature for consistent extraction
