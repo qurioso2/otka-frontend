@@ -591,7 +591,7 @@ Citește /app/PROJECT_STATUS_FINAL.md pentru context complet.
 
 **Ready for**: Testing, SQL execution, Deploy
 
-**Known issues**: Minor (RichTextEditor headings, gallery sync)
+**Known issues**: Minor (RichTextEditor headings)
 
 ---
 
