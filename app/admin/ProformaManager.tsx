@@ -37,6 +37,7 @@ type Product = {
   name: string;
   price_partner_net: number;
   tax_rate_id?: number;
+  stock_qty?: number;
 };
 
 type TaxRate = {
