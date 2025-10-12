@@ -2,10 +2,29 @@ import { NextResponse } from 'next/server';
 import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get('id');
-  if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 });
+  try {
+    // Using supabaseAdmin (service_role key - bypasses RLS)
+    const url = new URL(request.url);
+    const id = url.searchParams.get('id');
+    
+    if (!id) {
+      return NextResponse.json({ error: 'Order ID required' }, { status: 400 });
+    }
+    
+    const { data, error } = await supabase
+      .from('partner_orders')
+      .select('*')
+      .eq('id', id)
+      .single();
+      
+    if (error) {
+      console.error('Partner order detail error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
-  // Using supabaseAdmin (service_role key - bypasses RLS)
-  if (error) return NextResponse.json({ error: error.message }, { status: 400 });
-  return NextResponse.json(data);
+    return NextResponse.json({ order: data });
+  } catch (error: any) {
+    console.error('API Error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
