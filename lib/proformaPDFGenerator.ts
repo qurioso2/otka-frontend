@@ -357,13 +357,7 @@ export async function generateProformaPDF(
     font: regularFont,
   });
 
-  page.drawText('Facturez cu SmartBill.ro, standardul facturarii electronice', {
-    x: 50,
-    y: 50,
-    size: 7,
-    font: regularFont,
-    color: rgb(0.5, 0.5, 0.5),
-  });
+  // Removed SmartBill text as requested
 
   // Serialize the PDF
   const pdfBytes = await pdfDoc.save();
