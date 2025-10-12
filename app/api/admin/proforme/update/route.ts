@@ -3,28 +3,20 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabase from import
     const body = await request.json();
-
-    const { id, ...updateFields } = body;
+    const { id, ...updateData } = body;
 
     if (!id) {
       return NextResponse.json(
         { success: false, error: 'ID is required' },
         { status: 400 }
       );
+    }
 
-    // Don't allow updating computed fields
-    delete updateFields.subtotal_no_vat;
-    delete updateFields.total_vat;
-    delete updateFields.total_with_vat;
-    delete updateFields.full_number;
-    delete updateFields.number;
-    delete updateFields.series;
-
+    // Update proforma
     const { data, error } = await supabase
       .from('proforme')
-      .update(updateFields)
+      .update(updateData)
       .eq('id', id)
       .select()
       .single();
@@ -35,6 +27,7 @@ export async function POST(request: NextRequest) {
         { success: false, error: error.message },
         { status: 500 }
       );
+    }
 
     return NextResponse.json({
       success: true,
@@ -46,3 +39,5 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
+  }
+}

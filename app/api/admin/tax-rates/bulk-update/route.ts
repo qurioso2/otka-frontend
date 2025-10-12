@@ -3,35 +3,33 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabase from import
     const body = await request.json();
+    const { updates } = body;
 
-    const { old_rate_id, new_rate_id } = body;
-
-    if (!old_rate_id || !new_rate_id) {
+    if (!updates || !Array.isArray(updates)) {
       return NextResponse.json(
-        { success: false, error: 'old_rate_id and new_rate_id are required' },
+        { success: false, error: 'Updates array is required' },
         { status: 400 }
       );
+    }
 
-    // Call the SQL function to update all products
-    const { data, error } = await supabase
-      .rpc('update_all_products_tax_rate', {
-        old_rate_id,
-        new_rate_id,
-      });
-
-    if (error) {
-      console.error('Error bulk updating tax rates:', error);
-      return NextResponse.json(
-        { success: false, error: error.message },
-        { status: 500 }
-      );
+    // Bulk update tax rates
+    let affectedCount = 0;
+    for (const update of updates) {
+      const { id, rate } = update;
+      if (id && rate !== undefined) {
+        const { error } = await supabase
+          .from('tax_rates')
+          .update({ rate })
+          .eq('id', id);
+        if (!error) affectedCount++;
+      }
+    }
 
     return NextResponse.json({
       success: true,
-      affected_count: data,
-      message: `Updated ${data} products`,
+      affected_count: affectedCount,
+      message: `Updated ${affectedCount} tax rates`,
     });
   } catch (error: any) {
     console.error('Error in tax-rates/bulk-update:', error);
@@ -39,3 +37,5 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
+  }
+}

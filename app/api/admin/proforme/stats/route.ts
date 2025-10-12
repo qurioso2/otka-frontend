@@ -1,34 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
-export const dynamic = 'force-dynamic';
-
 export async function GET(request: NextRequest) {
   try {
-    // Using supabase from import
+    // Get statistics for proforme
+    const { data: totalCount, error: countError } = await supabase
+      .from('proforme')
+      .select('*', { count: 'exact', head: true });
 
-    // Use the view we created
-    const { data, error } = await supabase
-      .from('proforma_stats')
-      .select('*');
+    const { data: draftCount, error: draftError } = await supabase
+      .from('proforme')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'draft');
 
-    if (error) {
-      console.error('Error fetching proforma stats:', error);
+    const { data: sentCount, error: sentError } = await supabase
+      .from('proforme')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'sent');
+
+    const { data: paidCount, error: paidError } = await supabase
+      .from('proforme')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'paid');
+
+    if (countError || draftError || sentError || paidError) {
+      console.error('Error fetching stats:', { countError, draftError, sentError, paidError });
       return NextResponse.json(
-        { success: false, error: error.message },
+        { success: false, error: 'Failed to fetch statistics' },
         { status: 500 }
       );
+    }
 
-    // If no data, return zeros
-    const stats = data && data.length > 0 ? data[0] : {
-      total_proforme: 0,
-      total_paid: 0,
-      total_pending: 0,
-      total_cancelled: 0,
-      suma_incasata: 0,
-      suma_in_asteptare: 0,
-      suma_totala: 0,
-      currency: 'RON',
+    const stats = {
+      total: totalCount || 0,
+      draft: draftCount || 0,
+      sent: sentCount || 0,
+      paid: paidCount || 0
     };
 
     return NextResponse.json({
@@ -41,3 +48,5 @@ export async function GET(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
+  }
+}

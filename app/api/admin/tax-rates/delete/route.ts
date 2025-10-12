@@ -3,9 +3,7 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabase from import
     const body = await request.json();
-
     const { id } = body;
 
     if (!id) {
@@ -13,22 +11,25 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'ID is required' },
         { status: 400 }
       );
+    }
 
-    // Check if this tax rate is used in products
-    const { data: productsWithTaxRate, error: checkError } = await supabase
-      .from('products')
-      .select('id', { count: 'exact', head: true })
-      .eq('tax_rate_id', id);
+    // Check if tax rate is used by any proforme or products
+    const { data: proformeUsing, error: proformeError } = await supabase
+      .from('proforme')
+      .select('id')
+      .eq('vat_rate', id)
+      .limit(1);
 
-    if (checkError) {
-      console.error('Error checking products:', checkError);
+    if (proformeError) {
+      console.error('Error checking proforme usage:', proformeError);
       return NextResponse.json(
-        { success: false, error: checkError.message },
+        { success: false, error: proformeError.message },
         { status: 500 }
       );
+    }
 
-    // If tax rate is used in products, deactivate instead of delete
-    if (productsWithTaxRate && (productsWithTaxRate as any).count > 0) {
+    if (proformeUsing && proformeUsing.length > 0) {
+      // Instead of deleting, mark as inactive
       const { data, error } = await supabase
         .from('tax_rates')
         .update({ active: false })
@@ -42,14 +43,16 @@ export async function POST(request: NextRequest) {
           { success: false, error: error.message },
           { status: 500 }
         );
+      }
 
       return NextResponse.json({
         success: true,
-        data,
-        message: 'Tax rate deactivated (in use by products)',
+        message: 'Tax rate deactivated (was used by existing proforme)',
+        data
       });
+    }
 
-    // Otherwise, delete
+    // Delete tax rate if not used
     const { error } = await supabase
       .from('tax_rates')
       .delete()
@@ -61,6 +64,7 @@ export async function POST(request: NextRequest) {
         { success: false, error: error.message },
         { status: 500 }
       );
+    }
 
     return NextResponse.json({
       success: true,
@@ -72,3 +76,5 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
+  }
+}

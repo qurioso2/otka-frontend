@@ -3,46 +3,48 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabase from import
     const body = await request.json();
+    const { name, rate, description, active = true } = body;
 
-    const { name, rate, active, is_default, description, effective_from, sort_order } = body;
-
-    // Validate required fields
-    if (!name || rate === undefined || rate === null) {
+    if (!name || rate === undefined) {
       return NextResponse.json(
         { success: false, error: 'Name and rate are required' },
         { status: 400 }
       );
+    }
 
-    // If this is being set as default, unset other defaults
-    if (is_default) {
-      await supabase
-        .from('tax_rates')
-        .update({ is_default: false })
-        .eq('is_default', true);
+    if (typeof rate !== 'number' || rate < 0 || rate > 100) {
+      return NextResponse.json(
+        { success: false, error: 'Rate must be a number between 0 and 100' },
+        { status: 400 }
+      );
+    }
 
     // Create tax rate
     const { data, error } = await supabase
       .from('tax_rates')
       .insert({
-        name,
-        rate: parseFloat(rate),
-        active: active ?? true,
-        is_default: is_default ?? false,
-        description: description || null,
-        effective_from: effective_from || null,
-        sort_order: sort_order ?? 0,
+        name: name.trim(),
+        rate,
+        description: description?.trim() || null,
+        active
       })
       .select()
       .single();
 
     if (error) {
       console.error('Error creating tax rate:', error);
+      if (error.code === '23505') {
+        return NextResponse.json(
+          { success: false, error: 'A tax rate with this name already exists' },
+          { status: 409 }
+        );
+      }
       return NextResponse.json(
         { success: false, error: error.message },
         { status: 500 }
       );
+    }
 
     return NextResponse.json({
       success: true,
@@ -54,3 +56,5 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
+  }
+}
