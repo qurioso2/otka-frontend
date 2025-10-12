@@ -1,47 +1,7 @@
 [
   {
-    "content": "Obține design guidelines de la design_agent pentru sistem proforme",
-    "status": "completed"
-  },
-  {
-    "content": "Creează schema DB: tabele tax_rates, proforme, proforme_items, company_settings",
-    "status": "completed"
-  },
-  {
-    "content": "Adaugă referință tax_rate_id în tabelul products (în loc de vat_rate numeric)",
-    "status": "completed"
-  },
-  {
-    "content": "Creează API endpoints pentru tax_rates management (CRUD)",
-    "status": "completed"
-  },
-  {
-    "content": "Creează API endpoints pentru company_settings (read/update)",
-    "status": "completed"
-  },
-  {
-    "content": "Creează API endpoints pentru proforme (list, create, update, delete, confirm)",
-    "status": "completed"
-  },
-  {
-    "content": "Implementează PDF generator pentru proforme cu pdf-lib",
-    "status": "completed"
-  },
-  {
-    "content": "Adaugă selector cotă TVA în ProductsAdmin.tsx (la adăugare/editare produs)",
-    "status": "completed"
-  },
-  {
-    "content": "Afișează cotă TVA lângă Preț de Vânzare în form produse",
-    "status": "completed"
-  },
-  {
-    "content": "Fix build warnings: createClient export + sendZohoMail backward compatibility",
-    "status": "completed"
-  },
-  {
     "content": "Creează TaxRatesManager.tsx în admin (gestionare cote TVA)",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Creează CompanySettingsManager.tsx în admin (date firmă, IBAN, logo)",
@@ -53,14 +13,6 @@
   },
   {
     "content": "Integrează tab-uri noi în AdminDashboard.tsx (Cote TVA, Setări Firmă, Proforme)",
-    "status": "pending"
-  },
-  {
-    "content": "Implementează email service pentru trimitere proforme cu PDF atașat",
-    "status": "completed"
-  },
-  {
-    "content": "Testează flow complet: creează proformă → generează PDF → trimite email",
     "status": "pending"
   }
 ]
