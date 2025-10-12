@@ -4,7 +4,6 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 export async function POST(request: NextRequest) {
   try {
     // Using supabaseAdmin (service_role key - bypasses RLS)
-    
 
     // Parse request body
     const body = await request.json();
@@ -13,6 +12,7 @@ export async function POST(request: NextRequest) {
     // Validation
     if (!id) {
       return NextResponse.json({ error: 'Brand ID is required' }, { status: 400 });
+    }
 
     // Check if brand is used by any products
     const { data: products, error: checkError } = await supabase
@@ -23,6 +23,8 @@ export async function POST(request: NextRequest) {
 
     if (checkError) {
       console.error('Error checking products:', checkError);
+      return NextResponse.json({ error: checkError.message }, { status: 500 });
+    }
 
     // If brand is used, just mark as inactive instead of deleting
     if (products && products.length > 0) {
@@ -39,11 +41,13 @@ export async function POST(request: NextRequest) {
           error: 'Failed to deactivate brand',
           details: error.message 
         }, { status: 500 });
+      }
 
       return NextResponse.json({ 
         brand, 
         message: 'Brand dezactivat (folosit de produse)' 
       });
+    }
 
     // Delete brand if not used
     const { error } = await supabase
@@ -57,8 +61,11 @@ export async function POST(request: NextRequest) {
         error: 'Failed to delete brand',
         details: error.message 
       }, { status: 500 });
+    }
 
     return NextResponse.json({ message: 'Brand șters cu succes' });
   } catch (error: any) {
     console.error('API Error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}

@@ -4,7 +4,6 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 export async function POST(request: NextRequest) {
   try {
     // Using supabaseAdmin (service_role key - bypasses RLS)
-    
 
     // Parse request body
     const body = await request.json();
@@ -13,9 +12,11 @@ export async function POST(request: NextRequest) {
     // Validation
     if (!id) {
       return NextResponse.json({ error: 'Brand ID is required' }, { status: 400 });
+    }
 
     if (!name || !name.trim()) {
       return NextResponse.json({ error: 'Brand name is required' }, { status: 400 });
+    }
 
     // Generate slug from name
     const slug = name
@@ -54,12 +55,16 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ 
           error: 'Un alt brand cu acest nume sau slug există deja' 
         }, { status: 409 });
+      }
       return NextResponse.json({ 
         error: 'Failed to update brand',
         details: error.message 
       }, { status: 500 });
+    }
 
     return NextResponse.json({ brand, message: 'Brand updated successfully' });
   } catch (error: any) {
     console.error('API Error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
