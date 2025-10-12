@@ -4,7 +4,6 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 export async function POST(request: NextRequest) {
   try {
     // Using supabaseAdmin (service_role key - bypasses RLS)
-    
 
     // Parse request body
     const body = await request.json();
