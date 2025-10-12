@@ -31,8 +31,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Decrease stock for each product
+    console.log('=== STOCK UPDATE START ===');
+    console.log('Items found:', items?.length || 0);
+    
     if (items && items.length > 0) {
       for (const item of items) {
+        console.log('Processing item:', { product_id: item.product_id, quantity: item.quantity });
+        
         if (item.product_id) {
           // Get current stock
           const { data: product, error: productError } = await supabase
@@ -41,18 +46,33 @@ export async function POST(request: NextRequest) {
             .eq('id', item.product_id)
             .single();
 
-          if (!productError && product) {
-            const newStock = Math.max(0, (product.stock_qty || 0) - item.quantity);
+          if (productError) {
+            console.error('Error fetching product:', productError);
+            continue;
+          }
+
+          if (product) {
+            const currentStock = product.stock_qty || 0;
+            const newStock = Math.max(0, currentStock - item.quantity);
+            
+            console.log(`Product ${item.product_id}: ${currentStock} → ${newStock}`);
             
             // Update stock
-            await supabase
+            const { error: updateError } = await supabase
               .from('products')
               .update({ stock_qty: newStock })
               .eq('id', item.product_id);
+              
+            if (updateError) {
+              console.error('Error updating stock:', updateError);
+            } else {
+              console.log(`✓ Stock updated successfully for product ${item.product_id}`);
+            }
           }
         }
       }
     }
+    console.log('=== STOCK UPDATE END ===');
 
     // Update status to paid and set confirmed_at
     const { data, error } = await supabase
