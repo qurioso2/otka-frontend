@@ -1,11 +1,11 @@
 [
   {
     "content": "Obține design guidelines de la design_agent pentru sistem proforme",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Creează schema DB: tabele tax_rates, proforme, proforme_items, company_settings",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Adaugă referință tax_rate_id în tabelul products (în loc de vat_rate numeric)",
