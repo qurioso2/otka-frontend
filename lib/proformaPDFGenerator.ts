@@ -36,8 +36,6 @@ type CompanySettings = {
   bank_name?: string;
 };
 
-const EUR_TO_RON = 5.0639; // Exchange rate
-
 // Helper function to remove Romanian diacritics
 function removeDiacritics(text: string): string {
   if (!text) return '';
