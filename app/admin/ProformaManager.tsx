@@ -992,7 +992,7 @@ export default function ProformaManager() {
                   >
                     <div className="font-medium text-slate-900">{product.name}</div>
                     <div className="text-sm text-slate-600">
-                      SKU: {product.sku} • Preț: {product.price_partner_net.toFixed(2)} RON
+                      SKU: {product.sku} • Preț: {(product.price_partner_net || 0).toFixed(2)} RON
                     </div>
                   </button>
                 ))
