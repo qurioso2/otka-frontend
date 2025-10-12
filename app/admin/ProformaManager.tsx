@@ -729,6 +729,18 @@ export default function ProformaManager() {
                         client_address: '',
                         client_phone: '',
                       });
+                    } else {
+                      // Reset to empty form
+                      setSelectedClientId(null);
+                      setClientData({
+                        client_name: '',
+                        client_email: '',
+                        client_company: '',
+                        client_cui: '',
+                        client_reg_com: '',
+                        client_address: '',
+                        client_phone: '',
+                      });
                     }
                   }}
                   className="w-4 h-4"
