@@ -216,7 +216,9 @@ function OverviewTab({ setActiveTab }: { setActiveTab: (tab: string) => void }) 
           </div>
           <div className="ml-4">
             <p className="text-sm text-neutral-800 font-semibold">Parteneri Activi</p>
-            <p className="text-2xl font-extrabold text-neutral-950" data-testid="active-partners">-</p>
+            <p className="text-2xl font-extrabold text-neutral-950" data-testid="active-partners">
+              {stats.loading ? '...' : stats.activePartners.toLocaleString()}
+            </p>
           </div>
         </div>
       </div>
