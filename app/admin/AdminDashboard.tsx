@@ -200,7 +200,9 @@ function OverviewTab({ setActiveTab }: { setActiveTab: (tab: string) => void }) 
           </div>
           <div className="ml-4">
             <p className="text-sm text-neutral-800 font-semibold">Total Produse</p>
-            <p className="text-2xl font-extrabold text-neutral-950" data-testid="total-products">-</p>
+            <p className="text-2xl font-extrabold text-neutral-950" data-testid="total-products">
+              {stats.loading ? '...' : stats.totalProducts.toLocaleString()}
+            </p>
           </div>
         </div>
       </div>
