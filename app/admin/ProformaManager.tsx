@@ -134,11 +134,20 @@ export default function ProformaManager() {
     try {
       const res = await fetch('/api/admin/products/list', { cache: 'no-store' });
       const data = await res.json();
+      console.log('Products API response:', data);
+      
+      // Handle both formats: direct array or { products: [...] }
       if (Array.isArray(data)) {
         setProducts(data);
+      } else if (data.products && Array.isArray(data.products)) {
+        setProducts(data.products);
+      } else {
+        console.error('Unexpected products API format:', data);
+        setProducts([]);
       }
     } catch (error) {
       console.error('Error loading products:', error);
+      setProducts([]);
     }
   };
 
