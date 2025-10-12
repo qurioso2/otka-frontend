@@ -709,6 +709,69 @@ export default function ProformaManager() {
           <div className="bg-white rounded-[10px] shadow-sm border border-slate-200 p-6 space-y-4">
             <h2 className="text-lg font-bold text-slate-900 border-b border-slate-200 pb-3">👤 Date Client</h2>
             
+            <div className="flex gap-4 mb-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={useExistingClient}
+                  onChange={(e) => {
+                    setUseExistingClient(e.target.checked);
+                    if (e.target.checked && clients.length > 0) {
+                      // Auto-select first client
+                      const firstClient = clients[0];
+                      setSelectedClientId(firstClient.id);
+                      setClientData({
+                        client_name: firstClient.name,
+                        client_email: firstClient.email,
+                        client_company: firstClient.company || '',
+                        client_cui: '',
+                        client_reg_com: '',
+                        client_address: '',
+                        client_phone: '',
+                      });
+                    }
+                  }}
+                  className="w-4 h-4"
+                />
+                <span className="font-medium text-blue-600">Selectează client existent ({clients.length})</span>
+              </label>
+            </div>
+
+            {useExistingClient && clients.length > 0 && (
+              <div className="mb-4">
+                <label className="block text-sm font-bold text-slate-900 mb-2">
+                  Client Existent
+                </label>
+                <select
+                  value={selectedClientId || ''}
+                  onChange={(e) => {
+                    const clientId = parseInt(e.target.value);
+                    setSelectedClientId(clientId);
+                    const client = clients.find(c => c.id === clientId);
+                    if (client) {
+                      setClientData({
+                        client_name: client.name,
+                        client_email: client.email,
+                        client_company: client.company || '',
+                        client_cui: '',
+                        client_reg_com: '',
+                        client_address: '',
+                        client_phone: '',
+                      });
+                    }
+                  }}
+                  className="w-full border-2 border-slate-300 rounded-lg px-3 py-2"
+                >
+                  <option value="">Selectează client...</option>
+                  {clients.map(client => (
+                    <option key={client.id} value={client.id}>
+                      {client.name} ({client.email}) {client.company && `- ${client.company}`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
             <div className="flex gap-4">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
