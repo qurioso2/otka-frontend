@@ -100,6 +100,7 @@ export default function ProformaManager() {
     if (activeView === 'create') {
       loadProducts();
       loadTaxRates();
+      loadClients(); // Load clients when switching to create view
     }
   }, [activeView]);
 
