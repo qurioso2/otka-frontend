@@ -414,19 +414,17 @@ export default function CheckoutPage() {
 
           <div className="bg-emerald-50 rounded-xl p-4 mb-6">
             <p className="text-sm text-emerald-800">
-              Proforma a fost creată și salvată în sistem. Poți descărca PDF-ul sau trimite proforma pe email.
+              Proforma a fost creată și salvată în sistem. {result.emailSent && 'Email-ul cu PDF a fost trimis automat! ✉️'} Poți descărca PDF-ul sau retrimite email-ul dacă este necesar.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <button 
-              onClick={sendEmail} 
-              disabled={sending} 
-              className="flex-1 rounded-full bg-black text-white px-6 py-3 text-sm font-medium hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
-            >
-              <Mail className="w-4 h-4" />
-              {sending ? 'Se trimite...' : `Trimite pe email (${result.email})`}
-            </button>
+            {result.emailSent && (
+              <div className="flex-1 bg-green-50 border border-green-300 rounded-full px-6 py-3 text-sm font-medium text-green-800 flex items-center justify-center gap-2">
+                <Check className="w-4 h-4" />
+                Email trimis automat!
+              </div>
+            )}
             <button 
               onClick={downloadPDF} 
               className="flex-1 rounded-full border-2 border-black text-black px-6 py-3 text-sm font-medium hover:bg-neutral-50 transition-colors"
