@@ -91,11 +91,14 @@ BEGIN
     )
     WHERE tax_rate_id IS NULL;
     
-    -- Setăm default pentru produse noi (21%)
-    ALTER TABLE public.products 
-      ALTER COLUMN tax_rate_id SET DEFAULT (
-        SELECT id FROM public.tax_rates WHERE is_default = true LIMIT 1
-      );
+    -- Setăm default pentru produse noi folosind o funcție
+    -- Nu putem folosi subquery direct în DEFAULT, deci vom lăsa NULL și setăm în aplicație
+    -- SAU setăm manual după migrare
+    
+    -- Găsim ID-ul cotei default și îl setăm pentru produsele care au NULL
+    UPDATE public.products 
+    SET tax_rate_id = (SELECT id FROM public.tax_rates WHERE is_default = true LIMIT 1)
+    WHERE tax_rate_id IS NULL;
     
     RAISE NOTICE 'Coloana tax_rate_id adăugată cu succes în products';
   ELSE
