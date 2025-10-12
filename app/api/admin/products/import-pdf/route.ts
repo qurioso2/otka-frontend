@@ -20,6 +20,7 @@ interface ExtractedProduct {
   height?: number;
   weight?: number;
   gallery?: string[];
+}
 
 export async function POST(request: NextRequest) {
   try {
