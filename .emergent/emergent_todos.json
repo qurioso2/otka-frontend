@@ -1,22 +1,58 @@
 [
   {
-    "content": "Fix RichTextEditor - H2, H3, P, Lists, Clear nu funcționează",
-    "status": "completed"
+    "content": "Obține design guidelines de la design_agent pentru sistem proforme",
+    "status": "in_progress"
   },
   {
-    "content": "Creează Management UI pentru Categorii (lista, edit, delete, toggle active)",
-    "status": "completed"
+    "content": "Creează schema DB: tabele tax_rates, proforme, proforme_items, company_settings",
+    "status": "pending"
   },
   {
-    "content": "Creează Management UI pentru Branduri (lista, edit, delete, toggle active)",
-    "status": "completed"
+    "content": "Adaugă referință tax_rate_id în tabelul products (în loc de vat_rate numeric)",
+    "status": "pending"
   },
   {
-    "content": "Adaugă tab-uri în Admin Dashboard pentru Categories și Brands",
-    "status": "completed"
+    "content": "Creează API endpoints pentru tax_rates management (CRUD)",
+    "status": "pending"
   },
   {
-    "content": "Verifică că API-urile public afișează doar active=true",
-    "status": "completed"
+    "content": "Creează API endpoints pentru company_settings (read/update)",
+    "status": "pending"
+  },
+  {
+    "content": "Creează API endpoints pentru proforme (list, create, update, delete, confirm)",
+    "status": "pending"
+  },
+  {
+    "content": "Implementează PDF generator pentru proforme cu mPDF/pdf-lib",
+    "status": "pending"
+  },
+  {
+    "content": "Adaugă selector cotă TVA în ProductsAdmin.tsx (la adăugare/editare produs)",
+    "status": "pending"
+  },
+  {
+    "content": "Afișează cotă TVA lângă Preț de Vânzare în form produse",
+    "status": "pending"
+  },
+  {
+    "content": "Creează TaxRatesManager.tsx în admin (gestionare cote TVA)",
+    "status": "pending"
+  },
+  {
+    "content": "Creează CompanySettingsManager.tsx în admin (date firmă, IBAN, logo)",
+    "status": "pending"
+  },
+  {
+    "content": "Creează ProformaManager.tsx în admin (dashboard proforme)",
+    "status": "pending"
+  },
+  {
+    "content": "Implementează email service pentru trimitere proforme cu PDF atașat",
+    "status": "pending"
+  },
+  {
+    "content": "Testează flow complet: creează proformă → generează PDF → trimite email",
+    "status": "pending"
   }
 ]
