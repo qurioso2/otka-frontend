@@ -3,6 +3,8 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function GET() {
   try {
+    console.log('=== Orders API (using supabaseAdmin) ===');
+    
     const { data, error } = await supabase
       .from('manual_orders')
       .select(`

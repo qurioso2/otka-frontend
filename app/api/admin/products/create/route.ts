@@ -3,11 +3,11 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabaseAdmin (service_role key - bypasses RLS)
+    console.log('=== Products Create (using supabaseAdmin) ===');
 
     // Parse request body
     const body = await request.json();
-    console.log('Received product data:', body); // Debug log
+    console.log('Create request body:', body);
     
     const {
       sku,

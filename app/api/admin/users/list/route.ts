@@ -3,6 +3,8 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function GET() {
   try {
+    console.log('=== Users API (using supabaseAdmin) ===');
+
     // Unele instanțe nu au coloana created_at în tabela users. Ordonăm după email pentru compatibilitate.
     const { data, error } = await supabase.from('users').select('*').order('email', { ascending: true });
     
