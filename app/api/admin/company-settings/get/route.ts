@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('=== Company Settings API (using supabaseAdmin) ===');
+    console.log('=== Company Settings API (using getSupabaseAdmin) ===');
+
+    const supabase = getSupabaseAdmin();
 
     // Get company settings (should only be 1 row)
     const { data, error } = await supabase
