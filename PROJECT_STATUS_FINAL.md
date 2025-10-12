@@ -397,15 +397,16 @@ SELECT id, name, brand_name, summary, category FROM products_public LIMIT 3;
 
 ---
 
-### 2. ⚠️ Gallery - Thumbnail Selection Sync
+### 2. ✅ Gallery - Thumbnail Selection (REZOLVAT)
 
-**Status**: PARTIAL FIX
+**Status**: ✅ FUNCȚIONEAZĂ CORECT
 
-**Issue**: Când selectezi un thumbnail, imaginea principală nu se actualizează vizual (deși state-ul se schimbă)
+**Fix aplicat**: 
+- State `currentImage` sincronizat cu `selectedImage`
+- `useEffect` actualizează imaginea principală la schimbare thumbnail
+- `key={currentImage}` forțează re-render al ProductImage
 
-**Workaround**: Click pe imagine → modal se deschide cu imaginea corectă
-
-**TODO**: Debug React re-render cu ProductImage component
+**Rezultat**: Click pe thumbnail → imaginea principală se actualizează instant
 
 ---
 
