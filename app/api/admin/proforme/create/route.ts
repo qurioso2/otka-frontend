@@ -69,18 +69,10 @@ export async function POST(request: NextRequest) {
     
     const total = subtotal + vat_amount;
 
-    // Generate sequential proforma number (1, 2, 3...)
-    // Get the highest existing number and add 1
-    const { data: lastProforma, error: numberError } = await supabase
-      .from('proforme')
-      .select('number')
-      .order('number', { ascending: false })
-      .limit(1)
-      .single();
-
-    const nextNumber = lastProforma?.number ? lastProforma.number + 1 : 1;
+    // Let Supabase auto-generate the number (set to NULL - trigger will handle)
+    // This will create sequential numbering: 1, 2, 3...
     
-    console.log('Next proforma number:', nextNumber);
+    console.log('Using auto-increment from Supabase trigger');
 
     // Insert proforma - using correct column names from schema
     const { data: proforma, error: proformaError } = await supabase
