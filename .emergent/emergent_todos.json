@@ -1,15 +1,11 @@
 [
   {
-    "content": "Implementare: Ascundere produse fără stoc pe homepage",
+    "content": "Implementare: Validare cantitate stoc în CartProvider",
     "status": "completed"
   },
   {
-    "content": "Implementare: Validare cantitate stoc în CartProvider",
-    "status": "in_progress"
-  },
-  {
     "content": "Implementare: Adăugare stock_qty la AddToCartButton",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Scoate text SmartBill din PDF",
