@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { supabase } from '@/lib/supabaseClient';
 
 export async function GET(request: NextRequest) {
   try {
+    console.log('=== Proforme Stats API Debug ===');
+    console.log('Using supabaseClient (same as homepage)');
+    
     // Get statistics for proforme
     const { data: totalCount, error: countError } = await supabase
       .from('proforme')
@@ -37,6 +40,8 @@ export async function GET(request: NextRequest) {
       sent: sentCount || 0,
       paid: paidCount || 0
     };
+
+    console.log('Stats result:', stats);
 
     return NextResponse.json({
       success: true,

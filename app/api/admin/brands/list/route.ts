@@ -1,15 +1,22 @@
 import { NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { supabase } from '@/lib/supabaseClient';
 
 export async function GET() {
   try {
-    // Using supabaseAdmin (service_role key - bypasses RLS)
+    console.log('=== Brands API Debug ===');
+    console.log('Using supabaseClient (same as homepage)');
 
     // Get all brands
     const { data, error } = await supabase
       .from('brands')
       .select('*')
       .order('sort_order', { ascending: true });
+
+    console.log('Brands result:', { 
+      brandsCount: data?.length || 0, 
+      hasError: !!error,
+      errorMessage: error?.message 
+    });
 
     if (error) {
       console.error('Error fetching brands:', error);

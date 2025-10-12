@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { supabase } from '@/lib/supabaseClient';
 
 export async function GET(request: NextRequest) {
   try {
+    console.log('=== Proforme List API Debug ===');
+    console.log('Using supabaseClient (same as homepage)');
+    
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get('page') || '1');
     const limit = parseInt(url.searchParams.get('limit') || '10');
@@ -20,6 +23,13 @@ export async function GET(request: NextRequest) {
     }
 
     const { data, error, count } = await query;
+
+    console.log('Proforme result:', { 
+      proformeCount: data?.length || 0, 
+      totalCount: count || 0,
+      hasError: !!error,
+      errorMessage: error?.message 
+    });
 
     if (error) {
       console.error('Error fetching proforme:', error);

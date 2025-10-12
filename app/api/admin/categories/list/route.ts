@@ -1,15 +1,22 @@
 import { NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { supabase } from '@/lib/supabaseClient';
 
 export async function GET() {
   try {
-    // Using supabaseAdmin (service_role key - bypasses RLS)
+    console.log('=== Categories API Debug ===');
+    console.log('Using supabaseClient (same as homepage)');
 
     // Get all categories
     const { data, error } = await supabase
       .from('categories')
       .select('*')
       .order('sort_order', { ascending: true });
+
+    console.log('Categories result:', { 
+      categoriesCount: data?.length || 0, 
+      hasError: !!error,
+      errorMessage: error?.message 
+    });
 
     if (error) {
       console.error('Error fetching categories:', error);
