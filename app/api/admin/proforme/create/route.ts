@@ -74,12 +74,12 @@ export async function POST(request: NextRequest) {
       .from('proforme')
       .insert({
         proforma_number: proformaNumber,
-        customer_name,
-        customer_email,
-        customer_company,
-        customer_cui,
-        customer_address,
-        notes,
+        customer_name: finalCustomerName,
+        customer_email: finalCustomerEmail,
+        customer_company: finalCustomerCompany,
+        customer_cui: finalCustomerCui,
+        customer_address: finalCustomerAddress,
+        notes: finalNotes,
         subtotal,
         vat_rate,
         vat_amount,
