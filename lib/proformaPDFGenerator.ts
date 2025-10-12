@@ -38,6 +38,21 @@ type CompanySettings = {
 
 const EUR_TO_RON = 5.0639; // Exchange rate
 
+// Helper function to remove Romanian diacritics
+function removeDiacritics(text: string): string {
+  if (!text) return '';
+  return text
+    .replace(/[ăâ]/gi, 'a')
+    .replace(/[î]/gi, 'i')
+    .replace(/[ș]/gi, 's')
+    .replace(/[ț]/gi, 't')
+    .replace(/[Ă]/gi, 'A')
+    .replace(/[Â]/gi, 'A')
+    .replace(/[Î]/gi, 'I')
+    .replace(/[Ș]/gi, 'S')
+    .replace(/[Ț]/gi, 'T');
+}
+
 export async function generateProformaPDF(
   proforma: ProformaData,
   items: ProformaItem[],
@@ -54,8 +69,8 @@ export async function generateProformaPDF(
 
   let y = height - 50;
 
-  // Header - Company Name
-  page.drawText(companySettings.company_name || 'MERCURY VC S.R.L.', {
+  // Header - Company Name (remove diacritics)
+  page.drawText(removeDiacritics(companySettings.company_name || 'MERCURY VC S.R.L.'), {
     x: 50,
     y,
     size: 18,
@@ -73,7 +88,7 @@ export async function generateProformaPDF(
     color: rgb(0.8, 0, 0),
   });
 
-  page.drawText(`Nr: ${proforma.full_number}`, {
+  page.drawText(`Nr: ${removeDiacritics(proforma.full_number)}`, {
     x: width - 180,
     y: height - 75,
     size: 12,
@@ -97,12 +112,12 @@ export async function generateProformaPDF(
   y -= 15;
 
   const supplierInfo = [
-    companySettings.company_name || 'MERCURY VC S.R.L.',
-    `CIF: ${companySettings.cui || 'RO48801623'}`,
-    `Reg. Com: ${companySettings.reg_com || 'J2023003937126'}`,
-    `Adresa: ${companySettings.address || 'Bld. Eroilor, Nr.42, Et.I, Ap.9'}`,
-    `${companySettings.city || 'Cluj-Napoca'}, Jud.: ${companySettings.county || 'Cluj'}`,
-    `Banca: ${companySettings.bank_name || 'BANCA TRANSILVANIA'}`,
+    removeDiacritics(companySettings.company_name || 'MERCURY VC S.R.L.'),
+    `CIF: ${removeDiacritics(companySettings.cui || 'RO48801623')}`,
+    `Reg. Com: ${removeDiacritics(companySettings.reg_com || 'J2023003937126')}`,
+    `Adresa: ${removeDiacritics(companySettings.address || 'Bld. Eroilor, Nr.42, Et.I, Ap.9')}`,
+    `${removeDiacritics(companySettings.city || 'Cluj-Napoca')}, Jud.: ${removeDiacritics(companySettings.county || 'Cluj')}`,
+    `Banca: ${removeDiacritics(companySettings.bank_name || 'BANCA TRANSILVANIA')}`,
     `IBAN (EUR): ${companySettings.iban_eur || 'RO34BTRLEURCRT0CX2815301'}`,
     `IBAN (RON): ${companySettings.iban_ron || 'RO87BTRLRONCRT0CX2815301'}`,
   ];
@@ -129,12 +144,12 @@ export async function generateProformaPDF(
   y -= 15;
 
   const clientInfo = [
-    proforma.client_name,
-    proforma.client_cui ? `CIF: ${proforma.client_cui}` : '',
-    proforma.client_reg_com ? `Reg. Com: ${proforma.client_reg_com}` : '',
-    proforma.client_address || '',
-    proforma.client_city && proforma.client_county ? `${proforma.client_city}, Jud.: ${proforma.client_county}` : '',
-    proforma.client_email ? `Email: ${proforma.client_email}` : '',
+    removeDiacritics(proforma.client_name),
+    proforma.client_cui ? `CIF: ${removeDiacritics(proforma.client_cui)}` : '',
+    proforma.client_reg_com ? `Reg. Com: ${removeDiacritics(proforma.client_reg_com)}` : '',
+    proforma.client_address ? removeDiacritics(proforma.client_address) : '',
+    proforma.client_city && proforma.client_county ? `${removeDiacritics(proforma.client_city)}, Jud.: ${removeDiacritics(proforma.client_county)}` : '',
+    proforma.client_email || '',
   ].filter(Boolean);
 
   clientInfo.forEach((line) => {
@@ -189,7 +204,7 @@ export async function generateProformaPDF(
 
   y -= 25;
 
-  // Draw items
+  // Draw items (remove diacritics from product names)
   items.forEach((item, index) => {
     const itemTotal = item.quantity * item.unit_price;
 
@@ -200,9 +215,10 @@ export async function generateProformaPDF(
       font: regularFont,
     });
 
-    // Product name with wrapping
-    const productName = item.name.length > 30 ? item.name.substring(0, 30) + '...' : item.name;
-    page.drawText(productName, {
+    // Product name with wrapping and diacritics removed
+    const productName = removeDiacritics(item.name);
+    const displayName = productName.length > 30 ? productName.substring(0, 30) + '...' : productName;
+    page.drawText(displayName, {
       x: colX.description,
       y,
       size: 8,
