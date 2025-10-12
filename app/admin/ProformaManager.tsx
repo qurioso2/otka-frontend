@@ -425,7 +425,7 @@ export default function ProformaManager() {
       const data = await res.json();
 
       if (data.success) {
-        showNotification('success', `Proformă ${data.data.full_number} creată!`);
+        showNotification('success', `Proformă ${data.data.proforma?.full_number || 'nouă'} creată!`);
         // Reset form
         setClientData({
           client_name: '',
@@ -438,8 +438,14 @@ export default function ProformaManager() {
           client_county: '',
         });
         setItems([]);
+        setUseExistingClient(false);
+        setSelectedClientId(null);
         setClientNotes('');
+        // Switch back to list and reload
         setActiveView('list');
+        setTimeout(() => {
+          loadProforme(); // Refresh list to show new proforma
+        }, 500);
       } else {
         showNotification('error', data.error || 'Eroare la creare');
       }
