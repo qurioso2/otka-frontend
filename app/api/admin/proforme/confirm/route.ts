@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSupabase } from '@/app/auth/server';
 
+// Updated: Stock management on payment confirmation
 export async function POST(request: NextRequest) {
     const supabase = await getServerSupabase();
   try {
