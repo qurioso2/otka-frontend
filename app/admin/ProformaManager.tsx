@@ -63,6 +63,9 @@ export default function ProformaManager() {
   
   // Create proforma state
   const [clientType, setClientType] = useState<'PF' | 'PJ'>('PF');
+  const [clients, setClients] = useState<{id: number, name: string, email: string, company?: string}[]>([]);
+  const [useExistingClient, setUseExistingClient] = useState(false);
+  const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
   const [clientData, setClientData] = useState({
     client_name: '',
     client_cui: '',
