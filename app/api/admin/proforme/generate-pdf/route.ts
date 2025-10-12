@@ -23,16 +23,29 @@ export async function POST(request: NextRequest) {
       .eq('id', id)
       .single();
 
+    console.log('Proforma fetch result:', { 
+      hasProforma: !!proforma, 
+      error: proformaError?.message,
+      proformaId: proforma?.id 
+    });
+
     if (proformaError || !proforma) {
+      console.error('Proforma fetch error:', proformaError);
       return NextResponse.json(
-        { success: false, error: 'Proforma not found' },
+        { success: false, error: 'Proforma not found', details: proformaError?.message },
         { status: 404 }
       );
     }
 
     const { data: items, error: itemsError } = await supabase
-      .from('proforme_items')
+      .from('proforma_items') // Use correct table name
       .select('*')
+      .eq('proforma_id', id);
+
+    console.log('Items fetch result:', { 
+      itemsCount: items?.length || 0, 
+      error: itemsError?.message 
+    });
       .eq('proforma_id', id);
 
     if (itemsError) {
