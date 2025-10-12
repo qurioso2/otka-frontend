@@ -9,11 +9,11 @@
   },
   {
     "content": "Update PDF structure to match uploaded model exactly",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Test contact page display",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Test PDF generation with new structure",
