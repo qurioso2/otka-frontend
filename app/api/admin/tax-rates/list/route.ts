@@ -1,17 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
-export const dynamic = 'force-dynamic';
-
 export async function GET(request: NextRequest) {
   try {
-    // Using supabase from import
-
-    // Get all tax rates, ordered by sort_order
+    // Get all tax rates
     const { data: taxRates, error } = await supabase
       .from('tax_rates')
       .select('*')
-      .order('sort_order', { ascending: true });
+      .order('rate', { ascending: false });
 
     if (error) {
       console.error('Error fetching tax rates:', error);
@@ -19,6 +15,7 @@ export async function GET(request: NextRequest) {
         { success: false, error: error.message },
         { status: 500 }
       );
+    }
 
     return NextResponse.json({
       success: true,
@@ -30,3 +27,5 @@ export async function GET(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
+  }
+}
