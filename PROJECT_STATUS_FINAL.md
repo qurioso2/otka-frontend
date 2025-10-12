@@ -2,7 +2,7 @@
 
 **Data**: 11 Octombrie 2025  
 **Status**: ✅ **FUNCTIONAL - Gata pentru Deploy**  
-**Preview URL**: https://proforma-tva.preview.emergentagent.com
+**Preview URL**: https://admin-api-fix-1.preview.emergentagent.com
 
 ---
 
@@ -493,7 +493,7 @@ git push origin main
 ```
 
 ### Preview URL
-https://proforma-tva.preview.emergentagent.com
+https://admin-api-fix-1.preview.emergentagent.com
 
 ---
 
@@ -540,8 +540,8 @@ https://proforma-tva.preview.emergentagent.com
 ### Quick Links
 
 - **Supabase Dashboard**: https://supabase.com/dashboard/project/kzwzqtghjnkrdjfosbdz
-- **Preview URL**: https://proforma-tva.preview.emergentagent.com
-- **Admin Panel**: https://proforma-tva.preview.emergentagent.com/admin
+- **Preview URL**: https://admin-api-fix-1.preview.emergentagent.com
+- **Admin Panel**: https://admin-api-fix-1.preview.emergentagent.com/admin
 
 ---
 
