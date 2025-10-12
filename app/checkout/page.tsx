@@ -45,7 +45,7 @@ export default function CheckoutPage() {
         })),
       };
 
-      const res = await fetch('/api/internal/proforme/create', { 
+      const res = await fetch('/api/internal/proforme/create-simple', { 
         method: 'POST', 
         headers: { 'Content-Type': 'application/json' }, 
         body: JSON.stringify(body) 
