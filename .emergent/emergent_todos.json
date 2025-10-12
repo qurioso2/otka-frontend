@@ -1,11 +1,11 @@
 [
   {
     "content": "Remove FAQ section from Contact Page (lines 127-138)",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Remove EUR_TO_RON constant from proformaPDFGenerator.ts",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Update PDF structure to match uploaded model exactly",
