@@ -1,37 +1,29 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '../types/supabase';
 
-// Use the environment variables that ARE available at runtime
+// Direct approach - use the exact environment variable names that work
 export function getSupabaseAdmin() {
-  const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  console.log('Environment variables available:', {
-    SUPABASE_URL: !!process.env.SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_URL: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-    SUPABASE_SERVICE_ROLE_KEY: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
-    SUPABASE_ANON_KEY: !!process.env.SUPABASE_ANON_KEY
+  // From debug API, these are the vars that ARE available:
+  const supabaseUrl = process.env.SUPABASE_URL; // This works
+  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY; // This works
+  
+  console.log('=== Supabase Admin Debug ===');
+  console.log('Available env vars:', {
+    SUPABASE_URL: !!supabaseUrl,
+    SUPABASE_ANON_KEY: !!supabaseAnonKey,
+    SUPABASE_SERVICE_ROLE_KEY: !!process.env.SUPABASE_SERVICE_ROLE_KEY
   });
 
   if (!supabaseUrl) {
     throw new Error('Missing SUPABASE_URL environment variable');
   }
-
-  // TEMPORARY: Use ANON key until SERVICE_ROLE key is available
-  const fallbackKey = process.env.SUPABASE_ANON_KEY;
-  const keyToUse = supabaseServiceRoleKey || fallbackKey;
   
-  if (!keyToUse) {
-    throw new Error('Missing both SUPABASE_SERVICE_ROLE_KEY and SUPABASE_ANON_KEY');
+  if (!supabaseAnonKey) {
+    throw new Error('Missing SUPABASE_ANON_KEY environment variable');
   }
 
-  console.log('Creating Supabase client with:', {
-    url: supabaseUrl,
-    keyType: supabaseServiceRoleKey ? 'SERVICE_ROLE' : 'ANON (fallback)',
-    keyLength: keyToUse.length
-  });
-
-  return createClient<Database>(supabaseUrl, keyToUse, {
+  // Use ANON key for now - we'll need to configure RLS policies properly
+  return createClient<Database>(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: false,
       autoRefreshToken: false,
