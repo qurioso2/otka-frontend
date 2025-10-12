@@ -14,12 +14,18 @@ import ImportPDF from './ImportPDF';
 import CategoriesManager from './CategoriesManager';
 import BrandsManager from './BrandsManager';
 import WorkflowExplainer from './WorkflowExplainer';
+import TaxRatesManager from './TaxRatesManager';
+import CompanySettingsManager from './CompanySettingsManager';
+import ProformaManager from './ProformaManager';
 
 const tabs = [
   { id: 'overview', name: 'Prezentare Generală', icon: '📊' },
   { id: 'products', name: 'Produse', icon: '📦' },
   { id: 'categories', name: 'Categorii', icon: '🏷️' },
   { id: 'brands', name: 'Branduri', icon: '⭐' },
+  { id: 'tax-rates', name: 'Cote TVA', icon: '📊' },
+  { id: 'proforme', name: 'Proforme', icon: '🧾' },
+  { id: 'company-settings', name: 'Setări Firmă', icon: '⚙️' },
   { id: 'import', name: 'Import CSV/Excel', icon: '📥' },
   { id: 'import-pdf', name: 'Import PDF (AI)', icon: '✨' },
   { id: 'users', name: 'Utilizatori & Parteneri', icon: '👥' },
