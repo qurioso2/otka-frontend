@@ -1,22 +1,14 @@
 [
   {
-    "content": "Implementare: Scădere stoc automat la marcare achitată",
-    "status": "completed"
-  },
-  {
-    "content": "Implementare: Creștere stoc la marcare neachitată",
-    "status": "completed"
-  },
-  {
     "content": "Implementare: Ascundere produse fără stoc pe homepage",
+    "status": "completed"
+  },
+  {
+    "content": "Implementare: Validare cantitate stoc în CartProvider",
     "status": "in_progress"
   },
   {
-    "content": "Implementare: Validare cantitate stoc în backend (add to cart)",
-    "status": "pending"
-  },
-  {
-    "content": "Implementare: Validare cantitate stoc în frontend",
+    "content": "Implementare: Adăugare stock_qty la AddToCartButton",
     "status": "pending"
   },
   {
