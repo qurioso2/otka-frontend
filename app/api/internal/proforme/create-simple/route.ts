@@ -21,12 +21,12 @@ export async function POST(request: NextRequest) {
     const { data: lastProforma } = await supabase
       .from('proforme')
       .select('number')
-      .eq('series', 'PRF')
+      .eq('series', 'OTK')
       .order('number', { ascending: false })
       .limit(1);
 
     const nextNumber = lastProforma && lastProforma.length > 0 ? lastProforma[0].number + 1 : 1;
-    const fullNumber = `PRF${String(nextNumber).padStart(6, '0')}`;
+    const fullNumber = `OTK${String(nextNumber).padStart(6, '0')}`;
 
     console.log('Next proforma number:', fullNumber);
 
