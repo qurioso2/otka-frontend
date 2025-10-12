@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
       .from('proforme')
       .insert({
         series: 'OTK',
-        number: simpleNumber, // Manual number to avoid trigger issues
+        number: uniqueNumber, // Use unique number instead
         client_type: 'PF', // Default to person
         client_name: finalCustomerName,
         client_email: finalCustomerEmail,
