@@ -61,6 +61,7 @@ export async function POST(request: NextRequest) {
 
     if (uploadError) {
       console.warn('⚠️ Storage upload warning:', uploadError.message);
+    }
 
     // Get public URL for storage
     const { data: { publicUrl } } = supabase.storage
