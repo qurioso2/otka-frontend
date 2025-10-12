@@ -1,15 +1,11 @@
 [
   {
-    "content": "Implementare: Validare cantitate stoc în CartProvider",
+    "content": "Implementare: Adăugare stock_qty la AddToCartButton",
     "status": "completed"
   },
   {
-    "content": "Implementare: Adăugare stock_qty la AddToCartButton",
-    "status": "in_progress"
-  },
-  {
     "content": "Scoate text SmartBill din PDF",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Testare: Validare plată și scădere stoc",
