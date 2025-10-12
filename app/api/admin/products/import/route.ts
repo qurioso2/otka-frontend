@@ -72,6 +72,8 @@ export async function POST(request: NextRequest) {
       imported: data?.length || 0,
       products: data
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('API Error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
