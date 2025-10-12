@@ -217,6 +217,7 @@ export async function generateProformaPDF(
   // Draw items (remove diacritics from product names)
   items.forEach((item, index) => {
     const itemTotal = item.quantity * item.unit_price;
+    const itemVat = itemTotal * (item.tax_rate_value / 100);
 
     page.drawText(`${index + 1}`, {
       x: colX.nr,
@@ -225,38 +226,24 @@ export async function generateProformaPDF(
       font: regularFont,
     });
 
-    // SKU column
-    const sku = removeDiacritics((item as any).sku || 'N/A');
-    page.drawText(sku.substring(0, 10), {
-      x: colX.sku,
+    // Product name with description on next line and diacritics removed
+    const productName = removeDiacritics(item.name);
+    page.drawText(productName.substring(0, 35), {
+      x: colX.description,
       y,
-      size: 7,
+      size: 8,
       font: regularFont,
     });
-
-    // Product name with wrapping (2 lines) and diacritics removed
-    const productName = removeDiacritics(item.name);
-    if (productName.length > 30) {
-      const line1 = productName.substring(0, 30);
-      const line2 = productName.substring(30, 60);
-      page.drawText(line1, {
-        x: colX.description,
-        y,
-        size: 7,
-        font: regularFont,
-      });
-      page.drawText(line2, {
+    
+    // Add description below if available
+    if (item.description) {
+      const desc = removeDiacritics(item.description);
+      page.drawText(desc.substring(0, 40), {
         x: colX.description,
         y: y - 8,
         size: 7,
         font: regularFont,
-      });
-    } else {
-      page.drawText(productName, {
-        x: colX.description,
-        y,
-        size: 8,
-        font: regularFont,
+        color: rgb(0.4, 0.4, 0.4),
       });
     }
 
@@ -288,7 +275,14 @@ export async function generateProformaPDF(
       font: regularFont,
     });
 
-    y -= productName.length > 30 ? 20 : 15;
+    page.drawText(itemVat.toFixed(2), {
+      x: colX.vat,
+      y,
+      size: 8,
+      font: regularFont,
+    });
+
+    y -= item.description ? 20 : 15;
 
     // Add new page if needed
     if (y < 150) {
