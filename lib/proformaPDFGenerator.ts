@@ -186,11 +186,12 @@ export async function generateProformaPDF(
 
   const headers = [
     { text: 'Nr.', x: colX.nr },
+    { text: 'SKU', x: colX.sku },
     { text: 'Denumirea produselor', x: colX.description },
     { text: 'U.M.', x: colX.um },
     { text: 'Cant.', x: colX.qty },
-    { text: 'Pret/u (EUR)', x: colX.price },
-    { text: 'Valoare (EUR)', x: colX.value },
+    { text: 'Pret/u (LEI)', x: colX.price },
+    { text: 'Valoare (LEI)', x: colX.value },
   ];
 
   headers.forEach((header) => {
