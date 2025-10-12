@@ -164,7 +164,7 @@ export default function ProformaManager() {
     }
   };
 
-  const showNotification = (type: 'success' | 'error', message: string) => {
+  const showNotification = (type: 'success' | 'error' | 'warning', message: string) => {
     setNotification({ type, message });
     setTimeout(() => setNotification(null), 3000);
   };
