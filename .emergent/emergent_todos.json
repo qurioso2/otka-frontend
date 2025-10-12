@@ -1,11 +1,11 @@
 [
   {
     "content": "Fix Company Settings - nu se încarcă/salvează datele",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Fix Proforme - produsele nu se încarcă la creare proformă",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Testează flow complet după fix-uri",
