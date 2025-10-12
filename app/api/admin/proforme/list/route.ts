@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function GET(request: NextRequest) {
   try {
     console.log('=== Proforme List API Debug ===');
-    console.log('Using supabaseClient (same as homepage)');
+    console.log('Using getServerSupabase (same as create)');
+    
+    const supabase = await getServerSupabase();
     
     const url = new URL(request.url);
     const page = parseInt(url.searchParams.get('page') || '1');
