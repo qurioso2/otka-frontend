@@ -4,7 +4,6 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 export async function POST(request: NextRequest) {
   try {
     // Using supabaseAdmin (service_role key - bypasses RLS)
-    
 
     // Parse form data
     const formData = await request.formData();
@@ -12,6 +11,7 @@ export async function POST(request: NextRequest) {
     
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+    }
 
     // Read CSV content
     const csvContent = await file.text();
@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
     
     if (lines.length < 2) {
       return NextResponse.json({ error: 'CSV must have header and at least one row' }, { status: 400 });
+    }
 
     // Parse header
     const header = lines[0].split(',').map(h => h.trim());
@@ -28,34 +29,40 @@ export async function POST(request: NextRequest) {
     const missingHeaders = expectedHeaders.filter(h => !header.includes(h));
     if (missingHeaders.length > 0) {
       return NextResponse.json({ 
-        error: `Missing required headers: ${missingHeaders.join(', ')}` 
+        error: `Missing required headers: ${missingHeaders.join(', ')}`,
+        received: header,
+        expected: expectedHeaders
       }, { status: 400 });
+    }
 
-    // Parse rows
+    // Parse products
     const products = [];
     for (let i = 1; i < lines.length; i++) {
       const values = lines[i].split(',').map(v => v.trim());
-      if (values.length !== header.length) continue;
-
       const product: any = {};
+      
       header.forEach((h, index) => {
-        product[h] = values[index];
+        const value = values[index] || '';
+        if (h === 'price_public_ttc' || h === 'price_partner_net') {
+          product[h] = parseFloat(value) || 0;
+        } else if (h === 'stock_qty') {
+          product[h] = parseInt(value) || 0;
+        } else if (h === 'gallery') {
+          product[h] = value ? value.split('|').map(url => url.trim()).filter(Boolean) : [];
+        } else {
+          product[h] = value;
+        }
       });
+      
+      // Generate slug from name
+      if (product.name) {
+        product.slug = product.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+      }
+      
+      products.push(product);
+    }
 
-      // Process product data
-      products.push({
-        sku: product.sku,
-        name: product.name,
-        slug: product.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
-        price_public_ttc: parseFloat(product.price_public_ttc) || 0,
-        price_partner_net: parseFloat(product.price_partner_net) || 0,
-        stock_qty: parseInt(product.stock_qty) || 0,
-        description: product.description || '',
-        gallery: product.gallery ? [product.gallery] : []
-      });
-
-    if (products.length === 0) {
-      return NextResponse.json({ error: 'No valid products found in CSV' }, { status: 400 });
+    console.log('Parsed products:', products.length);
 
     // Insert products
     const { data, error } = await supabase
@@ -64,8 +71,9 @@ export async function POST(request: NextRequest) {
       .select();
 
     if (error) {
-      console.error('Error importing products:', error);
-      return NextResponse.json({ error: 'Failed to import products' }, { status: 500 });
+      console.error('Database error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
     return NextResponse.json({ 
       message: 'Products imported successfully',
