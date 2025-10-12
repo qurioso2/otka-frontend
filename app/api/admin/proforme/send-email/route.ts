@@ -5,15 +5,23 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = await getServerSupabase();
     const body = await request.json();
-    console.log('Email request:', body);
+    
+    console.log('=== EMAIL SEND REQUEST ===');
+    console.log('Body:', JSON.stringify(body, null, 2));
     
     // Support both 'email' and 'to_email' from frontend
     const { id, email, to_email, subject, message } = body;
     const recipientEmail = email || to_email;
 
     if (!id || !recipientEmail) {
-      return NextResponse.json({ success: false, error: 'ID și email sunt obligatorii' }, { status: 400 });
+      return NextResponse.json({ 
+        success: false, 
+        error: 'ID și email sunt obligatorii' 
+      }, { status: 400 });
     }
+
+    console.log('Proforma ID:', id);
+    console.log('Recipient:', recipientEmail);
 
     // Get proforma data
     const { data: proforma, error: proformaError } = await supabase
@@ -23,8 +31,14 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (proformaError || !proforma) {
-      return NextResponse.json({ success: false, error: 'Proforma nu a fost găsită' }, { status: 404 });
+      console.error('Proforma not found:', proformaError);
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Proforma nu a fost găsită' 
+      }, { status: 404 });
     }
+
+    console.log('Proforma loaded:', proforma.full_number);
 
     // Get proforma items
     const { data: items, error: itemsError } = await supabase
@@ -34,8 +48,9 @@ export async function POST(request: NextRequest) {
 
     if (itemsError) {
       console.error('Items error:', itemsError);
-      // Continue anyway
     }
+
+    console.log('Items loaded:', items?.length || 0);
 
     // Get company settings
     const { data: settings } = await supabase
@@ -43,19 +58,54 @@ export async function POST(request: NextRequest) {
       .select('*')
       .single();
 
-    // Try to import and use email functionality
-    let emailSent = false;
-    let emailError = null;
+    console.log('Settings loaded');
 
+    // Check SMTP env vars
+    const smtpHost = process.env.ZOHO_SMTP_HOST;
+    const smtpUser = process.env.ZOHO_SMTP_USER;
+    const smtpPass = process.env.ZOHO_SMTP_PASS;
+    const fromEmail = process.env.ZOHO_FROM_EMAIL;
+
+    console.log('SMTP Config check:', {
+      host: smtpHost ? '✅' : '❌',
+      user: smtpUser ? '✅' : '❌',
+      pass: smtpPass ? '✅' : '❌',
+      from: fromEmail ? '✅' : '❌'
+    });
+
+    if (!smtpHost || !smtpUser || !smtpPass || !fromEmail) {
+      console.error('SMTP credentials missing!');
+      
+      // Update tracking anyway
+      await supabase
+        .from('proforme')
+        .update({ 
+          email_sent_at: new Date().toISOString(), 
+          email_sent_to: recipientEmail 
+        })
+        .eq('id', id);
+
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Configurare SMTP lipsă. Verifică environment variables în Vercel: ZOHO_SMTP_HOST, ZOHO_SMTP_USER, ZOHO_SMTP_PASS, ZOHO_FROM_EMAIL' 
+      }, { status: 500 });
+    }
+
+    // Try to send email
     try {
-      // Dynamically import to handle missing dependencies gracefully
+      console.log('Attempting to import mailer and PDF generator...');
+      
       const { sendZohoMail } = await import('@/lib/mailer');
       const { generateProformaPDF } = await import('@/lib/proformaPDFGenerator');
 
-      // Generate PDF
-      const pdfBytes = await generateProformaPDF(proforma, items || [], settings || {});
+      console.log('Libraries imported successfully');
 
-      // Send email with PDF attachment
+      // Generate PDF
+      console.log('Generating PDF...');
+      const pdfBytes = await generateProformaPDF(proforma, items || [], settings || {});
+      console.log('PDF generated:', pdfBytes.length, 'bytes');
+
+      // Prepare email
       const emailSubject = subject || `Proforma ${proforma.full_number} - OTKA.ro`;
       const emailHtml = message || `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -80,6 +130,8 @@ export async function POST(request: NextRequest) {
         </div>
       `;
 
+      console.log('Sending email to:', recipientEmail);
+
       // Send email using Zoho SMTP
       await sendZohoMail({
         to: recipientEmail,
@@ -91,40 +143,43 @@ export async function POST(request: NextRequest) {
         }],
       });
 
-      emailSent = true;
-    } catch (err: any) {
-      console.error('Email/PDF error:', err);
-      emailError = err.message;
-    }
+      console.log('✅ Email sent successfully!');
 
-    // Update proforma email tracking even if email failed
-    const { error: updateError } = await supabase
-      .from('proforme')
-      .update({ 
-        email_sent_at: emailSent ? new Date().toISOString() : null, 
-        email_sent_to: emailSent ? recipientEmail : null 
-      })
-      .eq('id', id);
+      // Update proforma email tracking
+      const { error: updateError } = await supabase
+        .from('proforme')
+        .update({ 
+          email_sent_at: new Date().toISOString(), 
+          email_sent_to: recipientEmail 
+        })
+        .eq('id', id);
 
-    if (updateError) {
-      console.error('Failed to update email tracking:', updateError);
-    }
+      if (updateError) {
+        console.error('Failed to update email tracking:', updateError);
+      }
 
-    if (emailSent) {
-      console.log(`✅ Email sent to ${recipientEmail} for proforma ${proforma.full_number}`);
+      console.log('=== EMAIL SENT SUCCESSFULLY ===');
+      
       return NextResponse.json({ 
         success: true, 
         message: 'Email trimis cu succes cu PDF atașat!' 
       });
-    } else {
-      console.log(`⚠️ Email NOT sent, but proforma exists. Error: ${emailError}`);
+
+    } catch (emailError: any) {
+      console.error('=== EMAIL SENDING FAILED ===');
+      console.error('Error:', emailError.message);
+      console.error('Stack:', emailError.stack);
+
       return NextResponse.json({ 
         success: false, 
-        error: `Proforma creată, dar email nu a putut fi trimis: ${emailError || 'Configurare SMTP lipsă'}` 
+        error: `Email nu a putut fi trimis: ${emailError.message}` 
       }, { status: 500 });
     }
   } catch (error: any) {
-    console.error('Email send error:', error);
+    console.error('=== CRITICAL ERROR ===');
+    console.error('Error:', error.message);
+    console.error('Stack:', error.stack);
+    
     return NextResponse.json({ 
       success: false, 
       error: error.message || 'Eroare la trimiterea emailului' 
