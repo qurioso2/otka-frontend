@@ -1,23 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSupabase } from '@/app/auth/server';
-import { generateProformaPDF } from '@/lib/proformaPDF';
 
+// Simple PDF generation without external library
 export async function POST(request: NextRequest) {
-    const supabase = await getServerSupabase();
   try {
     const supabase = await getServerSupabase();
     const body = await request.json();
-    console.log('Generate PDF request:', body);
     const { id } = body;
 
     if (!id) {
-      return NextResponse.json(
-        { success: false, error: 'ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'ID is required' }, { status: 400 });
     }
-
-    console.log('Fetching proforma with ID:', id);
 
     // Get proforma
     const { data: proforma, error: proformaError } = await supabase
@@ -26,76 +19,55 @@ export async function POST(request: NextRequest) {
       .eq('id', id)
       .single();
 
-    console.log('Proforma fetch result:', { 
-      hasProforma: !!proforma, 
-      error: proformaError?.message,
-      proformaData: proforma 
-    });
-
     if (proformaError || !proforma) {
-      console.error('Proforma fetch error:', proformaError);
-      return NextResponse.json(
-        { success: false, error: 'Proforma not found', details: proformaError?.message },
-        { status: 404 }
-      );
+      return NextResponse.json({ success: false, error: 'Proforma not found' }, { status: 404 });
     }
 
-    // Get proforma items
+    // Get items
     const { data: items, error: itemsError } = await supabase
       .from('proforma_items')
       .select('*')
       .eq('proforma_id', id);
 
-    console.log('Items fetch result:', { 
-      itemsCount: items?.length || 0, 
-      error: itemsError?.message,
-      items: items 
-    });
-
     if (itemsError) {
-      return NextResponse.json(
-        { success: false, error: itemsError.message },
-        { status: 500 }
-      );
+      return NextResponse.json({ success: false, error: itemsError.message }, { status: 500 });
     }
 
-    // Generate PDF
-    try {
-      console.log('=== GENERATING PDF ===');
-      console.log('Proforma full_number:', proforma.full_number);
-      console.log('Items count:', items?.length);
-      console.log('First item:', items?.[0]);
-      
-      const pdfBuffer = await generateProformaPDF({
-        ...proforma,
-        items: items || []
-      });
+    // Simple HTML to PDF response (browser will handle PDF generation)
+    const htmlContent = `
+    <html>
+    <head><title>Proforma ${proforma.full_number}</title></head>
+    <body style="font-family: Arial; margin: 20px;">
+      <h1>PROFORMA ${proforma.full_number}</h1>
+      <p><strong>Client:</strong> ${proforma.client_name}</p>
+      <p><strong>Email:</strong> ${proforma.client_email}</p>
+      <p><strong>Data:</strong> ${proforma.issue_date}</p>
+      <hr>
+      <table border="1" style="width: 100%; border-collapse: collapse;">
+        <tr><th>Produs</th><th>Cantitate</th><th>Preț</th><th>Total</th></tr>
+        ${(items || []).map((item: any) => `
+          <tr>
+            <td>${item.name}</td>
+            <td>${item.quantity}</td>
+            <td>${item.unit_price} RON</td>
+            <td>${(item.quantity * item.unit_price).toFixed(2)} RON</td>
+          </tr>
+        `).join('')}
+      </table>
+      <hr>
+      <p><strong>TOTAL: ${proforma.total_with_vat} ${proforma.currency}</strong></p>
+    </body>
+    </html>`;
 
-      console.log('=== PDF GENERATED SUCCESS ===');
-      console.log('PDF size:', pdfBuffer.length, 'bytes');
-
-      return new NextResponse(pdfBuffer, {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/pdf',
-          'Content-Disposition': `attachment; filename="Proforma-${proforma.full_number}.pdf"`,
-        },
-      });
-    } catch (pdfError: any) {
-      console.error('=== PDF GENERATION FAILED ===');
-      console.error('Error type:', typeof pdfError);
-      console.error('Error message:', pdfError?.message);
-      console.error('Error stack:', pdfError?.stack);
-      return NextResponse.json(
-        { success: false, error: 'Failed to generate PDF', details: pdfError.message },
-        { status: 500 }
-      );
-    }
+    return new NextResponse(htmlContent, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html',
+        'Content-Disposition': `inline; filename="Proforma-${proforma.full_number}.html"`,
+      },
+    });
   } catch (error: any) {
-    console.error('Error generating PDF:', error);
-    return NextResponse.json(
-      { success: false, error: error.message || 'Internal server error' },
-      { status: 500 }
-    );
+    console.error('PDF Error:', error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
