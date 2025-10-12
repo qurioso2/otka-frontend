@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function GET() {
   try {
-    console.log('=== Orders API (using supabaseAdmin) ===');
+    console.log('=== Orders API (using getServerSupabase) ===');
+    
+    const supabase = await getServerSupabase();
     
     const { data, error } = await supabase
       .from('manual_orders')

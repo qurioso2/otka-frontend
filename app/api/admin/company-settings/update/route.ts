@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('=== Company Settings Update (using getSupabaseAdmin) ===');
+    console.log('=== Company Settings Update (using getServerSupabase) ===');
     
     const body = await request.json();
     console.log('Update request body:', body);
 
-    const supabase = getSupabaseAdmin();
+    const supabase = await getServerSupabase();
 
     // Check if settings exist
     const { data: existing } = await supabase

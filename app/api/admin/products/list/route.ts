@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('=== Products API (using getSupabaseAdmin) ===');
+    console.log('=== Products API (using getServerSupabase) ===');
 
-    const supabase = getSupabaseAdmin();
+    const supabase = await getServerSupabase();
 
-    // Fetch products from main table (not public view)
+    // Fetch products from main table
     const { data: products, error } = await supabase
       .from('products')
       .select('*')

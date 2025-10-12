@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('=== Products Create (using supabaseAdmin) ===');
+    console.log('=== Products Create (using getServerSupabase) ===');
+
+    const supabase = await getServerSupabase();
 
     // Parse request body
     const body = await request.json();
@@ -32,16 +34,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Validate numeric fields
-    const parsedPrice = parseFloat(price_public_ttc);
-    if (isNaN(parsedPrice) || parsedPrice < 0) {
-      return NextResponse.json({ 
-        error: 'Invalid price_public_ttc value',
-        received: price_public_ttc 
-      }, { status: 400 });
-    }
-
-    // Create product - process validated data from frontend
+    // Create product
     const productToInsert = {
       sku: sku?.trim(),
       name: name?.trim(),
@@ -56,8 +49,6 @@ export async function POST(request: NextRequest) {
       ...(category && { category: category.trim() }),
       ...(brand_id && { brand_id: typeof brand_id === 'number' ? brand_id : parseInt(brand_id) })
     };
-
-    console.log('Inserting product:', productToInsert);
 
     const { data: product, error } = await supabase
       .from('products')

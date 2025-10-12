@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function GET() {
   try {
-    console.log('=== Users API (using supabaseAdmin) ===');
+    console.log('=== Users API (using getServerSupabase) ===');
 
-    // Unele instanțe nu au coloana created_at în tabela users. Ordonăm după email pentru compatibilitate.
+    const supabase = await getServerSupabase();
+
     const { data, error } = await supabase.from('users').select('*').order('email', { ascending: true });
     
     if (error) {
