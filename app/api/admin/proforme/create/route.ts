@@ -70,17 +70,17 @@ export async function POST(request: NextRequest) {
     
     const total = subtotal + vat_amount;
 
-    // Generate simple incremental number manually (avoid trigger issues)
-    const { data: maxNumber } = await supabase
+    // TEMPORARY: Get current count for debugging
+    const { count: totalCount } = await supabase
       .from('proforme')
-      .select('number')
-      .order('number', { ascending: false })
-      .limit(1)
-      .single();
+      .select('*', { count: 'exact', head: true });
     
-    const nextNumber = maxNumber?.number ? maxNumber.number + 1 : 1;
+    console.log('Current proforme count in DB:', totalCount);
+
+    // Try simple sequential number based on count
+    const nextNumber = (totalCount || 0) + 1;
     
-    console.log('Manual numbering:', { maxFound: maxNumber?.number, nextNumber });
+    console.log('Using count-based numbering:', nextNumber);
 
     // Insert proforma - manual numbering to avoid trigger issues
     const { data: proforma, error: proformaError } = await supabase
