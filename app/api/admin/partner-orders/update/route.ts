@@ -30,13 +30,9 @@ export async function POST(request: Request) {
           const subject = `Actualizare comandă ${orderRow.order_number || orderRow.id}: ${status}`;
           const html = `Bună,\n<br/>Statusul comenzii tale a fost actualizat la: <strong>${status}</strong>.\n<br/>Număr comandă: <strong>${orderRow.order_number || orderRow.id}</strong>.\n<br/><br/>Vă mulțumim,\n<br/>OTKA`;
           await mailer.send(orderRow.partner_email, subject, html);
-        }
-      }
     } catch (e) { /* no-op */ }
 
     return NextResponse.json({ ok: true });
   } catch (e: any) {
     console.error(e);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}

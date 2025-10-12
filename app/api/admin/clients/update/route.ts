@@ -9,9 +9,7 @@ export async function POST(request: Request) {
   if (patch.partner_email) {
     const { data: partner } = await supabase.from('users').select('email,role').eq('email', patch.partner_email).maybeSingle();
     if (!partner || partner.role !== 'partner') return NextResponse.json({ error: 'partner_email must belong to a partner user' }, { status: 400 });
-  }
 
   const { error } = await supabase.from('clients').update(patch).eq('id', id);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ ok: true });
-}

@@ -14,7 +14,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'ID is required' },
         { status: 400 }
       );
-    }
 
     // Get proforma with items
     const { data: proforma, error: proformaError } = await supabase
@@ -28,7 +27,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'Proforma not found' },
         { status: 404 }
       );
-    }
 
     const { data: items, error: itemsError } = await supabase
       .from('proforma_items')
@@ -41,7 +39,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: itemsError.message },
         { status: 500 }
       );
-    }
 
     // Get company settings
     const { data: settings, error: settingsError } = await supabase
@@ -55,7 +52,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: settingsError.message },
         { status: 500 }
       );
-    }
 
     // Generate PDF
     const pdfBytes = await generateProformaPDF(
@@ -82,5 +78,3 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
-  }
-}

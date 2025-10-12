@@ -5,4 +5,3 @@ export async function GET() {
   // Using supabaseAdmin (service_role key - bypasses RLS)
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ assets: data || [] });
-}

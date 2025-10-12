@@ -21,13 +21,11 @@ export async function GET(request: NextRequest) {
     // Apply filters
     if (status && status !== 'all') {
       query = query.eq('status', status);
-    }
 
     if (search && search.trim()) {
       query = query.or(
         `client_name.ilike.%${search}%,client_email.ilike.%${search}%,full_number.ilike.%${search}%`
       );
-    }
 
     // Sorting and pagination
     query = query
@@ -42,7 +40,6 @@ export async function GET(request: NextRequest) {
         { success: false, error: error.message },
         { status: 500 }
       );
-    }
 
     return NextResponse.json({
       success: true,
@@ -55,5 +52,3 @@ export async function GET(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
-  }
-}

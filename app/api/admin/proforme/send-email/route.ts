@@ -15,7 +15,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'id and to_email are required' },
         { status: 400 }
       );
-    }
 
     const mailer = getMailer();
     if (!mailer) {
@@ -23,7 +22,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'Email configuration not available' },
         { status: 500 }
       );
-    }
 
     // Get proforma with items
     const { data: proforma, error: proformaError } = await supabase
@@ -37,7 +35,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'Proforma not found' },
         { status: 404 }
       );
-    }
 
     const { data: items } = await supabase
       .from('proforma_items')
@@ -125,5 +122,3 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
-  }
-}

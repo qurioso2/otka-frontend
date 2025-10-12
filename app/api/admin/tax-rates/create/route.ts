@@ -14,7 +14,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'Name and rate are required' },
         { status: 400 }
       );
-    }
 
     // If this is being set as default, unset other defaults
     if (is_default) {
@@ -22,7 +21,6 @@ export async function POST(request: NextRequest) {
         .from('tax_rates')
         .update({ is_default: false })
         .eq('is_default', true);
-    }
 
     // Create tax rate
     const { data, error } = await supabase
@@ -45,7 +43,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: error.message },
         { status: 500 }
       );
-    }
 
     return NextResponse.json({
       success: true,
@@ -57,5 +54,3 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
-  }
-}

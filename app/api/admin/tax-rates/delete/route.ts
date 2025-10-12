@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'ID is required' },
         { status: 400 }
       );
-    }
 
     // Check if this tax rate is used in products
     const { data: productsWithTaxRate, error: checkError } = await supabase
@@ -27,7 +26,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: checkError.message },
         { status: 500 }
       );
-    }
 
     // If tax rate is used in products, deactivate instead of delete
     if (productsWithTaxRate && (productsWithTaxRate as any).count > 0) {
@@ -44,14 +42,12 @@ export async function POST(request: NextRequest) {
           { success: false, error: error.message },
           { status: 500 }
         );
-      }
 
       return NextResponse.json({
         success: true,
         data,
         message: 'Tax rate deactivated (in use by products)',
       });
-    }
 
     // Otherwise, delete
     const { error } = await supabase
@@ -65,7 +61,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: error.message },
         { status: 500 }
       );
-    }
 
     return NextResponse.json({
       success: true,
@@ -77,5 +72,3 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
-  }
-}

@@ -6,7 +6,6 @@ export async function POST(request: Request) {
   const { client_id, total_net, total_vat = 0, total_gross, status = 'completed', note } = body || {};
   if (!client_id || !total_net || !total_gross) {
     return NextResponse.json({ error: 'client_id, total_net, total_gross are required' }, { status: 400 });
-  }
 
   // Fetch client to get partner_email
   const { data: client, error: clientErr } = await supabase.from('clients').select('id, partner_email').eq('id', client_id).maybeSingle();
@@ -27,4 +26,3 @@ export async function POST(request: Request) {
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
   return NextResponse.json({ order: data });
-}

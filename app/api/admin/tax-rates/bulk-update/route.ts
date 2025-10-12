@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'old_rate_id and new_rate_id are required' },
         { status: 400 }
       );
-    }
 
     // Call the SQL function to update all products
     const { data, error } = await supabase
@@ -28,7 +27,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: error.message },
         { status: 500 }
       );
-    }
 
     return NextResponse.json({
       success: true,
@@ -41,5 +39,3 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
-  }
-}

@@ -7,16 +7,12 @@ export async function POST(request: NextRequest) {
   try {
     // Using supabaseAdmin (service_role key - bypasses RLS)
     
-    // Verify admin access
-    }
-    }
 
     const formData = await request.formData();
     const file = formData.get('file') as File;
     
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
-    }
 
     const fileExt = file.name.split('.').pop()?.toLowerCase();
     let products: any[] = [];
@@ -33,14 +29,12 @@ export async function POST(request: NextRequest) {
         { error: `Format nesuportat: ${fileExt}. Folosiți CSV sau Excel (.xlsx, .xls)` },
         { status: 400 }
       );
-    }
 
     if (products.length === 0) {
       return NextResponse.json(
         { error: 'Nu s-au găsit produse în fișier' },
         { status: 400 }
       );
-    }
 
     console.log(`Parsed ${products.length} products from file`);
 
@@ -54,7 +48,6 @@ export async function POST(request: NextRequest) {
 
     if (uploadError) {
       console.warn('Storage upload warning:', uploadError.message);
-    }
 
     // Insert/Update produse în baza de date
     const productsToInsert = products.map(p => ({
@@ -77,7 +70,6 @@ export async function POST(request: NextRequest) {
         { error: `Eroare la salvare: ${insertError.message}` },
         { status: 500 }
       );
-    }
 
     return NextResponse.json({
       success: true,
@@ -93,8 +85,6 @@ export async function POST(request: NextRequest) {
       { error: `Import failed: ${error.message}` },
       { status: 500 }
     );
-  }
-}
 
 async function processCSV(file: File): Promise<any[]> {
   const text = await file.text();
@@ -108,10 +98,8 @@ async function processCSV(file: File): Promise<any[]> {
 
   if (result.errors.length > 0) {
     console.warn('CSV parse warnings:', result.errors);
-  }
 
   return result.data.map((row: any) => normalizeProduct(row));
-}
 
 async function processExcel(file: File): Promise<any[]> {
   const arrayBuffer = await file.arrayBuffer();
@@ -122,7 +110,6 @@ async function processExcel(file: File): Promise<any[]> {
   const data = XLSX.utils.sheet_to_json(worksheet);
 
   return data.map((row: any) => normalizeProduct(row));
-}
 
 function normalizeProduct(rawData: any): any {
   // Generate slug from name
@@ -166,7 +153,5 @@ function normalizeProduct(rawData: any): any {
   const galleryStr = rawData['Imagini'] || rawData['Images'] || rawData['gallery'] || rawData['Gallery'] || '';
   if (galleryStr && typeof galleryStr === 'string') {
     normalized.gallery = galleryStr.split(',').map((url: string) => url.trim()).filter(Boolean);
-  }
 
   return normalized;
-}

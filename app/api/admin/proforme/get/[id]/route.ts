@@ -19,7 +19,6 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         { success: false, error: 'ID is required' },
         { status: 400 }
       );
-    }
 
     // Get proforma
     const { data: proforma, error } = await supabase
@@ -34,7 +33,6 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         { success: false, error: error.message },
         { status: 404 }
       );
-    }
 
     // Get proforma items with tax rate details
     const { data: items, error: itemsError } = await supabase
@@ -52,7 +50,6 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         { success: false, error: itemsError.message },
         { status: 500 }
       );
-    }
 
     return NextResponse.json({
       success: true,
@@ -67,5 +64,3 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
-  }
-}

@@ -5,9 +5,6 @@ export async function POST(request: NextRequest) {
   try {
     // Using supabaseAdmin (service_role key - bypasses RLS)
     
-    // Verify admin access
-    }
-    }
 
     // Parse request body
     const body = await request.json();
@@ -34,7 +31,6 @@ export async function POST(request: NextRequest) {
         error: 'Missing required fields: sku, name, price_public_ttc',
         received: { sku: !!sku, name: !!name, price_public_ttc: price_public_ttc }
       }, { status: 400 });
-    }
 
     // Validate numeric fields
     const parsedPrice = parseFloat(price_public_ttc);
@@ -43,7 +39,6 @@ export async function POST(request: NextRequest) {
         error: 'Invalid price_public_ttc value',
         received: price_public_ttc 
       }, { status: 400 });
-    }
 
     // Create product - process validated data from frontend
     const productToInsert = {
@@ -76,11 +71,8 @@ export async function POST(request: NextRequest) {
         details: error.message,
         code: error.code 
       }, { status: 500 });
-    }
 
     return NextResponse.json({ product, message: 'Product created successfully' });
   } catch (error) {
     console.error('API Error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}

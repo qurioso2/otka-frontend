@@ -30,7 +30,6 @@ export async function POST(request: NextRequest) {
           { success: false, error: error.message },
           { status: 500 }
         );
-      }
 
       result = data;
     } else {
@@ -47,10 +46,8 @@ export async function POST(request: NextRequest) {
           { success: false, error: error.message },
           { status: 500 }
         );
-      }
 
       result = data;
-    }
 
     return NextResponse.json({
       success: true,
@@ -62,5 +59,3 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
-  }
-}

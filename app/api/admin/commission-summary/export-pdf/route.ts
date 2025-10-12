@@ -45,7 +45,6 @@ export async function GET(request: Request) {
     totalNet += v.net; totalCom += commission;
     if (y < 50) {
       y = 800; pdf.addPage();
-    }
     page.drawText(email, { x: 50, y, size: 10, font });
     page.drawText(String(v.orders), { x: 280, y, size: 10, font });
     page.drawText(v.net.toFixed(2), { x: 350, y, size: 10, font });
@@ -63,6 +62,4 @@ export async function GET(request: Request) {
     headers: {
       'Content-Type': 'application/pdf',
       'Content-Disposition': `attachment; filename="comisioane-${start.toISOString().slice(0,7)}.pdf"`
-    }
   });
-}

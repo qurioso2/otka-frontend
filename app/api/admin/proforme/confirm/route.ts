@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'ID is required' },
         { status: 400 }
       );
-    }
 
     // Update status to paid and set confirmed_at
     const { data, error } = await supabase
@@ -32,7 +31,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: error.message },
         { status: 500 }
       );
-    }
 
     // TODO: Here you can add logic to:
     // 1. Decrease stock for all products in proforma_items
@@ -49,5 +47,3 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
-  }
-}

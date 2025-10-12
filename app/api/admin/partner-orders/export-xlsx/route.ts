@@ -32,6 +32,4 @@ export async function GET(request: Request) {
     headers: {
       'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       'Content-Disposition': 'attachment; filename="comenzi-parteneri.xlsx"'
-    }
   });
-}

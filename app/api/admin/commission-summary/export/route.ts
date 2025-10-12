@@ -51,7 +51,6 @@ export async function GET(request: Request) {
       commission.toFixed(2),
       row.status
     ].join(','));
-  }
 
   // Adaug și sumarul pe parteneri
   const map: Record<string, { total_net: number; commission: number; orders: number }> = {};
@@ -61,7 +60,6 @@ export async function GET(request: Request) {
     if (!map[key]) map[key] = { total_net: 0, commission: 0, orders: 0 };
     map[key].total_net += Number(row.total_net || 0);
     map[key].orders += 1;
-  }
   Object.keys(map).forEach(k => { map[k].commission = map[k].total_net * 0.05; });
 
   if (Object.keys(map).length > 0) {
@@ -77,7 +75,6 @@ export async function GET(request: Request) {
         stats.commission.toFixed(2)
       ].join(','));
     });
-  }
 
   const csv = csvRows.join('\n');
   const monthLabel = start.toISOString().slice(0,7);
@@ -88,4 +85,3 @@ export async function GET(request: Request) {
       'Content-Disposition': `attachment; filename="comisioane-${monthLabel}.csv"`,
     },
   });
-}

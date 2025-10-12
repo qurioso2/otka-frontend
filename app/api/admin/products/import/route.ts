@@ -5,9 +5,6 @@ export async function POST(request: NextRequest) {
   try {
     // Using supabaseAdmin (service_role key - bypasses RLS)
     
-    // Verify admin access
-    }
-    }
 
     // Parse form data
     const formData = await request.formData();
@@ -15,7 +12,6 @@ export async function POST(request: NextRequest) {
     
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
-    }
 
     // Read CSV content
     const csvContent = await file.text();
@@ -23,7 +19,6 @@ export async function POST(request: NextRequest) {
     
     if (lines.length < 2) {
       return NextResponse.json({ error: 'CSV must have header and at least one row' }, { status: 400 });
-    }
 
     // Parse header
     const header = lines[0].split(',').map(h => h.trim());
@@ -35,7 +30,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ 
         error: `Missing required headers: ${missingHeaders.join(', ')}` 
       }, { status: 400 });
-    }
 
     // Parse rows
     const products = [];
@@ -59,11 +53,9 @@ export async function POST(request: NextRequest) {
         description: product.description || '',
         gallery: product.gallery ? [product.gallery] : []
       });
-    }
 
     if (products.length === 0) {
       return NextResponse.json({ error: 'No valid products found in CSV' }, { status: 400 });
-    }
 
     // Insert products
     const { data, error } = await supabase
@@ -74,7 +66,6 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('Error importing products:', error);
       return NextResponse.json({ error: 'Failed to import products' }, { status: 500 });
-    }
 
     return NextResponse.json({ 
       message: 'Products imported successfully',
@@ -84,5 +75,3 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('API Error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-  }
-}

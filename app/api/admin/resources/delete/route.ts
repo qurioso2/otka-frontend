@@ -9,4 +9,3 @@ export async function POST(request: Request) {
   const { error } = await supabase.from('partner_resources').delete().eq('id', id);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ ok: true });
-}

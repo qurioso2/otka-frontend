@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: 'ID is required' },
         { status: 400 }
       );
-    }
 
     // If this is being set as default, unset other defaults
     if (is_default) {
@@ -22,7 +21,6 @@ export async function POST(request: NextRequest) {
         .update({ is_default: false })
         .neq('id', id)
         .eq('is_default', true);
-    }
 
     // Build update object with only provided fields
     const updateData: any = {};
@@ -47,7 +45,6 @@ export async function POST(request: NextRequest) {
         { success: false, error: error.message },
         { status: 500 }
       );
-    }
 
     return NextResponse.json({
       success: true,
@@ -59,5 +56,3 @@ export async function POST(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
-  }
-}

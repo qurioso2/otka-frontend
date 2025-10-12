@@ -18,7 +18,6 @@ export async function GET(request: NextRequest) {
         { success: false, error: error.message },
         { status: 500 }
       );
-    }
 
     // If no data, return zeros
     const stats = data && data.length > 0 ? data[0] : {
@@ -42,5 +41,3 @@ export async function GET(request: NextRequest) {
       { success: false, error: error.message || 'Internal server error' },
       { status: 500 }
     );
-  }
-}

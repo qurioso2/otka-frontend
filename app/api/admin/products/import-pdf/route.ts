@@ -20,15 +20,11 @@ interface ExtractedProduct {
   height?: number;
   weight?: number;
   gallery?: string[];
-}
 
 export async function POST(request: NextRequest) {
   try {
     // Using supabaseAdmin (service_role key - bypasses RLS)
     
-    // Verify admin access
-    }
-    }
 
     const formData = await request.formData();
     const file = formData.get('file') as File;
@@ -37,7 +33,6 @@ export async function POST(request: NextRequest) {
     
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
-    }
 
     const fileExt = file.name.split('.').pop()?.toLowerCase();
     if (fileExt !== 'pdf') {
@@ -45,7 +40,6 @@ export async function POST(request: NextRequest) {
         { error: `Format nesuportat: ${fileExt}. Folosiți doar PDF` },
         { status: 400 }
       );
-    }
 
     console.log(`🔍 Processing PDF: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
 
@@ -64,7 +58,6 @@ export async function POST(request: NextRequest) {
 
     if (uploadError) {
       console.warn('⚠️ Storage upload warning:', uploadError.message);
-    }
 
     // Get public URL for storage
     const { data: { publicUrl } } = supabase.storage
@@ -112,7 +105,6 @@ Format răspuns (array de produse):
     "length": 45,
     "height": 75,
     "weight": 25.5
-  }
 ]
 
 Brand/Producător: ${brandName}
@@ -135,10 +127,7 @@ Analizează catalogul și returnează JSON-ul cu toate produsele găsite.`;
               image_url: {
                 url: `data:application/pdf;base64,${base64Pdf}`,
                 detail: 'high' // High detail for better extraction
-              }
-            }
           ]
-        }
       ],
       max_tokens: 4096,
       temperature: 0.1, // Low temperature for consistent extraction
@@ -157,7 +146,6 @@ Analizează catalogul și returnează JSON-ul cu toate produsele găsite.`;
         extractedProducts = JSON.parse(jsonMatch[0]);
       } else {
         extractedProducts = JSON.parse(responseText);
-      }
     } catch (parseError) {
       console.error('❌ JSON parse error:', parseError);
       console.log('Raw response:', responseText.substring(0, 500));
@@ -166,7 +154,6 @@ Analizează catalogul și returnează JSON-ul cu toate produsele găsite.`;
         details: 'GPT-4o response was not valid JSON',
         raw_response: responseText.substring(0, 1000)
       }, { status: 500 });
-    }
 
     console.log(`✅ Extracted ${extractedProducts.length} products from PDF`);
 
@@ -176,7 +163,6 @@ Analizează catalogul și returnează JSON-ul cu toate produsele găsite.`;
         message: 'GPT-4o could not extract any products from the catalog',
         suggestion: 'Please check if the PDF contains product information in a readable format'
       }, { status: 400 });
-    }
 
     // Prepare products for database insertion
     const productsToInsert = extractedProducts.map((product, index) => {
@@ -228,7 +214,6 @@ Analizează catalogul și returnează JSON-ul cu toate produsele găsite.`;
         details: insertError.message,
         extracted_count: extractedProducts.length
       }, { status: 500 });
-    }
 
     console.log(`✅ Successfully imported ${insertedProducts?.length || 0} products`);
 
@@ -253,8 +238,6 @@ Analizează catalogul și returnează JSON-ul cu toate produsele găsite.`;
       message: error.message,
       details: error.toString()
     }, { status: 500 });
-  }
-}
 
 // GET endpoint to check if PDF import is available
 export async function GET() {
@@ -272,4 +255,3 @@ export async function GET() {
       'Automatic SKU generation if missing'
     ]
   });
-}

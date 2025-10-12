@@ -21,8 +21,6 @@ export async function GET(request: Request) {
     if (!map[key]) map[key] = { total_net: 0, commission: 0, orders: 0 };
     map[key].total_net += Number(row.total_net || 0);
     map[key].orders += 1;
-  }
   Object.keys(map).forEach(k => { map[k].commission = map[k].total_net * 0.05; });
 
   return NextResponse.json({ month: start.toISOString().slice(0,7), summary: map });
-}

@@ -29,10 +29,8 @@ export async function POST(request: Request) {
       gallery: row.gallery ? JSON.parse(row.gallery) : [],
       visible: row.visible === 'true' || row.visible === '1',
     });
-  }
 
   const { error } = await supabase.from('products').insert(products);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
   return NextResponse.json({ imported: products.length });
-}
