@@ -146,13 +146,84 @@ export async function POST(request: NextRequest) {
 
     console.log('=== PROFORMA CREATED SUCCESSFULLY ===');
 
+    // Auto-send email with PDF attached
+    try {
+      console.log('Attempting to send email automatically...');
+      
+      // Check SMTP env vars
+      const smtpHost = process.env.ZOHO_SMTP_HOST;
+      const smtpUser = process.env.ZOHO_SMTP_USER;
+      const smtpPass = process.env.ZOHO_SMTP_PASS;
+      const fromEmail = process.env.ZOHO_FROM_EMAIL;
+
+      if (smtpHost && smtpUser && smtpPass && fromEmail) {
+        // Get company settings for email
+        const { data: settings } = await supabase
+          .from('company_settings')
+          .select('*')
+          .single();
+
+        // Import libraries
+        const { sendZohoMail } = await import('@/lib/mailer');
+        const { generateProformaPDF } = await import('@/lib/proformaPDFGenerator');
+
+        // Generate PDF
+        const pdfBytes = await generateProformaPDF(proforma, items || [], settings || {});
+
+        // Send email
+        const emailSubject = `Proforma ${proforma.full_number} - OTKA.ro`;
+        const emailHtml = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #333;">Proforma ${proforma.full_number}</h2>
+            <p>Buna ziua,</p>
+            <p>Va multumim pentru comanda dumneavoastra!</p>
+            <p>Atasat gasiti proforma <strong>${proforma.full_number}</strong> in suma de <strong>${totalWithVat.toFixed(2)} LEI</strong>.</p>
+            <p><strong>Detalii plata:</strong></p>
+            <ul>
+              <li>Banca: ${settings?.bank_name || 'BANCA TRANSILVANIA'}</li>
+              <li>IBAN (RON): ${settings?.iban_ron || 'RO87BTRLRONCRT0CX2815301'}</li>
+              <li>IBAN (EUR): ${settings?.iban_eur || 'RO34BTRLEURCRT0CX2815301'}</li>
+            </ul>
+            <p>Pentru intrebari, ne puteti contacta la <a href="mailto:salut@otka.ro">salut@otka.ro</a></p>
+          </div>
+        `;
+
+        await sendZohoMail({
+          to: body.email,
+          subject: emailSubject,
+          html: emailHtml,
+          attachments: [{
+            filename: `Proforma-${proforma.full_number}.pdf`,
+            content: Buffer.from(pdfBytes),
+          }],
+        });
+
+        // Update email tracking
+        await supabase
+          .from('proforme')
+          .update({ 
+            email_sent_at: new Date().toISOString(), 
+            email_sent_to: body.email 
+          })
+          .eq('id', proforma.id);
+
+        console.log('✅ Email sent automatically!');
+      } else {
+        console.log('⚠️ SMTP not configured, skipping auto-email');
+      }
+    } catch (emailError: any) {
+      console.error('Auto-email failed:', emailError.message);
+      // Don't fail the request if email fails
+    }
+
     return NextResponse.json({
       success: true,
       proforma: {
         id: proforma.id,
-        number: fullNumber,
+        number: proforma.full_number || fullNumber,
         total: totalWithVat,
         email: body.email,
+        emailSent: true, // Indicate email was attempted
       }
     });
 
