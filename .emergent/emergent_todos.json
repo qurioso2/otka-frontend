@@ -1,18 +1,14 @@
 [
   {
-    "content": "Scoate text SmartBill din PDF",
+    "content": "Testare: Validare plată și scădere stoc",
     "status": "completed"
   },
   {
-    "content": "Testare: Validare plată și scădere stoc",
-    "status": "in_progress"
-  },
-  {
     "content": "Testare: Homepage fără produse stoc 0",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Testare: Validare cantitate în coș",
-    "status": "pending"
+    "status": "completed"
   }
 ]
