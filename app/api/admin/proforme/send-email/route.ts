@@ -18,14 +18,14 @@ export async function POST(request: NextRequest) {
     // Update proforma email tracking
     const { error } = await supabase
       .from('proforme')
-      .update({ email_sent_at: new Date().toISOString(), email_sent_to: email })
+      .update({ email_sent_at: new Date().toISOString(), email_sent_to: recipientEmail })
       .eq('id', id);
 
     if (error) {
       return NextResponse.json({ success: false, error: error.message }, { status: 500 });
     }
 
-    console.log(`EMAIL SIMULATED: Sent to ${email} for proforma ${id}`);
+    console.log(`EMAIL SIMULATED: Sent to ${recipientEmail} for proforma ${id}`);
     
     return NextResponse.json({ success: true, message: 'Email sent successfully' });
   } catch (error: any) {
