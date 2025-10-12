@@ -140,6 +140,54 @@ export default function AdminDashboard() {
 }
 
 function OverviewTab({ setActiveTab }: { setActiveTab: (tab: string) => void }) {
+  const [stats, setStats] = useState({
+    totalProducts: 0,
+    activePartners: 0,
+    ordersToday: 0,
+    loading: true
+  });
+
+  useEffect(() => {
+    const loadDashboardStats = async () => {
+      try {
+        // Load stats in parallel
+        const [productsRes, partnersRes, ordersRes] = await Promise.all([
+          fetch('/api/admin/products/list', { cache: 'no-store' }),
+          fetch('/api/admin/users/list', { cache: 'no-store' }),
+          fetch('/api/admin/orders/list', { cache: 'no-store' })
+        ]);
+
+        const productsData = await productsRes.json();
+        const partnersData = await partnersRes.json();
+        const ordersData = await ordersRes.json();
+
+        // Calculate stats
+        const totalProducts = productsData.products?.length || 0;
+        const activePartners = partnersData.users?.filter((u: any) => u.role === 'partner')?.length || 0;
+        
+        // Calculate orders today
+        const today = new Date().toISOString().split('T')[0];
+        const ordersToday = ordersData.orders?.filter((o: any) => 
+          o.created_at?.startsWith(today)
+        )?.length || 0;
+
+        setStats({
+          totalProducts,
+          activePartners,
+          ordersToday,
+          loading: false
+        });
+
+        console.log('Dashboard stats loaded:', { totalProducts, activePartners, ordersToday });
+      } catch (error) {
+        console.error('Error loading dashboard stats:', error);
+        setStats(prev => ({ ...prev, loading: false }));
+      }
+    };
+
+    loadDashboardStats();
+  }, []);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
       {/* Quick Stats */}
