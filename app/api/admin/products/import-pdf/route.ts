@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
     
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+    }
 
     const fileExt = file.name.split('.').pop()?.toLowerCase();
     if (fileExt !== 'pdf') {
@@ -41,6 +42,7 @@ export async function POST(request: NextRequest) {
         { error: `Format nesuportat: ${fileExt}. Folosiți doar PDF` },
         { status: 400 }
       );
+    }
 
     console.log(`🔍 Processing PDF: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
 
