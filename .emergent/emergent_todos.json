@@ -1,15 +1,11 @@
 [
   {
-    "content": "Implementare: Adăugare stock_qty la AddToCartButton",
+    "content": "Scoate text SmartBill din PDF",
     "status": "completed"
   },
   {
-    "content": "Scoate text SmartBill din PDF",
-    "status": "in_progress"
-  },
-  {
     "content": "Testare: Validare plată și scădere stoc",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Testare: Homepage fără produse stoc 0",
