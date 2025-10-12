@@ -1,15 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '../types/supabase';
 
-// Lazy initialization - avoid build-time env var access
+// Lazy initialization - completely avoid any build-time execution
 let _supabaseAdmin: ReturnType<typeof createClient<Database>> | null = null;
 
-const createSupabaseAdmin = () => {
+export function getSupabaseAdmin() {
   if (_supabaseAdmin) {
     return _supabaseAdmin;
   }
 
-  // Only access env vars at runtime when actually needed
+  // Only access env vars when this function is explicitly called
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
   const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
@@ -28,12 +28,12 @@ const createSupabaseAdmin = () => {
   });
 
   return _supabaseAdmin;
-};
+}
 
-// Export function that returns the admin client
+// For backward compatibility, keep the old export name but as a function call
 export const supabaseAdmin = {
-  from: (table: string) => createSupabaseAdmin().from(table),
-  auth: createSupabaseAdmin().auth,
-  storage: createSupabaseAdmin().storage,
-  rpc: (fn: string, args?: any) => createSupabaseAdmin().rpc(fn, args),
+  from: (table: string) => getSupabaseAdmin().from(table),
+  auth: getSupabaseAdmin().auth,
+  storage: getSupabaseAdmin().storage,
+  rpc: (fn: string, args?: any) => getSupabaseAdmin().rpc(fn, args),
 };
