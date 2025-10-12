@@ -5,15 +5,15 @@
   },
   {
     "content": "Creează schema DB: tabele tax_rates, proforme, proforme_items, company_settings",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Adaugă referință tax_rate_id în tabelul products (în loc de vat_rate numeric)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Creează API endpoints pentru tax_rates management (CRUD)",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Creează API endpoints pentru company_settings (read/update)",
@@ -24,7 +24,7 @@
     "status": "pending"
   },
   {
-    "content": "Implementează PDF generator pentru proforme cu mPDF/pdf-lib",
+    "content": "Implementează PDF generator pentru proforme cu pdf-lib",
     "status": "pending"
   },
   {
