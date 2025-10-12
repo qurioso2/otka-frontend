@@ -317,10 +317,10 @@ export default function ProformaManager() {
   };
 
   const calculateTotals = () => {
-    const subtotal = items.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0);
+    const subtotal = items.reduce((sum, item) => sum + ((item.quantity || 0) * (item.unit_price || 0)), 0);
     const totalVat = items.reduce((sum, item) => {
-      const itemSubtotal = item.quantity * item.unit_price;
-      return sum + (itemSubtotal * item.tax_rate_value / 100);
+      const itemSubtotal = (item.quantity || 0) * (item.unit_price || 0);
+      return sum + (itemSubtotal * (item.tax_rate_value || 0) / 100);
     }, 0);
     const total = subtotal + totalVat;
 
