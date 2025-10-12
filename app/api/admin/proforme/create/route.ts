@@ -8,17 +8,41 @@ export async function POST(request: NextRequest) {
     console.log('Creating proforma with data:', body);
 
     const {
+      client_type,
+      client_name,
+      client_email,
+      client_company,
+      client_cui,
+      client_address,
+      client_notes,
+      currency,
+      items = [],
+      // Also accept the old format for compatibility
       customer_name,
       customer_email,
       customer_company,
       customer_cui,
       customer_address,
       notes,
-      items = [],
     } = body;
 
+    // Use new format or fallback to old format
+    const finalCustomerName = client_name || customer_name;
+    const finalCustomerEmail = client_email || customer_email;
+    const finalCustomerCompany = client_company || customer_company;
+    const finalCustomerCui = client_cui || customer_cui;
+    const finalCustomerAddress = client_address || customer_address;
+    const finalNotes = client_notes || notes;
+
+    console.log('Processed data:', {
+      finalCustomerName,
+      finalCustomerEmail,
+      finalCustomerCompany,
+      itemsCount: items.length
+    });
+
     // Validation
-    if (!customer_name || !customer_email) {
+    if (!finalCustomerName || !finalCustomerEmail) {
       return NextResponse.json(
         { success: false, error: 'Customer name and email are required' },
         { status: 400 }
