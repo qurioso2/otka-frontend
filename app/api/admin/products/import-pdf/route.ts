@@ -258,3 +258,4 @@ export async function GET() {
       'Automatic SKU generation if missing'
     ]
   });
+}
