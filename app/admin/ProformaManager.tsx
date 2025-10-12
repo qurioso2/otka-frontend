@@ -462,10 +462,18 @@ export default function ProformaManager() {
         <div className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-[10px] shadow-lg ${
           notification.type === 'success'
             ? 'bg-green-50 text-green-800 ring-1 ring-green-200'
+            : notification.type === 'warning'
+            ? 'bg-yellow-50 text-yellow-800 ring-1 ring-yellow-200'
             : 'bg-red-50 text-red-800 ring-1 ring-red-200'
         }`}>
           <div className="flex items-center gap-2">
-            {notification.type === 'success' ? <CheckCircle className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
+            {notification.type === 'success' ? (
+              <CheckCircle className="w-5 h-5" />
+            ) : notification.type === 'warning' ? (
+              <AlertCircle className="w-5 h-5 text-yellow-600" />
+            ) : (
+              <AlertCircle className="w-5 h-5" />
+            )}
             <span className="font-medium">{notification.message}</span>
           </div>
         </div>
