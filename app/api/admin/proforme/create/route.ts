@@ -102,15 +102,16 @@ export async function POST(request: NextRequest) {
       const itemsWithProformaId = items.map((item: any) => ({
         proforma_id: proforma.id,
         product_id: item.product_id,
-        product_name: item.product_name,
-        product_sku: item.product_sku,
+        sku: item.sku,
+        name: item.name,
         quantity: item.quantity,
         unit_price: item.unit_price,
-        total_price: item.unit_price * item.quantity,
+        tax_rate_id: item.tax_rate_id || 1,
+        tax_rate_value: item.tax_rate_value || 21,
       }));
 
       const { data: insertedItems, error: itemsError } = await supabase
-        .from('proforme_items')
+        .from('proforma_items') // Note: singular 'proforma_items' not 'proforme_items'
         .insert(itemsWithProformaId)
         .select();
 
