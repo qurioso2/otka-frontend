@@ -51,6 +51,12 @@ export default function AdminDashboard() {
         return <CategoriesManager />;
       case 'brands':
         return <BrandsManager />;
+      case 'tax-rates':
+        return <TaxRatesManager />;
+      case 'proforme':
+        return <ProformaManager />;
+      case 'company-settings':
+        return <CompanySettingsManager />;
       case 'import':
         return <ImportCatalog />;
       case 'import-pdf':
