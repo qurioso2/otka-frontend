@@ -225,6 +225,7 @@ Analizează catalogul și returnează JSON-ul cu toate produsele găsite.`;
         details: insertError.message,
         extracted_count: extractedProducts.length
       }, { status: 500 });
+    }
 
     console.log(`✅ Successfully imported ${insertedProducts?.length || 0} products`);
 
