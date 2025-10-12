@@ -36,8 +36,12 @@
     "status": "completed"
   },
   {
+    "content": "Fix build warnings: createClient export + sendZohoMail backward compatibility",
+    "status": "completed"
+  },
+  {
     "content": "Creează TaxRatesManager.tsx în admin (gestionare cote TVA)",
-    "status": "in_progress"
+    "status": "pending"
   },
   {
     "content": "Creează CompanySettingsManager.tsx în admin (date firmă, IBAN, logo)",
@@ -48,12 +52,12 @@
     "status": "pending"
   },
   {
-    "content": "Implementează email service pentru trimitere proforme cu PDF atașat",
-    "status": "completed"
-  },
-  {
     "content": "Integrează tab-uri noi în AdminDashboard.tsx (Cote TVA, Setări Firmă, Proforme)",
     "status": "pending"
+  },
+  {
+    "content": "Implementează email service pentru trimitere proforme cu PDF atașat",
+    "status": "completed"
   },
   {
     "content": "Testează flow complet: creează proformă → generează PDF → trimite email",
