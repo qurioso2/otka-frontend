@@ -85,6 +85,8 @@ export async function POST(request: NextRequest) {
       { error: `Import failed: ${error.message}` },
       { status: 500 }
     );
+  }
+}
 
 async function processCSV(file: File): Promise<any[]> {
   const text = await file.text();
