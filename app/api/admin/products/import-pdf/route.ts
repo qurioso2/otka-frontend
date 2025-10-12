@@ -239,6 +239,8 @@ Analizează catalogul și returnează JSON-ul cu toate produsele găsite.`;
       message: error.message,
       details: error.toString()
     }, { status: 500 });
+  }
+}
 
 // GET endpoint to check if PDF import is available
 export async function GET() {
