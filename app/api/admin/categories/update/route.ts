@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabaseAdmin (service_role key - bypasses RLS)
-
-    // Parse request body
+    const supabase = await getServerSupabase();
     const body = await request.json();
+    console.log('Category update request:', body);
     const { id, name, description, icon, sort_order, active } = body;
 
-    // Validation
     if (!id) {
       return NextResponse.json({ error: 'Category ID is required' }, { status: 400 });
     }
@@ -18,7 +16,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Category name is required' }, { status: 400 });
     }
 
-    // Generate slug from name
     const slug = name
       .toLowerCase()
       .normalize('NFD')
@@ -33,7 +30,6 @@ export async function POST(request: NextRequest) {
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-');
 
-    // Update category
     const { data: category, error } = await supabase
       .from('categories')
       .update({
