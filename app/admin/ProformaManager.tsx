@@ -825,7 +825,7 @@ export default function ProformaManager() {
                           </select>
                         </td>
                         <td className="px-3 py-2 text-right font-bold tabular-nums">
-                          {((item.quantity * item.unit_price) * (1 + item.tax_rate_value / 100)).toFixed(2)}
+                          {(((item.quantity || 0) * (item.unit_price || 0)) * (1 + (item.tax_rate_value || 0) / 100)).toFixed(2)}
                         </td>
                         <td className="px-3 py-2">
                           <button
