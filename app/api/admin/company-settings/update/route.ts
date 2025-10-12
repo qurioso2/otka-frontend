@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { supabase } from '@/lib/supabaseClient';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabase from import
+    console.log('=== Company Settings Update API ===');
+    console.log('Using supabaseClient (same as homepage)');
+    
     const body = await request.json();
 
     // Check if settings exist

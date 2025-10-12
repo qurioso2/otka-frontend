@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { supabase } from '@/lib/supabaseClient';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    // Using supabase from import
+    console.log('=== Company Settings API Debug ===');
+    console.log('Using supabaseClient (same as homepage)');
 
     // Get company settings (should only be 1 row)
     const { data, error } = await supabase
@@ -13,6 +14,13 @@ export async function GET(request: NextRequest) {
       .select('*')
       .limit(1)
       .single();
+
+    console.log('Company settings result:', { 
+      hasData: !!data, 
+      hasError: !!error,
+      errorCode: error?.code,
+      errorMessage: error?.message 
+    });
 
     if (error && error.code !== 'PGRST116') {
       // PGRST116 = no rows found
