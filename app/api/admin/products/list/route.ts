@@ -1,18 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('=== Products API Debug ===');
-    console.log('Using supabaseClient (same as homepage)');
+    console.log('=== Products API (using supabaseAdmin) ===');
 
-    // Try with products_public first (same as homepage)
+    // Fetch products from main table (not public view)
     const { data: products, error } = await supabase
-      .from('products_public')
+      .from('products')
       .select('*')
       .order('id', { ascending: false });
 
-    console.log('Query result:', { 
+    console.log('Products result:', { 
       productsCount: products?.length || 0, 
       hasError: !!error,
       errorMessage: error?.message 
@@ -20,13 +19,15 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Error fetching products:', error);
-      return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
+      return NextResponse.json({ 
+        error: 'Failed to fetch products', 
+        details: error.message
+      }, { status: 500 });
     }
 
     return NextResponse.json({ products: products || [] });
   } catch (error: any) {
-    console.error('=== API Exception ===');
-    console.error('Error:', error?.message);
+    console.error('Products API Error:', error);
     return NextResponse.json({ 
       error: 'Internal server error', 
       details: error?.message

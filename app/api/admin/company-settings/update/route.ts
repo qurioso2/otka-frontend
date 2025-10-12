@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('=== Company Settings Update API ===');
-    console.log('Using supabaseClient (same as homepage)');
+    console.log('=== Company Settings Update (using supabaseAdmin) ===');
     
     const body = await request.json();
+    console.log('Update request body:', body);
 
     // Check if settings exist
     const { data: existing } = await supabase
@@ -14,6 +14,8 @@ export async function POST(request: NextRequest) {
       .select('id')
       .limit(1)
       .single();
+
+    console.log('Existing settings check:', { hasExisting: !!existing });
 
     let result;
 
@@ -53,6 +55,8 @@ export async function POST(request: NextRequest) {
 
       result = data;
     }
+
+    console.log('Settings operation result:', result);
 
     return NextResponse.json({
       success: true,
