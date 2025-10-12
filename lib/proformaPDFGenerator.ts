@@ -192,12 +192,15 @@ export async function generateProformaPDF(
 
   const headers = [
     { text: 'Nr. crt', x: colX.nr },
-    { text: '', x: colX.sku },
     { text: 'Denumirea produselor sau a serviciilor', x: colX.description },
     { text: 'U.M.', x: colX.um },
     { text: 'Cant.', x: colX.qty },
-    { text: 'Pret unitar (fara TVA) -Lei-', x: colX.price },
-    { text: 'Valoarea -Lei-', x: colX.value },
+    { text: 'Pret unitar', x: colX.price, size: 7 },
+    { text: '(fara TVA) -Lei-', x: colX.price, yOffset: -8, size: 7 },
+    { text: 'Valoarea', x: colX.value, size: 7 },
+    { text: '-Lei-', x: colX.value, yOffset: -8, size: 7 },
+    { text: 'Valoarea TVA', x: colX.vat, size: 7 },
+    { text: '-Lei-', x: colX.vat, yOffset: -8, size: 7 },
   ];
 
   headers.forEach((header) => {
