@@ -206,8 +206,8 @@ export async function generateProformaPDF(
   headers.forEach((header) => {
     page.drawText(header.text, {
       x: header.x,
-      y: y + 5,
-      size: 9,
+      y: y + 5 + ((header as any).yOffset || 0),
+      size: (header as any).size || 8,
       font: boldFont,
     });
   });
