@@ -4,8 +4,19 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 export async function GET() {
   try {
     // Using supabaseAdmin (service_role key - bypasses RLS)
+    
+    const { data, error } = await supabase
+      .from('partner_orders')
+      .select(`
+        *,
+        partner_order_items(*)
+      `)
+      .order('created_at', { ascending: false });
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+    if (error) {
+      console.error('Partner orders fetch error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
     const orders = (data || []).map((o: any) => {
       const items = Array.isArray(o.partner_order_items) ? o.partner_order_items : [];
@@ -27,5 +38,7 @@ export async function GET() {
 
     return NextResponse.json({ orders });
   } catch (e: any) {
-    console.error(e);
+    console.error('Partner orders list error:', e);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
