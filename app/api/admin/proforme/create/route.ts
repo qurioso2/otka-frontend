@@ -61,13 +61,19 @@ export async function POST(request: NextRequest) {
       return sum + (item.unit_price * item.quantity);
     }, 0);
 
-    // VAT calculation (assuming 19% VAT rate)
-    const vat_rate = 19;
-    const vat_amount = subtotal * (vat_rate / 100);
+    // VAT calculation based on items
+    const vat_amount = items.reduce((sum: number, item: any) => {
+      const itemSubtotal = item.unit_price * item.quantity;
+      return sum + (itemSubtotal * (item.tax_rate_value || 21) / 100);
+    }, 0);
+    
     const total = subtotal + vat_amount;
 
-    // Generate proforma number
-    const proformaNumber = `PF-${Date.now()}`;
+    // Generate simple proforma number (avoid trigger issues)
+    const timestamp = Date.now();
+    const simpleNumber = Math.floor(timestamp / 1000); // Unix timestamp for uniqueness
+
+    console.log('Calculated totals:', { subtotal, vat_amount, total });
 
     // Insert proforma - using correct column names from schema
     const { data: proforma, error: proformaError } = await supabase
