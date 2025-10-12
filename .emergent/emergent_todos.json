@@ -1,19 +1,15 @@
 [
   {
-    "content": "Explorare: Găsire API validare plată factură",
+    "content": "Implementare: Scădere stoc automat la marcare achitată",
     "status": "completed"
   },
   {
-    "content": "Implementare: Scădere stoc automat la marcare achitată",
-    "status": "in_progress"
-  },
-  {
     "content": "Implementare: Creștere stoc la marcare neachitată",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Implementare: Ascundere produse fără stoc pe homepage",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Implementare: Validare cantitate stoc în backend (add to cart)",
