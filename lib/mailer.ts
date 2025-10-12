@@ -36,6 +36,7 @@ export async function sendZohoMail(options: {
   to: string;
   subject: string;
   html: string;
+  replyTo?: string;
   attachments?: { filename: string; content: Buffer }[];
 }) {
   const host = process.env.ZOHO_SMTP_HOST;
@@ -58,6 +59,7 @@ export async function sendZohoMail(options: {
   await transporter.sendMail({
     from,
     to: options.to,
+    replyTo: options.replyTo,
     subject: options.subject,
     html: options.html,
     attachments: options.attachments,
