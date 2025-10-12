@@ -45,11 +45,11 @@ export async function POST(request: NextRequest) {
 
     console.log('Totals calculated:', { subtotalNoVat, totalVat, totalWithVat });
 
-    // Prepare proforma data - MINIMAL VERSION
+    // Prepare proforma data - MINIMAL VERSION (exclude full_number - it's auto-generated!)
     const proformaData: any = {
       series: 'PRF',
       number: nextNumber,
-      full_number: fullNumber,
+      // full_number is GENERATED ALWAYS - don't insert it!
       issue_date: new Date().toISOString().split('T')[0],
       client_type: body.clientType === 'company' ? 'PJ' : 'PF',
       client_name: body.clientType === 'company' ? (body.companyName || body.clientName) : body.clientName,
