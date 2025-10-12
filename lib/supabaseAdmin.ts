@@ -31,7 +31,7 @@ export function getSupabaseAdmin() {
   });
 }
 
-// For backward compatibility - create getter-based object
+// For backward compatibility
 export const supabaseAdmin = {
   get from() {
     return getSupabaseAdmin().from.bind(getSupabaseAdmin());
