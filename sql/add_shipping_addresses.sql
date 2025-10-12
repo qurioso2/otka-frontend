@@ -87,6 +87,7 @@ BEGIN
   ELSE
     RAISE NOTICE 'Reg_com field already exists in clients table';
   END IF;
+  
+  -- Final success message
+  RAISE NOTICE '✅ Schema update complete! All fields are ready.';
 END $$;
-
-RAISE NOTICE '✅ Schema update complete! All fields are ready.';
