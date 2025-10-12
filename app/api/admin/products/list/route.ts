@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('=== Products API (using supabaseAdmin) ===');
+    console.log('=== Products API (using getSupabaseAdmin) ===');
+
+    const supabase = getSupabaseAdmin();
 
     // Fetch products from main table (not public view)
     const { data: products, error } = await supabase
