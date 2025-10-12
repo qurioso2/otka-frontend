@@ -1,5 +1,5 @@
 import { getMailer } from './mailer';
-import { createClient } from './supabaseClient';
+import { supabase } from './supabaseClient';
 
 interface EmailProformaParams {
   proforma_id: number;
@@ -23,7 +23,7 @@ export async function sendProformaEmail(params: EmailProformaParams): Promise<{
       };
     }
 
-    const supabase = createClient();
+    // Using supabase from import
 
     // Get proforma details
     const { data: proforma, error: proformaError } = await supabase
