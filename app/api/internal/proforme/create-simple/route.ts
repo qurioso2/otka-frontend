@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       client_type: body.clientType === 'company' ? 'PJ' : 'PF',
       client_name: body.clientType === 'company' ? (body.companyName || body.clientName) : body.clientName,
       client_email: body.email,
-      currency: 'LEI',
+      currency: 'RON',
       subtotal_no_vat: subtotalNoVat,
       total_vat: totalVat,
       total_with_vat: totalWithVat,
