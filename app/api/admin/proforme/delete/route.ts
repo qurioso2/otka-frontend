@@ -3,7 +3,9 @@ import { getServerSupabase } from '@/app/auth/server';
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await getServerSupabase();
     const body = await request.json();
+    console.log('Delete proforma request:', body);
     const { id } = body;
 
     if (!id) {
@@ -14,7 +16,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Delete proforma items first (foreign key constraint)
-    await supabase.from('proforme_items').delete().eq('proforma_id', id);
+    const { error: itemsDeleteError } = await supabase
+      .from('proforma_items')
+      .delete()
+      .eq('proforma_id', id);
+
+    if (itemsDeleteError) {
+      console.error('Error deleting proforma items:', itemsDeleteError);
+    }
 
     // Delete proforma
     const { error } = await supabase

@@ -16,7 +16,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get proforma with items
+    console.log('Fetching proforma with ID:', id);
+
+    // Get proforma
     const { data: proforma, error: proformaError } = await supabase
       .from('proforme')
       .select('*')
@@ -26,7 +28,7 @@ export async function POST(request: NextRequest) {
     console.log('Proforma fetch result:', { 
       hasProforma: !!proforma, 
       error: proformaError?.message,
-      proformaId: proforma?.id 
+      proformaData: proforma 
     });
 
     if (proformaError || !proforma) {
@@ -37,14 +39,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get proforma items
     const { data: items, error: itemsError } = await supabase
-      .from('proforma_items') // Use correct table name
+      .from('proforma_items')
       .select('*')
       .eq('proforma_id', id);
 
     console.log('Items fetch result:', { 
       itemsCount: items?.length || 0, 
-      error: itemsError?.message 
+      error: itemsError?.message,
+      items: items 
     });
 
     if (itemsError) {
@@ -56,10 +60,14 @@ export async function POST(request: NextRequest) {
 
     // Generate PDF
     try {
+      console.log('Generating PDF for proforma:', proforma.full_number);
+      
       const pdfBuffer = await generateProformaPDF({
         ...proforma,
         items: items || []
       });
+
+      console.log('PDF generated successfully, size:', pdfBuffer.length);
 
       return new NextResponse(pdfBuffer, {
         status: 200,
@@ -71,7 +79,7 @@ export async function POST(request: NextRequest) {
     } catch (pdfError: any) {
       console.error('PDF generation error:', pdfError);
       return NextResponse.json(
-        { success: false, error: 'Failed to generate PDF' },
+        { success: false, error: 'Failed to generate PDF', details: pdfError.message },
         { status: 500 }
       );
     }
