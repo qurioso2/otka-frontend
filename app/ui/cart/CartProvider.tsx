@@ -46,11 +46,28 @@ export default function CartProvider({ children }: { children: React.ReactNode }
   const add: CartContextType['add'] = (item, qty = 1) => {
     setItems((prev) => {
       const idx = prev.findIndex((p) => p.sku === item.sku);
+      const stockQty = item.stock_qty || 0;
+      
       if (idx >= 0) {
         const clone = [...prev];
-        clone[idx] = { ...clone[idx], qty: clone[idx].qty + qty };
+        const newQty = clone[idx].qty + qty;
+        
+        // Validate stock
+        if (stockQty > 0 && newQty > stockQty) {
+          alert(`Stoc insuficient. Disponibil: ${stockQty} bucăți`);
+          return prev;
+        }
+        
+        clone[idx] = { ...clone[idx], qty: newQty };
         return clone;
       }
+      
+      // Validate stock for new item
+      if (stockQty > 0 && qty > stockQty) {
+        alert(`Stoc insuficient. Disponibil: ${stockQty} bucăți`);
+        return prev;
+      }
+      
       return [...prev, { ...item, qty }];
     });
   };
