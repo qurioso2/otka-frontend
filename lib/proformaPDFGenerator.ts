@@ -168,7 +168,8 @@ export async function generateProformaPDF(
   const tableTop = y;
   const colX = {
     nr: 50,
-    description: 80,
+    sku: 70,
+    description: 130,
     um: 320,
     qty: 360,
     price: 410,
