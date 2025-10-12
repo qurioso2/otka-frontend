@@ -1,6 +1,6 @@
 'use client';
 import AddToCartButton from '../../ui/AddToCartButton';
 
-export default function AddToCartClient({ item }: { item: { id: number; sku: string; name: string; price: number; image?: string | null } }) {
+export default function AddToCartClient({ item }: { item: { id: number; sku: string; name: string; price: number; image?: string | null; stock_qty?: number } }) {
   return <AddToCartButton item={item} />;
 }
