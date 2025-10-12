@@ -282,19 +282,43 @@ export default function ProformaManager() {
   };
 
   const handleAddProduct = (product: Product) => {
+    // Check if product is already added
+    const existingItem = items.find(item => item.product_id === product.id);
+    if (existingItem) {
+      showNotification('warning', `Produsul ${product.name} este deja adăugat în proformă`);
+      return;
+    }
+
+    // Check stock quantity (if available)
+    if (product.stock_qty !== undefined && product.stock_qty <= 0) {
+      showNotification('warning', `Produsul ${product.name} nu este în stoc (cantitate: ${product.stock_qty})`);
+      // Still allow adding but warn user
+    }
+
     const taxRate = taxRates.find(t => t.id === product.tax_rate_id) || taxRates.find(t => t.rate === 21);
     
-    setItems([...items, {
+    const newItem: ProformaItem = {
       product_id: product.id,
       sku: product.sku,
       name: product.name,
       quantity: 1,
-      unit_price: product.price_partner_net,
+      unit_price: product.price_partner_net || 0, // Ensure we have a price
       tax_rate_id: taxRate?.id || 1,
       tax_rate_value: taxRate?.rate || 21,
-    }]);
+    };
+
+    console.log('Adding product to proforma:', {
+      productId: product.id,
+      productName: product.name,
+      unitPrice: newItem.unit_price,
+      stockQty: product.stock_qty,
+      taxRate: newItem.tax_rate_value
+    });
+    
+    setItems([...items, newItem]);
     setShowProductSearch(false);
     setProductSearchTerm('');
+    showNotification('success', `Produs ${product.name} adăugat în proformă`);
   };
 
   const handleRemoveItem = (index: number) => {
