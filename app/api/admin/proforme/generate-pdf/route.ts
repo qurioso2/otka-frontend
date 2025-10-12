@@ -61,14 +61,18 @@ export async function POST(request: NextRequest) {
 
     // Generate PDF
     try {
-      console.log('Generating PDF for proforma:', proforma.full_number);
+      console.log('=== GENERATING PDF ===');
+      console.log('Proforma full_number:', proforma.full_number);
+      console.log('Items count:', items?.length);
+      console.log('First item:', items?.[0]);
       
       const pdfBuffer = await generateProformaPDF({
         ...proforma,
         items: items || []
       });
 
-      console.log('PDF generated successfully, size:', pdfBuffer.length);
+      console.log('=== PDF GENERATED SUCCESS ===');
+      console.log('PDF size:', pdfBuffer.length, 'bytes');
 
       return new NextResponse(pdfBuffer, {
         status: 200,
@@ -78,7 +82,10 @@ export async function POST(request: NextRequest) {
         },
       });
     } catch (pdfError: any) {
-      console.error('PDF generation error:', pdfError);
+      console.error('=== PDF GENERATION FAILED ===');
+      console.error('Error type:', typeof pdfError);
+      console.error('Error message:', pdfError?.message);
+      console.error('Error stack:', pdfError?.stack);
       return NextResponse.json(
         { success: false, error: 'Failed to generate PDF', details: pdfError.message },
         { status: 500 }
