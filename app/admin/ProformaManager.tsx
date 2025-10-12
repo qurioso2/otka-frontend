@@ -328,6 +328,23 @@ export default function ProformaManager() {
 
   const handleUpdateItem = (index: number, field: keyof ProformaItem, value: any) => {
     const newItems = [...items];
+    const item = newItems[index];
+    
+    // Quantity validation against stock
+    if (field === 'quantity') {
+      const product = products.find(p => p.id === item.product_id);
+      const requestedQty = parseInt(value) || 0;
+      
+      if (product?.stock_qty !== undefined && requestedQty > product.stock_qty) {
+        showNotification('warning', `Cantitate disponibilă: ${product.stock_qty}. Ajustată cantitatea.`);
+        value = Math.max(1, Math.min(requestedQty, product.stock_qty));
+      }
+      
+      if (requestedQty <= 0) {
+        value = 1; // Minimum quantity
+      }
+    }
+    
     newItems[index] = { ...newItems[index], [field]: value };
     
     // Update tax rate value if tax_rate_id changes
