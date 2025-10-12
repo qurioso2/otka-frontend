@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createClient();
+    // Using supabase from import
 
     // Get company settings (should only be 1 row)
     const { data, error } = await supabase

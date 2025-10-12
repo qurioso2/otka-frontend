@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createClient();
+    // Using supabase from import
 
     // Get all tax rates, ordered by sort_order
     const { data: taxRates, error } = await supabase

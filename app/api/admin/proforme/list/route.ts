@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createClient();
+    // Using supabase from import
     const { searchParams } = new URL(request.url);
 
     // Filters

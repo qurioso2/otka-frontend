@@ -3,7 +3,7 @@ import { supabase } from '@/lib/supabaseClient';
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createClient();
+    // Using supabase from import
     const body = await request.json();
 
     const { old_rate_id, new_rate_id } = body;

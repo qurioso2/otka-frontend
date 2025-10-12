@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createClient();
+    // Using supabase from import
 
     // Use the view we created
     const { data, error } = await supabase

@@ -5,7 +5,7 @@ import { getMailer } from '@/lib/mailer';
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createClient();
+    // Using supabase from import
     const body = await request.json();
 
     const { id, to_email } = body;

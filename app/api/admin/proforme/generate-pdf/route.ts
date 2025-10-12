@@ -4,7 +4,7 @@ import { generateProformaPDF } from '@/lib/proformaPDF';
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createClient();
+    // Using supabase from import
     const body = await request.json();
 
     const { id } = body;

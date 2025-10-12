@@ -11,7 +11,7 @@ type RouteParams = {
 
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
-    const supabase = createClient();
+    // Using supabase from import
     const { id } = params;
 
     if (!id) {
