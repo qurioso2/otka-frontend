@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getServerSupabase } from '@/app/auth/server';
+import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const month = searchParams.get('month');
-  const supabase = await getServerSupabase();
+  // Using supabaseAdmin (service_role key - bypasses RLS)
   const { data: { user } } = await supabase.auth.getUser();
   if (!user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const { data: me } = await supabase.from('users').select('role').eq('email', user.email).maybeSingle();

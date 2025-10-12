@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
-import { getServerSupabase } from '@/app/auth/server';
+import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
   if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 });
 
-  const supabase = await getServerSupabase();
+  // Using supabaseAdmin (service_role key - bypasses RLS)
   const { data: { user } } = await supabase.auth.getUser();
   if (!user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const { data: me } = await supabase.from('users').select('role').eq('email', user.email).maybeSingle();
