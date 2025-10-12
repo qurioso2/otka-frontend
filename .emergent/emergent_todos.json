@@ -13,19 +13,19 @@
   },
   {
     "content": "Creează API endpoints pentru tax_rates management (CRUD)",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Creează API endpoints pentru company_settings (read/update)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Creează API endpoints pentru proforme (list, create, update, delete, confirm)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Implementează PDF generator pentru proforme cu pdf-lib",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Adaugă selector cotă TVA în ProductsAdmin.tsx (la adăugare/editare produs)",
