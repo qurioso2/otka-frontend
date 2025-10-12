@@ -1,18 +1,14 @@
 [
   {
-    "content": "Creează TaxRatesManager.tsx în admin (gestionare cote TVA)",
-    "status": "completed"
+    "content": "Fix Company Settings - nu se încarcă/salvează datele",
+    "status": "in_progress"
   },
   {
-    "content": "Creează CompanySettingsManager.tsx în admin (date firmă, IBAN, logo)",
-    "status": "completed"
+    "content": "Fix Proforme - produsele nu se încarcă la creare proformă",
+    "status": "pending"
   },
   {
-    "content": "Creează ProformaManager.tsx în admin (dashboard proforme)",
-    "status": "completed"
-  },
-  {
-    "content": "Integrează tab-uri noi în AdminDashboard.tsx (Cote TVA, Setări Firmă, Proforme)",
-    "status": "completed"
+    "content": "Testează flow complet după fix-uri",
+    "status": "pending"
   }
 ]
