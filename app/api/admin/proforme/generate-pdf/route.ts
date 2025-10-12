@@ -46,7 +46,6 @@ export async function POST(request: NextRequest) {
       itemsCount: items?.length || 0, 
       error: itemsError?.message 
     });
-      .eq('proforma_id', id);
 
     if (itemsError) {
       return NextResponse.json(
