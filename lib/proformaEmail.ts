@@ -1,5 +1,5 @@
 import { getMailer } from './mailer';
-import { supabase } from './supabaseClient';
+import { supabaseAdmin as supabase } from './supabaseAdmin';
 
 interface EmailProformaParams {
   proforma_id: number;
