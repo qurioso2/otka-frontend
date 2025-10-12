@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function POST(request: Request) {
   try {
-    // Using supabaseAdmin (service_role key - bypasses RLS)
+    const supabase = await getServerSupabase();
     const body = await request.json();
     const { slug, title, body: articleBody, images = [], published = false } = body || {};
     if (!slug || !title) return NextResponse.json({ error: 'slug și title necesare' }, { status: 400 });

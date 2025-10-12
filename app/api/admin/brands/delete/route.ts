@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabaseAdmin (service_role key - bypasses RLS)
+    const supabase = await getServerSupabase();
 
     // Parse request body
     const body = await request.json();

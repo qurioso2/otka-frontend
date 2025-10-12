@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
@@ -24,7 +24,7 @@ interface ExtractedProduct {
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabaseAdmin (service_role key - bypasses RLS)
+    const supabase = await getServerSupabase();
     
 
     const formData = await request.formData();

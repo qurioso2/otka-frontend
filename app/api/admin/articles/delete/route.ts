@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 
 export async function POST(request: Request) {
   try {
-    // Using supabaseAdmin (service_role key - bypasses RLS)
+    const supabase = await getServerSupabase();
     const body = await request.json();
     const { id } = body || {};
     if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 });

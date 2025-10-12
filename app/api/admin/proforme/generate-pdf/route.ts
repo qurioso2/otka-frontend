@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 import { generateProformaPDF } from '@/lib/proformaPDF';
 
 export async function POST(request: NextRequest) {

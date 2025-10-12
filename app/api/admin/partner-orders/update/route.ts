@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 import { getMailer } from '@/lib/mailer';
 
 export async function POST(request: Request) {
   try {
-    // Using supabaseAdmin (service_role key - bypasses RLS)
+    const supabase = await getServerSupabase();
     const body = await request.json();
     const { order_id, status, admin_notes, proforma_url, confirmation_document_url } = body || {};
     

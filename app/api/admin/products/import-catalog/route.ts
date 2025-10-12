@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
+import { getServerSupabase } from '@/app/auth/server';
 import * as XLSX from 'xlsx';
 import Papa from 'papaparse';
 
 export async function POST(request: NextRequest) {
   try {
-    // Using supabaseAdmin (service_role key - bypasses RLS)
+    const supabase = await getServerSupabase();
 
     const formData = await request.formData();
     const file = formData.get('file') as File;
