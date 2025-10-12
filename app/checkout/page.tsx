@@ -9,7 +9,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [clientType, setClientType] = useState<'individual' | 'company'>('individual');
   const [sameAddress, setSameAddress] = useState(true);
-  const [result, setResult] = useState<{ id?: number; number?: string; email?: string } | null>(null);
+  const [result, setResult] = useState<{ id?: number; number?: string; email?: string; emailSent?: boolean } | null>(null);
   const [sending, setSending] = useState(false);
 
   useEffect(() => { /* noop */ }, [items, result]);
