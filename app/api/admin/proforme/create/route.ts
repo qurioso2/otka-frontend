@@ -69,12 +69,18 @@ export async function POST(request: NextRequest) {
     
     const total = subtotal + vat_amount;
 
-    // Generate unique proforma number (avoid timestamp collisions)
-    const randomComponent = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-    const timeComponent = Date.now().toString().slice(-6); // Last 6 digits
-    const uniqueNumber = parseInt(timeComponent + randomComponent);
+    // Generate sequential proforma number (1, 2, 3...)
+    // Get the highest existing number and add 1
+    const { data: lastProforma, error: numberError } = await supabase
+      .from('proforme')
+      .select('number')
+      .order('number', { ascending: false })
+      .limit(1)
+      .single();
 
-    console.log('Generated unique number:', uniqueNumber);
+    const nextNumber = lastProforma?.number ? lastProforma.number + 1 : 1;
+    
+    console.log('Next proforma number:', nextNumber);
 
     // Insert proforma - using correct column names from schema
     const { data: proforma, error: proformaError } = await supabase
