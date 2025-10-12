@@ -103,6 +103,13 @@ export default function ProductsAdmin() {
       const data = await res.json();
       if (data.success && Array.isArray(data.data)) {
         setTaxRates(data.data);
+        // Set default tax rate for new products
+        if (!newProduct.tax_rate_id && !editingProduct) {
+          const defaultRate = data.data.find((r: TaxRate) => r.is_default);
+          if (defaultRate) {
+            setNewProduct(prev => ({ ...prev, tax_rate_id: defaultRate.id.toString() }));
+          }
+        }
       }
     } catch (error: any) {
       console.error('Error loading tax rates:', error);
