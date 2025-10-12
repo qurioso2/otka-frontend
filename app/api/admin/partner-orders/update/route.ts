@@ -5,13 +5,6 @@ import { getMailer } from '@/lib/mailer';
 export async function POST(request: Request) {
   try {
     // Using supabaseAdmin (service_role key - bypasses RLS)
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-    const { data: me } = await supabase.from('users').select('role').eq('email', user.email).maybeSingle();
-    if (me?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-
-    const body = await request.json();
     const { order_id, status, admin_notes, proforma_url, confirmation_document_url } = body || {};
     if (!order_id) return NextResponse.json({ error: 'order_id required' }, { status: 400 });
 

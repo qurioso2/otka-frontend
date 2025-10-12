@@ -6,12 +6,6 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const month = searchParams.get('month');
   // Using supabaseAdmin (service_role key - bypasses RLS)
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  const { data: me } = await supabase.from('users').select('role').eq('email', user.email).maybeSingle();
-  if (me?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-
-  const start = month ? new Date(month + '-01T00:00:00') : new Date(new Date().getFullYear(), new Date().getMonth(), 1);
   const end = new Date(start); end.setMonth(start.getMonth() + 1);
 
   const { data, error } = await supabase

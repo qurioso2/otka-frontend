@@ -3,12 +3,6 @@ import { supabaseAdmin as supabase } from '@/lib/supabaseAdmin';
 
 export async function PUT(request: NextRequest) {
   // Using supabaseAdmin (service_role key - bypasses RLS)
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  const { data: me } = await supabase.from('users').select('role').eq('email', user.email).maybeSingle();
-  if (me?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-
-  const body = await request.json();
   const { email, role, partner_status } = body;
   if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400 });
 

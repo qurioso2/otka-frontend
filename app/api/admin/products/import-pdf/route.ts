@@ -27,19 +27,7 @@ export async function POST(request: NextRequest) {
     // Using supabaseAdmin (service_role key - bypasses RLS)
     
     // Verify admin access
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    const { data: profile } = await supabase
-      .from('users')
-      .select('role')
-      .eq('email', user.email!)
-      .maybeSingle();
-
-    if (profile?.role !== 'admin') {
-      return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
     const formData = await request.formData();

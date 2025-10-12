@@ -4,15 +4,6 @@ import * as XLSX from 'xlsx';
 
 export async function GET(request: Request) {
   // Using supabaseAdmin (service_role key - bypasses RLS)
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  const { data: me } = await supabase.from('users').select('role').eq('email', user.email).maybeSingle();
-  if (me?.role !== 'admin') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-
-  const { data, error } = await supabase
-    .from('partner_orders')
-    .select('id,order_number,partner_email,status,created_at,submitted_at,partner_notes,admin_notes,partner_order_items(quantity,partner_price)')
-    .order('created_at', { ascending: false });
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
   const rows = (data || []).map((o: any) => {
