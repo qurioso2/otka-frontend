@@ -47,14 +47,14 @@ export async function POST(request: NextRequest) {
 
     // Prepare proforma data - MINIMAL VERSION (exclude full_number - it's auto-generated!)
     const proformaData: any = {
-      series: 'PRF',
+      series: 'OTK',
       number: nextNumber,
       // full_number is GENERATED ALWAYS - don't insert it!
       issue_date: new Date().toISOString().split('T')[0],
       client_type: body.clientType === 'company' ? 'PJ' : 'PF',
       client_name: body.clientType === 'company' ? (body.companyName || body.clientName) : body.clientName,
       client_email: body.email,
-      currency: 'RON',
+      currency: 'LEI',
       subtotal_no_vat: subtotalNoVat,
       total_vat: totalVat,
       total_with_vat: totalWithVat,
