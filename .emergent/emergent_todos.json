@@ -9,10 +9,10 @@
   },
   {
     "content": "Creează ProformaManager.tsx în admin (dashboard proforme)",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Integrează tab-uri noi în AdminDashboard.tsx (Cote TVA, Setări Firmă, Proforme)",
-    "status": "pending"
+    "status": "completed"
   }
 ]
