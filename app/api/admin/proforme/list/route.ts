@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSupabase } from '@/app/auth/server';
 
 export async function GET(request: NextRequest) {
+    const supabase = await getServerSupabase();
   try {
     console.log('=== Proforme List API Debug ===');
     console.log('Using getServerSupabase (same as create)');

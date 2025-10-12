@@ -3,6 +3,7 @@ import { getServerSupabase } from '@/app/auth/server';
 import { getMailer } from '@/lib/mailer';
 
 export async function POST(request: Request) {
+    const supabase = await getServerSupabase();
   try {
     const supabase = await getServerSupabase();
     const body = await request.json();

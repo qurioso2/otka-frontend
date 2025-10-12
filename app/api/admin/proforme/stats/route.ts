@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
 
 export async function GET(request: NextRequest) {
+    const supabase = await getServerSupabase();
   try {
     console.log('=== Proforme Stats API Debug ===');
     console.log('Using supabaseClient (same as homepage)');

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
 
 export async function GET() {
+    const supabase = await getServerSupabase();
   try {
     console.log('=== Brands API Debug ===');
     console.log('Using supabaseClient (same as homepage)');

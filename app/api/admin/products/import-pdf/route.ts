@@ -23,6 +23,7 @@ interface ExtractedProduct {
 }
 
 export async function POST(request: NextRequest) {
+    const supabase = await getServerSupabase();
   try {
     const supabase = await getServerSupabase();
     

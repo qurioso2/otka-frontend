@@ -3,6 +3,7 @@ import { getServerSupabase } from '@/app/auth/server';
 import { generateProformaPDF } from '@/lib/proformaPDF';
 
 export async function POST(request: NextRequest) {
+    const supabase = await getServerSupabase();
   try {
     const supabase = await getServerSupabase();
     const body = await request.json();

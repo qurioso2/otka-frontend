@@ -4,6 +4,7 @@ import { getServerSupabase } from '@/app/auth/server';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
+    const supabase = await getServerSupabase();
   try {
     console.log('=== Company Settings API (using getServerSupabase) ===');
 

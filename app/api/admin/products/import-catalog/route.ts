@@ -4,6 +4,7 @@ import * as XLSX from 'xlsx';
 import Papa from 'papaparse';
 
 export async function POST(request: NextRequest) {
+    const supabase = await getServerSupabase();
   try {
     const supabase = await getServerSupabase();
 

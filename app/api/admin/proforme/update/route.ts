@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSupabase } from '@/app/auth/server';
 
 export async function POST(request: NextRequest) {
+    const supabase = await getServerSupabase();
   try {
     const body = await request.json();
     const { id, ...updateData } = body;

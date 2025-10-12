@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSupabase } from '@/app/auth/server';
 
 export async function GET() {
+    const supabase = await getServerSupabase();
   try {
     console.log('=== Users API (using getServerSupabase) ===');
 
