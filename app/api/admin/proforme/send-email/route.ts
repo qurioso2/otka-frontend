@@ -7,9 +7,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     console.log('Email request:', body);
     
-    const { id, email, subject, message } = body;
+    // Support both 'email' and 'to_email' from frontend
+    const { id, email, to_email, subject, message } = body;
+    const recipientEmail = email || to_email;
 
-    if (!id || !email) {
+    if (!id || !recipientEmail) {
       return NextResponse.json({ success: false, error: 'ID and email required' }, { status: 400 });
     }
 
